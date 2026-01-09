@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจองที่จอดรถ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding-left: 30px;
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-left: 4px solid white;
+        }
+
+        .menu-item .icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Top Bar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #667eea;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .user-profile:hover {
+            background: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid #e9ecef;
+            color: #dc3545;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tbody tr {
+            transition: all 0.3s;
+        }
+
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-available {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-booked {
+            background: #ffcdcd;
+            color: #850404;
+        }
+
+        .status-paid {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 5px;
+        }
+
+        .btn-book {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-book:hover {
+            background: #218838;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>🚗 Parking</h2>
+            <p>ระบบจองที่จอดรถ</p>
+        </div>
+        <nav class="sidebar-menu">
+            <a class="menu-item active" href="index.html">
+                <span class="icon">🏠</span>
+                <span>หน้าหลัก</span>
+            </a>
+            <a class="menu-item" href="payment.html">
+                <span class="icon">💳</span>
+                <span>แจ้งชำระเงิน</span>
+            </a>
+            <a class="menu-item" href="report.html">
+                <span class="icon">📊</span>
+                <span>รายงาน</span>
+            </a>
+            <a class="menu-item" href="settings.html">
+                <span class="icon">⚙️</span>
+                <span>ตั้งค่า</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="dropdown">
+            <div class="user-profile" id="userProfile">
+                <div class="user-info">
+                    <div class="user-name">สมชาย ใจดี</div>
+                    <div class="user-role">ผู้ดูแลระบบ</div>
+                </div>
+                <div class="user-avatar">SC</div>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item">
+                    <span>👤</span>
+                    <span>โปรไฟล์</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>🔔</span>
+                    <span>การแจ้งเตือน</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>⚙️</span>
+                    <span>ตั้งค่าบัญชี</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>🚪</span>
+                    <span>ออกจากระบบ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>🚗 ระบบจองที่จอดรถ</h1>
+            <p>จัดการที่จอดรถอย่างมีประสิทธิภาพ</p>
+        </div>
+
+        <div class="content">
+
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="ค้นหาเลขที่จอด, ชื่อผู้จอง..." id="searchInput">
+                <select class="filter-select" id="statusFilter">
+                    <option value="all">ทั้งหมด</option>
+                    <option value="available">ว่าง</option>
+                    <option value="booked">จองแล้ว</option>
+                    <option value="paid">ชำระแล้ว</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table id="parkingTable">
+                    <thead>
+                        <tr>
+                            <th>Slot</th>
+                            <th>ผู้จอง</th>
+                            <th>ราคา/เดือน</th>
+                            <th>จำนวนเงินที่จ่าย</th>
+                            <th>วันที่จ่าย</th>
+                            <th>วันที่หมดอายุ</th>
+                            <th>สถานะ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // User Profile Dropdown
+        const userProfile = document.getElementById('userProfile');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        userProfile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!userProfile.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
+
+        // Parking Data
+        const parkingData = [
+            { slot: 1, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 2, status: 'paid', name: 'สมชาย ใจดี', price: 2000, paid: 2000, payDate: '2026-01-05', expDate: '2026-02-05' },
+            { slot: 3, status: 'booked', name: 'สมหญิง รักสวย', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 4, status: 'paid', name: 'ประยุทธ์ มั่นคง', price: 2500, paid: 2500, payDate: '2026-01-03', expDate: '2026-02-03' },
+            { slot: 5, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 6, status: 'paid', name: 'วิไล สุขสม', price: 2000, paid: 2000, payDate: '2026-01-07', expDate: '2026-02-07' },
+            { slot: 7, status: 'booked', name: 'จิตติ มีเงิน', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 8, status: 'paid', name: 'สุดา รักงาม', price: 2000, paid: 2000, payDate: '2026-01-02', expDate: '2026-02-02' },
+            { slot: 9, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 10, status: 'paid', name: 'ธนา ร่ำรวย', price: 3000, paid: 3000, payDate: '2026-01-01', expDate: '2026-02-01' },
+            { slot: 11, status: 'booked', name: 'อัญชลี ยิ้มแย้ม', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 12, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 13, status: 'paid', name: 'วัชระ กล้าหาญ', price: 2000, paid: 2000, payDate: '2026-01-06', expDate: '2026-02-06' },
+            { slot: 14, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 15, status: 'booked', name: 'มาลี สวยงาม', price: 2500, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 16, status: 'paid', name: 'สมศักดิ์ เจริญ', price: 2000, paid: 2000, payDate: '2026-01-04', expDate: '2026-02-04' },
+            { slot: 17, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 18, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 19, status: 'booked', name: 'นิดา น่ารัก', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 20, status: 'paid', name: 'ชัยวัฒน์ ชนะ', price: 2000, paid: 2000, payDate: '2026-01-08', expDate: '2026-02-08' },
+            { slot: 21, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 22, status: 'booked', name: 'สุนีย์ แสงจันทร์', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 23, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 24, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 25, status: 'booked', name: 'ภูมิ ดีเลิศ', price: 2500, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 26, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 27, status: 'booked', name: 'อรุณ รุ่งเรือง', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 28, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 29, status: 'booked', name: 'ดวงใจ สดใส', price: 2000, paid: 0, payDate: '-', expDate: '-' },
+            { slot: 30, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' }
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                
+                const statusClass = item.status === 'available' ? 'status-available' : 
+                                   item.status === 'booked' ? 'status-booked' : 'status-paid';
+                const statusText = item.status === 'available' ? 'ว่าง' : 
+                                  item.status === 'booked' ? 'จองแล้ว' : 'ชำระแล้ว';
+
+                let actionButtons = '';
+                if (item.status === 'available') {
+                    actionButtons = '<button class="action-btn btn-book">จอง</button>';
+                }
+
+                row.innerHTML = `
+                    <td><strong>Slot ${item.slot}</strong></td>
+                    <td>${item.name}</td>
+                    <td>${item.price.toLocaleString()} บาท</td>
+                    <td>${item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-'}</td>
+                    <td>${item.payDate}</td>
+                    <td>${item.expDate}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>${actionButtons}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateStats(data);
+        }
+
+        function updateStats(data) {
+            const available = data.filter(d => d.status === 'available').length;
+            const booked = data.filter(d => d.status === 'booked').length;
+            const paid = data.filter(d => d.status === 'paid').length;
+
+            document.getElementById('availableCount').textContent = available;
+            document.getElementById('bookedCount').textContent = booked;
+            document.getElementById('paidCount').textContent = paid;
+        }
+
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            let filtered = parkingData;
+
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(item => item.status === statusFilter);
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(item => 
+                    item.slot.toString().includes(searchTerm) ||
+                    item.name.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderTable(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('statusFilter').addEventListener('change', filterData);
+
+        renderTable(parkingData);
+    </script>
+</body>
+</html>
