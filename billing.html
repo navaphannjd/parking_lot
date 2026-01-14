@@ -473,6 +473,15 @@
             color: #667eea;
         }
 
+        .status-unpaid {
+            background: #ffcdcd;
+            color: #850404;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
 
         /* Responsive Design for Mobile */
         @media screen and (max-width: 768px) {
@@ -695,7 +704,7 @@
                 <span class="icon">🏠</span>
                 <span>หน้าหลัก</span>
             </a>
-            <a class="menu-item" href="billing.html">
+            <a class="menu-item active" href="billing.html">
                 <span class="icon">💳</span>
                 <span>รายการเรียกเก็บเงิน</span>
             </a>
@@ -746,55 +755,26 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>💳 #Invoice-2026-001</h1>
+            <h1>💳 การเรียกเก็บเงิน</h1>
+            <p>รายการเรียกเก็บเงินค่าที่จอดรถรายเดือน</p>
         </div>
 
-        <div class="payment-container">
-            <div class="payment-card">
-                <h2>📝 ฟอร์มแจ้งชำระเงิน</h2>
-
-                <div class="info-box">
-                    <h3 style="margin-bottom: 10px;">ข้อมูลบัญชีสำหรับโอนเงิน</h3>
-                    <div class="bank-info">
-                        <p><strong>ธนาคาร:</strong> <span>กสิกรไทย</span></p>
-                        <p><strong>เลขที่บัญชี:</strong> <span>123-4-56789-0</span></p>
-                        <p><strong>ชื่อบัญชี:</strong> <span>บริษัท ลานจอดรถบางกอก จำกัด</span></p>
-                        <p><strong>พร้อมเพย์:</strong> <span>0812345678</span></p>
-                    </div>
-                </div>
-
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label>จำนวนเงินที่โอน (บาท) *</label>
-                        <input type="number" id="amount" placeholder="2000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>วันที่โอน *</label>
-                        <input type="date" id="paymentDate" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>เวลาที่โอน *</label>
-                        <input type="time" id="paymentTime" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>อัพโหลดหลักฐานการโอนเงิน *</label>
-                        <div class="upload-area" id="uploadArea">
-                            <div class="upload-icon">📤</div>
-                            <p><strong>คลิกหรือลากไฟล์มาที่นี่</strong></p>
-                            <p style="font-size: 14px; color: #666; margin-top: 5px;">รองรับไฟล์ JPG, PNG (ขนาดไม่เกิน
-                                5MB)</p>
-                            <input type="file" id="fileInput" accept="image/*" style="display: none;">
-                        </div>
-                        <img id="preview" class="preview-image" style="display: none;">
-                    </div>
-
-                    <button type="submit" class="btn-submit">ส่งข้อมูลการชำระเงิน</button>
-                </form>
+        <div class="content">
+            <div class="table-container">
+                <table class="pending-table">
+                    <thead>
+                        <tr>
+                            <th>Invoice #</th>
+                            <th>Total</th>
+                            <th>Invoice Date</th>
+                            <th>Paid Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billingTableBody">
+                    </tbody>
+                </table>
             </div>
-
         </div>
     </div>
 
@@ -804,11 +784,6 @@
         const overlay = document.getElementById('overlay');
         const userProfile = document.getElementById('userProfile');
         const dropdownMenu = document.getElementById('dropdownMenu');
-        const CLOUD_NAME = "dsnpelcth";
-        const UPLOAD_PRESET = "Bank Receipt";
-
-        let selectedFile = null;
-        let uploadedImageUrl = null;
 
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
@@ -833,99 +808,64 @@
             }
         });
 
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
+        // Billing Data
+        const billingData = [
+            { invoice: 'INV-2026-001', name: 'สมชาย ใจดี', slot: 2, total: 2000, invoiceDate: '2025-12-20', paidDate: '2026-01-05', status: 'paid' },
+            { invoice: 'INV-2026-002', name: 'สมหญิง รักสวย', slot: 3, total: 2000, invoiceDate: '2026-01-10', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-003', name: 'ประยุทธ์ มั่นคง', slot: 4, total: 2500, invoiceDate: '2025-12-15', paidDate: '2026-01-03', status: 'paid' },
+            { invoice: 'INV-2026-004', name: 'วิไล สุขสม', slot: 6, total: 2000, invoiceDate: '2025-12-28', paidDate: '2026-01-07', status: 'paid' },
+            { invoice: 'INV-2026-005', name: 'จิตติ มีเงิน', slot: 7, total: 2000, invoiceDate: '2026-01-12', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-006', name: 'สุดา รักงาม', slot: 8, total: 2000, invoiceDate: '2025-12-18', paidDate: '2026-01-02', status: 'paid' },
+            { invoice: 'INV-2026-007', name: 'ธนา รำรวย', slot: 10, total: 3000, invoiceDate: '2025-12-10', paidDate: '2026-01-01', status: 'paid' },
+            { invoice: 'INV-2026-008', name: 'อัชฌลี ยิ้มแย้ม', slot: 11, total: 2000, invoiceDate: '2026-01-11', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-009', name: 'วัชระ กล้าหาญ', slot: 13, total: 2000, invoiceDate: '2025-12-25', paidDate: '2026-01-06', status: 'paid' },
+            { invoice: 'INV-2026-010', name: 'มาลี สวยงาม', slot: 15, total: 2500, invoiceDate: '2026-01-09', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-011', name: 'สมศักดิ์ เจริญ', slot: 16, total: 2000, invoiceDate: '2025-12-22', paidDate: '2026-01-04', status: 'paid' },
+            { invoice: 'INV-2026-012', name: 'นิดา น่ารัก', slot: 19, total: 2000, invoiceDate: '2026-01-13', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-013', name: 'ชัยวัฒน์ ชนะ', slot: 20, total: 2000, invoiceDate: '2025-12-30', paidDate: '2026-01-08', status: 'paid' },
+            { invoice: 'INV-2026-014', name: 'สุนีย์ แสงจันทร์', slot: 22, total: 2000, invoiceDate: '2026-01-14', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-015', name: 'ภูมิ ดีเลิศ', slot: 25, total: 2500, invoiceDate: '2026-01-08', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-016', name: 'อรุณ รุ่งเรือง', slot: 27, total: 2000, invoiceDate: '2026-01-11', paidDate: '-', status: 'unpaid' },
+            { invoice: 'INV-2026-017', name: 'ดวงใจ สดใส', slot: 29, total: 2000, invoiceDate: '2026-01-12', paidDate: '-', status: 'unpaid' }
+        ];
 
-        uploadArea.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            handleFile(e.dataTransfer.files[0]);
-        });
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        function renderBillingTable(data) {
+            const tbody = document.getElementById('billingTableBody');
+            tbody.innerHTML = '';
 
-        function handleFile(file) {
-            if (!file || !file.type.startsWith('image/')) {
-                alert('กรุณาเลือกไฟล์รูปภาพ');
-                return;
-            }
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.style.cursor = 'pointer';
 
-            if (file.size > 5 * 1024 * 1024) {
-                alert('ไฟล์ต้องไม่เกิน 5MB');
-                return;
-            }
+                const statusClass = item.status === 'paid' ? 'status-approved' : 'status-unpaid';
+                const statusText = item.status === 'paid' ? 'ชำระแล้ว' : 'ยังไม่ชำระ';
 
-            selectedFile = file;
+                // แปลงวันที่เป็นรูปแบบ DD/MM/YYYY
+                const formatDate = (dateStr) => {
+                    if (dateStr === '-') return '-';
+                    const [year, month, day] = dateStr.split('-');
+                    return `${day}/${month}/${year}`;
+                };
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-                uploadArea.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
+                row.innerHTML = `
+                <td><strong>${item.invoice}</strong></td>
+                <td>${item.total.toLocaleString()} บาท</td>
+                <td>${formatDate(item.invoiceDate)}</td>
+                <td>${formatDate(item.paidDate)}</td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            `;
+
+                // เมื่อคลิกแถวให้ไปหน้า payment.html พร้อมส่ง invoice number
+                row.addEventListener('click', () => {
+                    window.location.href = `payment.html?invoice=${item.invoice}&slot=${item.slot}`;
+                });
+
+                tbody.appendChild(row);
+            });
         }
 
-        async function uploadToCloudinary(file) {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", UPLOAD_PRESET);
-            formData.append("folder", "payment-slips");
-
-            const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("อัปโหลดรูปไม่สำเร็จ");
-            }
-
-            const data = await response.json();
-            return data.secure_url; // URL รูป
-        }
-
-        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (!selectedFile) {
-                alert('กรุณาอัปโหลดสลิปการโอนเงิน');
-                return;
-            }
-
-            try {
-                // อัปโหลดรูป
-                const imageUrl = await uploadToCloudinary(selectedFile);
-                uploadedImageUrl = imageUrl;
-
-                console.log("Cloudinary URL:", imageUrl);
-
-                // 👉 ตรงนี้เอา imageUrl ไปเก็บ Firebase Firestore ต่อได้
-                // เช่น savePayment(imageUrl);
-
-                alert('ส่งข้อมูลการแจ้งชำระเงินเรียบร้อยแล้ว!');
-
-                e.target.reset();
-                preview.style.display = 'none';
-                uploadArea.style.display = 'block';
-                selectedFile = null;
-
-            } catch (error) {
-                console.error(error);
-                alert('เกิดข้อผิดพลาดในการอัปโหลดรูป');
-            }
-        });
-
-        document.getElementById('paymentDate').valueAsDate = new Date();
+        // เริ่มต้นแสดงข้อมูล
+        renderBillingTable(billingData);
     </script>
 </body>
 
