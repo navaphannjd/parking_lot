@@ -275,6 +275,9 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            width: 100%;
+            justify-content: center;
+            position: relative;
         }
 
         .nav-arrow {
@@ -471,6 +474,29 @@
         .total-row td {
             border-top: 2px solid #667eea;
         }
+
+        .view-selector {
+            padding: 12px 20px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: absolute;
+            right: 0;
+        }
+
+        .view-selector:hover {
+            background: #f8f9fa;
+        }
+
+        .view-selector:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
     </style>
 </head>
 
@@ -545,6 +571,11 @@
                 <div class="nav-arrow" id="prevMonth"><i class="fa-solid fa-angle-left"></i></div>
                 <div class="month-display" id="monthDisplay">Jan 2026</div>
                 <div class="nav-arrow" id="nextMonth"><i class="fa-solid fa-angle-right"></i></div>
+                <select class="view-selector" id="viewMode">
+                    <option value="month">By Month/Year</option>
+                    <option value="slot">By Slot</option>
+                    <option value="booker">By Booker</option>
+                </select>
             </div>
         </div>
 
@@ -575,6 +606,34 @@
                 <div class="modal-buttons">
                     <button class="btn-modal btn-cancel" id="btnCancel">ยกเลิก</button>
                     <button class="btn-modal btn-confirm" id="btnConfirm">ตรวจสอบ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal สำหรับเลือก Slot -->
+        <div class="modal" id="slotModal">
+            <div class="modal-content">
+                <h3>เลือก Slot</h3>
+                <select class="modal-select" id="modalSlotSelect">
+                    <!-- จะถูกสร้างด้วย JavaScript -->
+                </select>
+                <div class="modal-buttons">
+                    <button class="btn-modal btn-cancel" id="btnCancelSlot">ยกเลิก</button>
+                    <button class="btn-modal btn-confirm" id="btnConfirmSlot">ตรวจสอบ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal สำหรับเลือก Booker -->
+        <div class="modal" id="bookerModal">
+            <div class="modal-content">
+                <h3>เลือกผู้จอง</h3>
+                <select class="modal-select" id="modalBookerSelect">
+                    <!-- จะถูกสร้างด้วย JavaScript -->
+                </select>
+                <div class="modal-buttons">
+                    <button class="btn-modal btn-cancel" id="btnCancelBooker">ยกเลิก</button>
+                    <button class="btn-modal btn-confirm" id="btnConfirmBooker">ตรวจสอบ</button>
                 </div>
             </div>
         </div>
@@ -644,7 +703,10 @@
         });
 
         // เพิ่มหลัง script เดิม
-        let currentDate = new Date(2026, 0, 1); // Jan 2026
+        let currentDate = new Date(2026, 0, 1);
+        let viewMode = 'month'; // 'month', 'slot', 'booker'
+        let currentSlotIndex = 0;
+        let currentBookerIndex = 0;
 
         const monthNames = {
             'th': ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
@@ -653,7 +715,7 @@
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         };
 
-        // ข้อมูลการจองทั้งหมด 30 slot
+        // ข้อมูลการจองทั้งหมด 30 slot พร้อมประวัติ
         const allSlotsData = [
             { slot: 1, status: 'available', name: '-', license: '-', price: 2000, paid: 0, payDate: '-' },
             { slot: 2, status: 'paid', name: 'สมชาย ใจดี', license: 'ศน1024', price: 2000, paid: 2000, payDate: '2026-01-05' },
@@ -664,10 +726,10 @@
             { slot: 7, status: 'booked', name: 'จิตติ มีเงิน', license: 'กน1065', price: 2000, paid: 0, payDate: '-' },
             { slot: 8, status: 'paid', name: 'สุดา รักงาม', license: 'บผ1558', price: 2000, paid: 2000, payDate: '2026-01-02' },
             { slot: 9, status: 'available', name: '-', license: '-', price: 2000, paid: 0, payDate: '-' },
-            { slot: 10, status: 'paid', name: 'ธนา ร่ำรวย', license: 'มล1157', price: 3000, paid: 3000, payDate: '2026-01-01' },
-            { slot: 11, status: 'booked', name: 'อัญชลี ยิ้มแย้ม', license: 'วจ98', price: 2000, paid: 0, payDate: '-' },
+            { slot: 10, status: 'paid', name: 'ธนา รำรวย', license: 'มล1157', price: 3000, paid: 3000, payDate: '2026-01-01' },
+            { slot: 11, status: 'booked', name: 'อัชฌลี ยิ้มแย้ม', license: 'วจ98', price: 2000, paid: 0, payDate: '-' },
             { slot: 12, status: 'available', name: '-', license: '-', price: 2000, paid: 0, payDate: '-' },
-            { slot: 13, status: 'paid', name: 'วัชระ กล้าหาญ', license: 'ถภ1157', price: 2000, paid: 2000, payDate: '2026-01-06' },
+            { slot: 13, status: 'paid', name: 'วัชระ กล้าหาญ', license: 'ถภ 1157', price: 2000, paid: 2000, payDate: '2026-01-06' },
             { slot: 14, status: 'available', name: '-', license: '-', price: 2000, paid: 0, payDate: '-' },
             { slot: 15, status: 'booked', name: 'มาลี สวยงาม', license: 'ลช1098', price: 2500, paid: 0, payDate: '-' },
             { slot: 16, status: 'paid', name: 'สมศักดิ์ เจริญ', license: 'ชง9974', price: 2000, paid: 2000, payDate: '2026-01-04' },
@@ -687,10 +749,67 @@
             { slot: 30, status: 'available', name: '-', license: '-', price: 2000, paid: 0, payDate: '-' }
         ];
 
+        // ประวัติการจองแต่ละ Slot (ตัวอย่าง)
+        const slotHistory = {
+            2: [
+                { name: 'สมชาย ใจดี', license: 'ศน1024', price: 2000, paid: 2000, payDate: '2026-01-05', period: '2026-01-05 - 2026-02-05' },
+                { name: 'สมชาย ใจดี', license: 'ศน1024', price: 2000, paid: 2000, payDate: '2025-12-05', period: '2025-12-05 - 2026-01-05' },
+                { name: 'วิชัย กล้าหาญ', license: 'กท8899', price: 2000, paid: 2000, payDate: '2025-11-05', period: '2025-11-05 - 2025-12-05' }
+            ],
+            4: [
+                { name: 'ประยุทธ์ มั่นคง', license: 'พย111', price: 2500, paid: 2500, payDate: '2026-01-03', period: '2026-01-03 - 2026-02-03' },
+                { name: 'ประยุทธ์ มั่นคง', license: 'พย111', price: 2500, paid: 2500, payDate: '2025-12-03', period: '2025-12-03 - 2026-01-03' }
+            ],
+            6: [
+                { name: 'วิไล สุขสม', license: 'ทอ985', price: 2000, paid: 2000, payDate: '2026-01-07', period: '2026-01-07 - 2026-02-07' }
+            ],
+            8: [
+                { name: 'สุดา รักงาม', license: 'บผ1558', price: 2000, paid: 2000, payDate: '2026-01-02', period: '2026-01-02 - 2026-02-02' }
+            ],
+            10: [
+                { name: 'ธนา รำรวย', license: 'มล1157', price: 3000, paid: 3000, payDate: '2026-01-01', period: '2026-01-01 - 2026-02-01' }
+            ]
+        };
+
+        // รายการผู้จองทั้งหมด
+        const allBookers = [
+            ...new Set(allSlotsData.filter(s => s.name !== '-').map(s => s.name))
+        ].sort();
+
         function updateDisplay() {
-            const month = monthNames.en[currentDate.getMonth()];
-            const year = currentDate.getFullYear();
-            document.getElementById('monthDisplay').textContent = `${month} ${year}`;
+            const displayEl = document.getElementById('monthDisplay');
+
+            if (viewMode === 'month') {
+                const month = monthNames.en[currentDate.getMonth()];
+                const year = currentDate.getFullYear();
+                displayEl.textContent = `${month} ${year}`;
+            } else if (viewMode === 'slot') {
+                const bookedSlots = allSlotsData.filter(s => s.status !== 'available');
+
+                if (currentSlotIndex === -2 && window.selectedEmptySlot) {
+                    // แสดง slot ว่างที่เลือก
+                    displayEl.textContent = `Slot ${window.selectedEmptySlot}`;
+                } else if (bookedSlots.length === 0) {
+                    displayEl.textContent = 'ไม่มีข้อมูล';
+                    currentSlotIndex = -1;
+                } else {
+                    if (currentSlotIndex >= bookedSlots.length) currentSlotIndex = 0;
+                    if (currentSlotIndex < 0 && currentSlotIndex !== -2) currentSlotIndex = bookedSlots.length - 1;
+                    if (currentSlotIndex >= 0) {
+                        displayEl.textContent = `Slot ${bookedSlots[currentSlotIndex].slot}`;
+                    }
+                }
+            } else if (viewMode === 'booker') {
+                if (allBookers.length === 0) {
+                    displayEl.textContent = 'ไม่มีข้อมูล';
+                    currentBookerIndex = -1;
+                } else {
+                    if (currentBookerIndex >= allBookers.length) currentBookerIndex = 0;
+                    if (currentBookerIndex < 0) currentBookerIndex = allBookers.length - 1;
+                    displayEl.textContent = allBookers[currentBookerIndex];
+                }
+            }
+
             renderReportTable();
         }
 
@@ -698,46 +817,187 @@
             const tbody = document.querySelector('.report-table tbody');
             tbody.innerHTML = '';
 
-            let totalPaid = 0;
+            if (viewMode === 'month') {
+                // แสดงข้อมูลตามเดือน
+                allSlotsData.forEach(item => {
+                    const row = document.createElement('tr');
+                    const statusClass = item.status === 'paid' ? 'status-paid' : 'status-unpaid';
+                    const statusText = item.status === 'paid' ? 'ชำระแล้ว' :
+                        item.status === 'booked' ? 'ยังไม่ได้ชำระ' : '-';
 
-            // แสดงทั้ง 30 slot
-            allSlotsData.forEach(item => {
-                const row = document.createElement('tr');
-                const statusClass = item.status === 'paid' ? 'status-paid' : 'status-unpaid';
-                const statusText = item.status === 'paid' ? 'ชำระแล้ว' :
-                    item.status === 'booked' ? 'ยังไม่ได้ชำระ' : '-';
+                    row.innerHTML = `
+                <td><strong>Slot ${item.slot}</strong></td>
+                <td>${item.name}</td>
+                <td>${item.license}</td>
+                <td>${item.price.toLocaleString()} บาท</td>
+                <td>${item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-'}</td>
+                <td>${item.payDate}</td>
+                <td>${item.status !== 'available' ? `<span class="${statusClass}">${statusText}</span>` : '-'}</td>
+            `;
+                    tbody.appendChild(row);
+                });
+            } else if (viewMode === 'slot') {
+                // แสดงประวัติของ Slot ที่เลือก
 
-                if (item.status === 'paid') {
-                    totalPaid += item.paid;
+                // กรณีเลือก slot ว่าง
+                if (currentSlotIndex === -2 && window.selectedEmptySlot) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+            <td colspan="7" style="text-align: center; padding: 40px; color: #999; font-size: 18px;">
+                <i class="fa-solid fa-inbox" style="font-size: 48px; display: block; margin-bottom: 15px;"></i>
+                <strong>ไม่เคยมีประวัติการจอง</strong>
+            </td>
+        `;
+                    tbody.appendChild(row);
+                    return;
                 }
 
-                row.innerHTML = `
-            <td><strong>Slot ${item.slot}</strong></td>
-            <td>${item.name}</td>
-            <td>${item.license}</td>
-            <td>${item.price.toLocaleString()} บาท</td>
-            <td>${item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-'}</td>
-            <td>${item.payDate}</td>
-            <td>${item.status !== 'available' ? `<span class="${statusClass}">${statusText}</span>` : '-'}</td>
-        `;
-                tbody.appendChild(row);
-            });
+                const bookedSlots = allSlotsData.filter(s => s.status !== 'available');
+                if (currentSlotIndex >= 0 && currentSlotIndex < bookedSlots.length) {
+                    const currentSlot = bookedSlots[currentSlotIndex];
+                    const history = slotHistory[currentSlot.slot] || [
+                        {
+                            name: currentSlot.name,
+                            license: currentSlot.license,
+                            price: currentSlot.price,
+                            paid: currentSlot.paid,
+                            payDate: currentSlot.payDate,
+                            period: currentSlot.payDate !== '-' ? `${currentSlot.payDate} - (กำลังใช้งาน)` : '-'
+                        }
+                    ];
 
+                    history.forEach(record => {
+                        const row = document.createElement('tr');
+                        const statusClass = record.paid > 0 ? 'status-paid' : 'status-unpaid';
+                        const statusText = record.paid > 0 ? 'ชำระแล้ว' : 'ยังไม่ได้ชำระ';
+
+                        row.innerHTML = `
+                <td><strong>Slot ${currentSlot.slot}</strong></td>
+                <td>${record.name}</td>
+                <td>${record.license}</td>
+                <td>${record.price.toLocaleString()} บาท</td>
+                <td>${record.paid > 0 ? record.paid.toLocaleString() + ' บาท' : '-'}</td>
+                <td>${record.payDate}</td>
+                <td><span class="${statusClass}">${statusText}</span></td>
+            `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } else if (viewMode === 'booker') {
+                // แสดงประวัติของผู้จองที่เลือก
+                if (currentBookerIndex >= 0 && currentBookerIndex < allBookers.length) {
+                    const bookerName = allBookers[currentBookerIndex];
+                    const bookerRecords = allSlotsData.filter(s => s.name === bookerName);
+
+                    bookerRecords.forEach(item => {
+                        const row = document.createElement('tr');
+                        const statusClass = item.status === 'paid' ? 'status-paid' : 'status-unpaid';
+                        const statusText = item.status === 'paid' ? 'ชำระแล้ว' : 'ยังไม่ได้ชำระ';
+
+                        row.innerHTML = `
+                    <td><strong>Slot ${item.slot}</strong></td>
+                    <td>${item.name}</td>
+                    <td>${item.license}</td>
+                    <td>${item.price.toLocaleString()} บาท</td>
+                    <td>${item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-'}</td>
+                    <td>${item.payDate}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                `;
+                        tbody.appendChild(row);
+                    });
+                }
+            }
         }
+
+        // View Mode Change
+        document.getElementById('viewMode').addEventListener('change', (e) => {
+            viewMode = e.target.value;
+
+            if (viewMode === 'slot') {
+                // เริ่มที่ Slot 1
+                currentSlotIndex = -2;
+                window.selectedEmptySlot = 1;
+            } else {
+                currentSlotIndex = 0;
+                currentBookerIndex = 0;
+            }
+
+            updateDisplay();
+        });
 
         // Navigation
         document.getElementById('prevMonth').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
+            if (viewMode === 'month') {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+            } else if (viewMode === 'slot') {
+                const bookedSlots = allSlotsData.filter(s => s.status !== 'available');
+
+                // หา slot ปัจจุบัน
+                let currentSlotNum;
+                if (currentSlotIndex === -2 && window.selectedEmptySlot) {
+                    currentSlotNum = window.selectedEmptySlot;
+                } else if (currentSlotIndex >= 0 && currentSlotIndex < bookedSlots.length) {
+                    currentSlotNum = bookedSlots[currentSlotIndex].slot;
+                } else {
+                    currentSlotNum = 1;
+                }
+
+                // ย้อนกลับ 1 slot
+                currentSlotNum--;
+                if (currentSlotNum < 1) currentSlotNum = 30;
+
+                // ตรวจสอบว่า slot นี้มีการจองหรือไม่
+                const foundIndex = bookedSlots.findIndex(s => s.slot === currentSlotNum);
+                if (foundIndex !== -1) {
+                    currentSlotIndex = foundIndex;
+                    window.selectedEmptySlot = null;
+                } else {
+                    currentSlotIndex = -2;
+                    window.selectedEmptySlot = currentSlotNum;
+                }
+            } else if (viewMode === 'booker') {
+                currentBookerIndex--;
+            }
             updateDisplay();
         });
 
         document.getElementById('nextMonth').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
+            if (viewMode === 'month') {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            } else if (viewMode === 'slot') {
+                const bookedSlots = allSlotsData.filter(s => s.status !== 'available');
+
+                // หา slot ปัจจุบัน
+                let currentSlotNum;
+                if (currentSlotIndex === -2 && window.selectedEmptySlot) {
+                    currentSlotNum = window.selectedEmptySlot;
+                } else if (currentSlotIndex >= 0 && currentSlotIndex < bookedSlots.length) {
+                    currentSlotNum = bookedSlots[currentSlotIndex].slot;
+                } else {
+                    currentSlotNum = 1;
+                }
+
+                // ไปข้างหน้า 1 slot
+                currentSlotNum++;
+                if (currentSlotNum > 30) currentSlotNum = 1;
+
+                // ตรวจสอบว่า slot นี้มีการจองหรือไม่
+                const foundIndex = bookedSlots.findIndex(s => s.slot === currentSlotNum);
+                if (foundIndex !== -1) {
+                    currentSlotIndex = foundIndex;
+                    window.selectedEmptySlot = null;
+                } else {
+                    currentSlotIndex = -2;
+                    window.selectedEmptySlot = currentSlotNum;
+                }
+            } else if (viewMode === 'booker') {
+                currentBookerIndex++;
+            }
             updateDisplay();
         });
 
-        // Modal
-        const modal = document.getElementById('dateModal');
+        // Month/Year Modal
+        const dateModal = document.getElementById('dateModal');
         const monthDisplay = document.getElementById('monthDisplay');
         const btnCancel = document.getElementById('btnCancel');
         const btnConfirm = document.getElementById('btnConfirm');
@@ -745,13 +1005,19 @@
         const modalYear = document.getElementById('modalYear');
 
         monthDisplay.addEventListener('click', () => {
-            modalMonth.value = currentDate.getMonth();
-            modalYear.value = currentDate.getFullYear();
-            modal.classList.add('active');
+            if (viewMode === 'month') {
+                modalMonth.value = currentDate.getMonth();
+                modalYear.value = currentDate.getFullYear();
+                dateModal.classList.add('active');
+            } else if (viewMode === 'slot') {
+                openSlotModal();
+            } else if (viewMode === 'booker') {
+                openBookerModal();
+            }
         });
 
         btnCancel.addEventListener('click', () => {
-            modal.classList.remove('active');
+            dateModal.classList.remove('active');
         });
 
         btnConfirm.addEventListener('click', () => {
@@ -761,16 +1027,121 @@
                 1
             );
             updateDisplay();
-            modal.classList.remove('active');
+            dateModal.classList.remove('active');
         });
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
+        dateModal.addEventListener('click', (e) => {
+            if (e.target === dateModal) {
+                dateModal.classList.remove('active');
+            }
+        });
+
+        // Slot Modal
+        const slotModal = document.getElementById('slotModal');
+        const modalSlotSelect = document.getElementById('modalSlotSelect');
+        const btnCancelSlot = document.getElementById('btnCancelSlot');
+        const btnConfirmSlot = document.getElementById('btnConfirmSlot');
+
+        function openSlotModal() {
+            modalSlotSelect.innerHTML = '';
+
+            // หาหมายเลข slot ปัจจุบัน
+            let currentSlotNum = 1; // default เป็น slot 1
+
+            if (currentSlotIndex === -2 && window.selectedEmptySlot) {
+                currentSlotNum = window.selectedEmptySlot;
+            } else if (currentSlotIndex >= 0) {
+                const bookedSlots = allSlotsData.filter(s => s.status !== 'available');
+                if (currentSlotIndex < bookedSlots.length) {
+                    currentSlotNum = bookedSlots[currentSlotIndex].slot;
+                }
+            }
+
+            // แสดง Slot 1-30 ทั้งหมด
+            for (let i = 1; i <= 30; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Slot ${i}`;
+
+                // เลือก Slot ปัจจุบัน
+                if (i === currentSlotNum) {
+                    option.selected = true;
+                }
+
+                modalSlotSelect.appendChild(option);
+            }
+
+            slotModal.classList.add('active');
+        }
+
+        btnCancelSlot.addEventListener('click', () => {
+            slotModal.classList.remove('active');
+        });
+
+        btnConfirmSlot.addEventListener('click', () => {
+            const selectedSlot = parseInt(modalSlotSelect.value);
+
+            // หา index ของ slot ที่เลือกในรายการ bookedSlots
+            const bookedSlots = allSlotsData.filter(s => s.status !== 'available');
+            const foundIndex = bookedSlots.findIndex(s => s.slot === selectedSlot);
+
+            if (foundIndex !== -1) {
+                currentSlotIndex = foundIndex;
+            } else {
+                // ถ้าไม่พบใน bookedSlots แสดงว่าเป็น slot ว่าง
+                currentSlotIndex = -2; // ใช้ -2 แทน slot ที่ไม่มีประวัติ
+                window.selectedEmptySlot = selectedSlot; // เก็บหมายเลข slot ที่เลือก
+            }
+
+            updateDisplay();
+            slotModal.classList.remove('active');
+        });
+
+        slotModal.addEventListener('click', (e) => {
+            if (e.target === slotModal) {
+                slotModal.classList.remove('active');
+            }
+        });
+
+        // Booker Modal
+        const bookerModal = document.getElementById('bookerModal');
+        const modalBookerSelect = document.getElementById('modalBookerSelect');
+        const btnCancelBooker = document.getElementById('btnCancelBooker');
+        const btnConfirmBooker = document.getElementById('btnConfirmBooker');
+
+        function openBookerModal() {
+            modalBookerSelect.innerHTML = '';
+
+            allBookers.forEach((booker, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = booker;
+                if (index === currentBookerIndex) option.selected = true;
+                modalBookerSelect.appendChild(option);
+            });
+
+            bookerModal.classList.add('active');
+        }
+
+        btnCancelBooker.addEventListener('click', () => {
+            bookerModal.classList.remove('active');
+        });
+
+        btnConfirmBooker.addEventListener('click', () => {
+            currentBookerIndex = parseInt(modalBookerSelect.value);
+            updateDisplay();
+            bookerModal.classList.remove('active');
+        });
+
+        bookerModal.addEventListener('click', (e) => {
+            if (e.target === bookerModal) {
+                bookerModal.classList.remove('active');
             }
         });
 
         // Initialize
+        window.selectedEmptySlot = 1;
+
         updateDisplay();
     </script>
 </body>
