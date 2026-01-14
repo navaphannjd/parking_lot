@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +37,7 @@
 
         .sidebar-header {
             padding: 30px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-header h2 {
@@ -46,7 +47,7 @@
         }
 
         .sidebar-header p {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
         }
 
@@ -56,7 +57,7 @@
 
         .menu-item {
             padding: 15px 25px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -67,13 +68,13 @@
         }
 
         .menu-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             padding-left: 30px;
         }
 
         .menu-item.active {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border-left: 4px solid white;
         }
@@ -91,7 +92,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s;
@@ -112,7 +113,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
 
@@ -200,7 +201,7 @@
             right: 0;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
             min-width: 200px;
             opacity: 0;
             visibility: hidden;
@@ -250,7 +251,7 @@
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .page-header h1 {
@@ -267,7 +268,7 @@
             background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .search-bar {
@@ -296,7 +297,7 @@
         .table-container {
             overflow-x: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         table {
@@ -371,8 +372,191 @@
             background: #218838;
         }
 
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        .info-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e7f3ff;
+            color: #0066cc;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -392,10 +576,6 @@
             <a class="menu-item" href="report.html">
                 <span class="icon">📊</span>
                 <span>รายงาน</span>
-            </a>
-            <a class="menu-item" href="settings.html">
-                <span class="icon">⚙️</span>
-                <span>ตั้งค่า</span>
             </a>
         </nav>
     </div>
@@ -444,7 +624,6 @@
     <div class="container">
         <div class="page-header">
             <h1>🚗 ระบบจองที่จอดรถ</h1>
-            <p>จัดการที่จอดรถอย่างมีประสิทธิภาพ</p>
         </div>
 
         <div class="content">
@@ -468,14 +647,67 @@
                             <th>ราคา/เดือน</th>
                             <th>จำนวนเงินที่จ่าย</th>
                             <th>วันที่จ่าย</th>
-                            <th>วันที่หมดอายุ</th>
                             <th>สถานะ</th>
-                            <th>จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🚗 รายละเอียดที่จอดรถ</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="parkingForm">
+                    <div class="form-group">
+                        <label>Slot Number</label>
+                        <input type="text" id="modalSlot" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ชื่อ-นามสกุลผู้จอง</label>
+                        <input type="text" id="modalName" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>หมายเลขทะเบียนรถ</label>
+                        <input type="text" id="modalPlate" disabled>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ราคา/เดือน (บาท)</label>
+                            <input type="number" id="modalPrice" min="0" step="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>ราคาที่จ่าย (บาท)</label>
+                            <input type="text" id="modalPaid" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>วันที่จ่าย</label>
+                            <input type="text" id="modalPayDate" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label>ระยะเวลาจอง</label>
+                            <input type="text" id="modalBookPeriod" disabled>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-save" id="saveBtn">บันทึกข้อมูล</button>
             </div>
         </div>
     </div>
@@ -515,37 +747,39 @@
 
         // Parking Data
         const parkingData = [
-            { slot: 1, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 2, status: 'paid', name: 'สมชาย ใจดี', price: 2000, paid: 2000, payDate: '2026-01-05', expDate: '2026-02-05' },
-            { slot: 3, status: 'booked', name: 'สมหญิง รักสวย', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 4, status: 'paid', name: 'ประยุทธ์ มั่นคง', price: 2500, paid: 2500, payDate: '2026-01-03', expDate: '2026-02-03' },
-            { slot: 5, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 6, status: 'paid', name: 'วิไล สุขสม', price: 2000, paid: 2000, payDate: '2026-01-07', expDate: '2026-02-07' },
-            { slot: 7, status: 'booked', name: 'จิตติ มีเงิน', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 8, status: 'paid', name: 'สุดา รักงาม', price: 2000, paid: 2000, payDate: '2026-01-02', expDate: '2026-02-02' },
-            { slot: 9, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 10, status: 'paid', name: 'ธนา ร่ำรวย', price: 3000, paid: 3000, payDate: '2026-01-01', expDate: '2026-02-01' },
-            { slot: 11, status: 'booked', name: 'อัญชลี ยิ้มแย้ม', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 12, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 13, status: 'paid', name: 'วัชระ กล้าหาญ', price: 2000, paid: 2000, payDate: '2026-01-06', expDate: '2026-02-06' },
-            { slot: 14, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 15, status: 'booked', name: 'มาลี สวยงาม', price: 2500, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 16, status: 'paid', name: 'สมศักดิ์ เจริญ', price: 2000, paid: 2000, payDate: '2026-01-04', expDate: '2026-02-04' },
-            { slot: 17, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 18, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 19, status: 'booked', name: 'นิดา น่ารัก', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 20, status: 'paid', name: 'ชัยวัฒน์ ชนะ', price: 2000, paid: 2000, payDate: '2026-01-08', expDate: '2026-02-08' },
-            { slot: 21, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 22, status: 'booked', name: 'สุนีย์ แสงจันทร์', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 23, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 24, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 25, status: 'booked', name: 'ภูมิ ดีเลิศ', price: 2500, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 26, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 27, status: 'booked', name: 'อรุณ รุ่งเรือง', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 28, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 29, status: 'booked', name: 'ดวงใจ สดใส', price: 2000, paid: 0, payDate: '-', expDate: '-' },
-            { slot: 30, status: 'available', name: '-', price: 2000, paid: 0, payDate: '-', expDate: '-' }
+            { slot: 1, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 2, status: 'paid', name: 'สมชาย ใจดี', plate: 'กก-1234', price: 2000, paid: 2000, payDate: '2026-01-05', bookDate: '2025-12-20', expDate: '2026-02-05' },
+            { slot: 3, status: 'booked', name: 'สมหญิง รักสวย', plate: 'ขข-5678', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-10', expDate: '-' },
+            { slot: 4, status: 'paid', name: 'ประยุทธ์ มั่นคง', plate: 'คค-9012', price: 2500, paid: 2500, payDate: '2026-01-03', bookDate: '2025-12-15', expDate: '2026-02-03' },
+            { slot: 5, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 6, status: 'paid', name: 'วิไล สุขสม', plate: 'งง-3456', price: 2000, paid: 2000, payDate: '2026-01-07', bookDate: '2025-12-28', expDate: '2026-02-07' },
+            { slot: 7, status: 'booked', name: 'จิตติ มีเงิน', plate: 'จจ-7890', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-12', expDate: '-' },
+            { slot: 8, status: 'paid', name: 'สุดา รักงาม', plate: 'ฉฉ-2345', price: 2000, paid: 2000, payDate: '2026-01-02', bookDate: '2025-12-18', expDate: '2026-02-02' },
+            { slot: 9, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 10, status: 'paid', name: 'ธนา รำรวย', plate: 'ชช-6789', price: 3000, paid: 3000, payDate: '2026-01-01', bookDate: '2025-12-10', expDate: '2026-02-01' },
+            { slot: 11, status: 'booked', name: 'อัชฌลี ยิ้มแย้ม', plate: 'ซซ-0123', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-11', expDate: '-' },
+            { slot: 12, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 13, status: 'paid', name: 'วัชระ กล้าหาญ', plate: 'ฌฌ-4567', price: 2000, paid: 2000, payDate: '2026-01-06', bookDate: '2025-12-25', expDate: '2026-02-06' },
+            { slot: 14, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 15, status: 'booked', name: 'มาลี สวยงาม', plate: 'ญญ-8901', price: 2500, paid: 0, payDate: '-', bookDate: '2026-01-09', expDate: '-' },
+            { slot: 16, status: 'paid', name: 'สมศักดิ์ เจริญ', plate: 'ฎฎ-3456', price: 2000, paid: 2000, payDate: '2026-01-04', bookDate: '2025-12-22', expDate: '2026-02-04' },
+            { slot: 17, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 18, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 19, status: 'booked', name: 'นิดา น่ารัก', plate: 'ฏฏ-7890', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-13', expDate: '-' },
+            { slot: 20, status: 'paid', name: 'ชัยวัฒน์ ชนะ', plate: 'ฐฐ-2345', price: 2000, paid: 2000, payDate: '2026-01-08', bookDate: '2025-12-30', expDate: '2026-02-08' },
+            { slot: 21, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 22, status: 'booked', name: 'สุนีย์ แสงจันทร์', plate: 'ฑฑ-6789', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-14', expDate: '-' },
+            { slot: 23, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 24, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 25, status: 'booked', name: 'ภูมิ ดีเลิศ', plate: 'ฒฒ-0123', price: 2500, paid: 0, payDate: '-', bookDate: '2026-01-08', expDate: '-' },
+            { slot: 26, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 27, status: 'booked', name: 'อรุณ รุ่งเรือง', plate: 'ณณ-4567', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-11', expDate: '-' },
+            { slot: 28, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 29, status: 'booked', name: 'ดวงใจ สดใส', plate: 'ดด-8901', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-12', expDate: '-' },
+            { slot: 30, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' }
         ];
+
+        let currentEditSlot = null;
 
         function renderTable(data) {
             const tbody = document.getElementById('tableBody');
@@ -553,16 +787,12 @@
 
             data.forEach(item => {
                 const row = document.createElement('tr');
-                
-                const statusClass = item.status === 'available' ? 'status-available' : 
-                                   item.status === 'booked' ? 'status-booked' : 'status-paid';
-                const statusText = item.status === 'available' ? 'ว่าง' : 
-                                  item.status === 'booked' ? 'จองแล้ว' : 'ชำระแล้ว';
+                row.style.cursor = 'pointer';
 
-                let actionButtons = '';
-                if (item.status === 'available') {
-                    actionButtons = '<button class="action-btn btn-book">จอง</button>';
-                }
+                const statusClass = item.status === 'available' ? 'status-available' :
+                    item.status === 'booked' ? 'status-booked' : 'status-paid';
+                const statusText = item.status === 'available' ? 'ว่าง' :
+                    item.status === 'booked' ? 'จองแล้ว' : 'ชำระแล้ว';
 
                 row.innerHTML = `
                     <td><strong>Slot ${item.slot}</strong></td>
@@ -570,24 +800,95 @@
                     <td>${item.price.toLocaleString()} บาท</td>
                     <td>${item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-'}</td>
                     <td>${item.payDate}</td>
-                    <td>${item.expDate}</td>
                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>${actionButtons}</td>
                 `;
+
+                // เพิ่ม event listener สำหรับคลิกแถว
+                row.addEventListener('click', () => openModal(item));
+
                 tbody.appendChild(row);
             });
 
             updateStats(data);
         }
 
+        function openModal(item) {
+            currentEditSlot = item.slot;
+            const modal = document.getElementById('detailModal');
+
+            // แสดงข้อมูลใน modal
+            document.getElementById('modalSlot').value = `Slot ${item.slot}`;
+            document.getElementById('modalName').value = item.name;
+            document.getElementById('modalPlate').value = item.plate;
+            document.getElementById('modalPrice').value = item.price;
+            document.getElementById('modalPaid').value = item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-';
+            document.getElementById('modalPayDate').value = item.payDate;
+
+            // แสดงระยะเวลาจอง (วันที่จอง - วันที่หมดอายุ)
+            let bookPeriod = '-';
+            if (item.bookDate !== '-' && item.expDate !== '-') {
+                // แปลงวันที่เป็นรูปแบบ DD/MM/YYYY
+                const formatDate = (dateStr) => {
+                    if (dateStr === '-') return '-';
+                    const [year, month, day] = dateStr.split('-');
+                    return `${day}/${month}/${year}`;
+                };
+                bookPeriod = `${formatDate(item.bookDate)} - ${formatDate(item.expDate)}`;
+            }
+            document.getElementById('modalBookPeriod').value = bookPeriod;
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            currentEditSlot = null;
+        }
+
+        function saveChanges() {
+            if (currentEditSlot === null) return;
+
+            const newPrice = parseInt(document.getElementById('modalPrice').value);
+
+            // อัพเดทข้อมูลใน array
+            const itemIndex = parkingData.findIndex(item => item.slot === currentEditSlot);
+            if (itemIndex !== -1) {
+                parkingData[itemIndex].price = newPrice;
+            }
+
+            // รีเฟรชตาราง
+            filterData();
+
+            // แสดงข้อความสำเร็จ
+            alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+
+            closeModal();
+        }
+
+        // Event Listeners สำหรับ Modal
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('saveBtn').addEventListener('click', saveChanges);
+
+        // ปิด modal เมื่อคลิกนอก modal content
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') {
+                closeModal();
+            }
+        });
+
         function updateStats(data) {
             const available = data.filter(d => d.status === 'available').length;
             const booked = data.filter(d => d.status === 'booked').length;
             const paid = data.filter(d => d.status === 'paid').length;
 
-            document.getElementById('availableCount').textContent = available;
-            document.getElementById('bookedCount').textContent = booked;
-            document.getElementById('paidCount').textContent = paid;
+            // ถ้ามี element เหล่านี้ในหน้า
+            const availableEl = document.getElementById('availableCount');
+            const bookedEl = document.getElementById('bookedCount');
+            const paidEl = document.getElementById('paidCount');
+
+            if (availableEl) availableEl.textContent = available;
+            if (bookedEl) bookedEl.textContent = booked;
+            if (paidEl) paidEl.textContent = paid;
         }
 
         function filterData() {
@@ -601,7 +902,7 @@
             }
 
             if (searchTerm) {
-                filtered = filtered.filter(item => 
+                filtered = filtered.filter(item =>
                     item.slot.toString().includes(searchTerm) ||
                     item.name.toLowerCase().includes(searchTerm)
                 );
@@ -613,7 +914,9 @@
         document.getElementById('searchInput').addEventListener('input', filterData);
         document.getElementById('statusFilter').addEventListener('change', filterData);
 
+        // เริ่มต้นแสดงข้อมูล
         renderTable(parkingData);
     </script>
 </body>
+
 </html>
