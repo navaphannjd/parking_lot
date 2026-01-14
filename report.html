@@ -410,6 +410,13 @@
             font-size: 16px;
         }
 
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
         .report-table {
             width: 100%;
             border-collapse: collapse;
@@ -496,6 +503,198 @@
         .view-selector:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Responsive Design for Mobile */
+        @media screen and (max-width: 768px) {
+            .topbar {
+                padding: 12px 15px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 15px;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .page-header {
+                padding: 20px;
+                margin-bottom: 15px;
+                max-width: 100%;
+            }
+
+            .page-header h1 {
+                font-size: 1.5em;
+                word-wrap: break-word;
+            }
+
+            .filter-section {
+                padding: 20px 15px;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .month-selector {
+                flex-direction: row;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .nav-arrow {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                flex-shrink: 0;
+            }
+
+            .month-display {
+                min-width: 150px;
+                font-size: 15px;
+                padding: 10px 20px;
+                flex-shrink: 0;
+            }
+
+            .view-selector {
+                position: static;
+                width: 100%;
+                max-width: 100%;
+                margin-top: 10px;
+                order: 4;
+            }
+
+            /* ตารางเลื่อนซ้ายขวาได้ */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .report-table {
+                min-width: 900px;
+            }
+
+            .report-table th,
+            .report-table td {
+                font-size: 14px;
+                padding: 12px 10px;
+                white-space: nowrap;
+            }
+
+            /* Modal สำหรับมือถือ */
+            .modal-content {
+                width: 95%;
+                max-width: 400px;
+                padding: 25px;
+            }
+
+            .modal-content h3 {
+                font-size: 20px;
+            }
+
+            .modal-select {
+                font-size: 15px;
+                padding: 10px;
+            }
+
+            .btn-modal {
+                font-size: 15px;
+                padding: 10px;
+            }
+
+            /* Sidebar สำหรับมือถือ */
+            .sidebar {
+                width: 250px;
+                left: -250px;
+            }
+
+            .dropdown-menu {
+                right: -10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .page-header {
+                padding: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 1.3em;
+            }
+
+            .filter-section {
+                padding: 15px 10px;
+            }
+
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .month-display {
+                min-width: 130px;
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .view-selector {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            .report-table {
+                min-width: 800px;
+            }
+
+            .report-table th,
+            .report-table td {
+                font-size: 13px;
+                padding: 10px 8px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-content h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .modal-select {
+                font-size: 14px;
+                padding: 10px;
+                margin-bottom: 12px;
+            }
+
+            .btn-modal {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .sidebar {
+                width: 220px;
+                left: -220px;
+            }
+
+            .status-paid,
+            .status-unpaid {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
         }
     </style>
 </head>
@@ -638,22 +837,24 @@
             </div>
         </div>
 
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>Slot</th>
-                    <th>ชื่อผู้จอง</th>
-                    <th>ทะเบียนรถ</th>
-                    <th>ราคา/เดือน</th>
-                    <th>จำนวนเงินที่ชำระ</th>
-                    <th>วันที่ชำระ</th>
-                    <th>สถานะ</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-container">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Slot</th>
+                        <th>ชื่อผู้จอง</th>
+                        <th>ทะเบียนรถ</th>
+                        <th>ราคา/เดือน</th>
+                        <th>จำนวนเงินที่ชำระ</th>
+                        <th>วันที่ชำระ</th>
+                        <th>สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>

@@ -554,6 +554,129 @@
             font-size: 14px;
             font-weight: 600;
         }
+
+        /* Responsive Design for Mobile */
+        @media screen and (max-width: 768px) {
+            .topbar {
+                padding: 12px 15px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .page-header {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-input,
+            .filter-select {
+                width: 100%;
+            }
+
+            /* ตารางเลื่อนซ้ายขวาได้ */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 800px;
+            }
+
+            th,
+            td {
+                white-space: nowrap;
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            /* Modal สำหรับมือถือ */
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 20px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                padding: 15px 20px;
+                flex-direction: column;
+            }
+
+            .btn-save,
+            .btn-cancel {
+                width: 100%;
+            }
+
+            /* Sidebar สำหรับมือถือ */
+            .sidebar {
+                width: 250px;
+                left: -250px;
+            }
+
+            .dropdown-menu {
+                right: -10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.3em;
+            }
+
+            .modal-header h2 {
+                font-size: 18px;
+            }
+
+            .sidebar {
+                width: 220px;
+                left: -220px;
+            }
+
+            th,
+            td {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 
