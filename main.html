@@ -561,6 +561,27 @@
             gap: 10px;
         }
 
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
         .btn-save {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -638,12 +659,21 @@
             }
 
             .search-bar {
-                flex-direction: column;
+                flex-wrap: wrap;
+                /* แก้ไขจาก flex-direction: column */
             }
 
-            .search-input,
+            .search-input {
+                flex: 1 1 100%;
+                /* ให้ search input อยู่คนเดียวบรรทัดแรก */
+                min-width: 100%;
+            }
+
             .filter-select {
-                width: 100%;
+                flex: 1;
+                /* ให้ dropdown ยืดตามพื้นที่ */
+                min-width: 0;
+                /* ลบ min-width เดิม */
             }
 
             /* ตารางเลื่อนซ้ายขวาได้ */
@@ -693,6 +723,11 @@
             .btn-save,
             .btn-cancel {
                 width: 100%;
+            }
+
+            .btn-add {
+                padding: 12px 16px;
+                font-size: 14px;
             }
 
             /* Sidebar สำหรับมือถือ */
@@ -814,6 +849,9 @@
                     <option value="booked">รอชำระ</option>
                     <option value="paid">ชำระแล้ว</option>
                 </select>
+                <button class="btn-add" id="addBtn">
+                    <span style="font-size: 20px; font-weight: bold;">+</span>
+                </button>
             </div>
 
             <div class="table-container">
@@ -839,53 +877,60 @@
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>🚗 รายละเอียดที่จอดรถ</h2>
+                <h2 id="modalTitle">🚗 เพิ่มข้อมูลที่จอดรถ</h2>
                 <button class="close-btn" id="closeModal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="parkingForm">
                     <div class="form-group">
-                        <label>Slot Number</label>
-                        <input type="text" id="modalSlot" disabled>
+                        <label>Slot Name</label>
+                        <input type="text" id="modalSlotName" placeholder="กรอกชื่อ Slot" required>
                     </div>
 
                     <div class="form-group">
                         <label>ชื่อ-นามสกุลผู้จอง</label>
-                        <input type="text" id="modalName" disabled>
+                        <input type="text" id="modalName" placeholder="กรอกชื่อ-นามสกุล" required>
                     </div>
 
                     <div class="form-group">
                         <label>หมายเลขทะเบียนรถ</label>
-                        <input type="text" id="modalPlate" disabled>
+                        <input type="text" id="modalPlate" placeholder="เช่น กก-1234" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ค่าเช่า/เดือน (บาท)</label>
+                        <input type="number" id="modalPrice" min="0" step="100" placeholder="2000" required>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>ราคา/เดือน (บาท)</label>
-                            <input type="number" id="modalPrice" min="0" step="100">
-                        </div>
-
                         <div class="form-group">
                             <label>ราคาที่จ่าย (บาท)</label>
-                            <input type="text" id="modalPaid" disabled>
+                            <input type="number" id="modalPaid" min="0" step="100" value="0" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label>วันที่จ่าย</label>
+                            <input type="date" id="modalPayDate" disabled>
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>วันที่จ่าย</label>
-                            <input type="text" id="modalPayDate" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label>ระยะเวลาจอง</label>
-                            <input type="text" id="modalBookPeriod" disabled>
+                    <div class="form-group">
+                        <label>วันที่จอง</label>
+                        <div class="form-row">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 13px; color: #666;">จาก</label>
+                                <input type="date" id="modalBookDateFrom" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 13px; color: #666;">ถึง</label>
+                                <input type="date" id="modalBookDateTo" required>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-save" id="saveBtn">บันทึกข้อมูล</button>
+                <button type="button" class="btn-save" id="saveBtn">เพิ่มข้อมูล</button>
             </div>
         </div>
     </div>
@@ -895,6 +940,7 @@
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
+
         // Submenu Toggle
         const rentalMenu = document.getElementById('rentalMenu');
         const rentalSubmenu = document.getElementById('rentalSubmenu');
@@ -976,6 +1022,7 @@
             { slot: 30, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' }
         ];
 
+        let isEditMode = false; // ตัวแปรเช็คว่าเป็นโหมดแก้ไขหรือเพิ่มใหม่
         let currentEditSlot = null;
 
         function renderTable(data) {
@@ -984,7 +1031,6 @@
 
             data.forEach(item => {
                 const row = document.createElement('tr');
-                row.style.cursor = 'pointer';
 
                 const statusClass = item.status === 'available' ? 'status-available' :
                     item.status === 'booked' ? 'status-booked' : 'status-paid';
@@ -1000,64 +1046,120 @@
                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 `;
 
-                // เพิ่ม event listener สำหรับคลิกแถว
-                row.addEventListener('click', () => openModal(item));
-
                 tbody.appendChild(row);
             });
 
             updateStats(data);
         }
 
-        function openModal(item) {
-            currentEditSlot = item.slot;
+        // ฟังก์ชันเปิด Modal สำหรับเพิ่มข้อมูลใหม่
+        function openAddModal() {
+            isEditMode = false;
+            currentEditSlot = null;
             const modal = document.getElementById('detailModal');
 
-            // แสดงข้อมูลใน modal
-            document.getElementById('modalSlot').value = `Slot ${item.slot}`;
-            document.getElementById('modalName').value = item.name;
-            document.getElementById('modalPlate').value = item.plate;
-            document.getElementById('modalPrice').value = item.price;
-            document.getElementById('modalPaid').value = item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-';
-            document.getElementById('modalPayDate').value = item.payDate;
+            // เปลี่ยนหัวข้อ Modal
+            document.getElementById('modalTitle').textContent = '🚗 เพิ่มข้อมูลที่จอดรถ';
 
-            // แสดงระยะเวลาจอง (วันที่จอง - วันที่หมดอายุ)
-            let bookPeriod = '-';
-            if (item.bookDate !== '-' && item.expDate !== '-') {
-                // แปลงวันที่เป็นรูปแบบ DD/MM/YYYY
-                const formatDate = (dateStr) => {
-                    if (dateStr === '-') return '-';
-                    const [year, month, day] = dateStr.split('-');
-                    return `${day}/${month}/${year}`;
-                };
-                bookPeriod = `${formatDate(item.bookDate)} - ${formatDate(item.expDate)}`;
-            }
-            document.getElementById('modalBookPeriod').value = bookPeriod;
+            // รีเซ็ตฟอร์ม
+            document.getElementById('parkingForm').reset();
+
+            // ตั้งค่าราคาเริ่มต้น
+            document.getElementById('modalPrice').value = 2000;
+            document.getElementById('modalPaid').value = 0;
+
+            // เปิดใช้งานทุก input
+            enableAllInputs();
 
             modal.classList.add('active');
         }
 
+        // ฟังก์ชันเปิดใช้งานทุก input
+        function enableAllInputs() {
+            document.getElementById('modalSlotName').disabled = false;
+            document.getElementById('modalName').disabled = false;
+            document.getElementById('modalPlate').disabled = false;
+            document.getElementById('modalPrice').disabled = false;
+            document.getElementById('modalBookDateFrom').disabled = false;
+            document.getElementById('modalBookDateTo').disabled = false;
+        }
+
         function closeModal() {
             document.getElementById('detailModal').classList.remove('active');
+            isEditMode = false;
             currentEditSlot = null;
         }
 
         function saveChanges() {
-            if (currentEditSlot === null) return;
+            const slotName = document.getElementById('modalSlotName').value.trim();
+            const name = document.getElementById('modalName').value.trim();
+            const plate = document.getElementById('modalPlate').value.trim();
+            const price = parseInt(document.getElementById('modalPrice').value);
+            const paid = parseInt(document.getElementById('modalPaid').value) || 0;
+            const payDate = document.getElementById('modalPayDate').value || '-';
+            const bookDateFrom = document.getElementById('modalBookDateFrom').value;
+            const bookDateTo = document.getElementById('modalBookDateTo').value;
 
-            const newPrice = parseInt(document.getElementById('modalPrice').value);
-
-            // อัพเดทข้อมูลใน array
-            const itemIndex = parkingData.findIndex(item => item.slot === currentEditSlot);
-            if (itemIndex !== -1) {
-                parkingData[itemIndex].price = newPrice;
+            // ตรวจสอบข้อมูลบังคับ
+            if (!slotName || !name || !plate || !price || !bookDateFrom || !bookDateTo) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน (Slot Name, ชื่อ, ทะเบียน, ค่าเช่า, วันที่จอง)');
+                return;
             }
+
+            // ตรวจสอบวันที่
+            if (new Date(bookDateTo) < new Date(bookDateFrom)) {
+                alert('วันที่สิ้นสุดต้องมากกว่าหรือเท่ากับวันที่เริ่มต้น');
+                return;
+            }
+
+            // กำหนด status
+            let status = 'booked'; // ค่าเริ่มต้น
+            if (paid > 0 && paid >= price) {
+                status = 'paid';
+            } else if (paid === 0) {
+                status = 'booked';
+            }
+
+            // หา slot number ที่ว่าง (เพิ่มข้อมูลใหม่)
+            let newSlotNumber = 1;
+            const usedSlots = parkingData.map(item => item.slot).sort((a, b) => a - b);
+
+            // หา slot ที่ว่างหรือใช้ slot ถัดไป
+            for (let i = 0; i < usedSlots.length; i++) {
+                if (usedSlots[i] !== i + 1) {
+                    newSlotNumber = i + 1;
+                    break;
+                }
+            }
+            if (newSlotNumber === 1 && usedSlots.length > 0) {
+                newSlotNumber = usedSlots[usedSlots.length - 1] + 1;
+            }
+
+            // สร้างข้อมูลใหม่
+            const newData = {
+                slot: newSlotNumber,
+                slotName: slotName,
+                status: status,
+                name: name,
+                plate: plate,
+                price: price,
+                paid: paid,
+                payDate: payDate,
+                bookDate: bookDateFrom,
+                expDate: bookDateTo
+            };
+
+            // เพิ่มข้อมูลใหม่
+            parkingData.push(newData);
+
+            // เรียงข้อมูลตาม slot number
+            parkingData.sort((a, b) => a.slot - b.slot);
 
             // รีเฟรชตาราง
             filterData();
 
             // แสดงข้อความสำเร็จ
-            alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+            alert('เพิ่มข้อมูลเรียบร้อยแล้ว');
 
             closeModal();
         }
@@ -1065,6 +1167,9 @@
         // Event Listeners สำหรับ Modal
         document.getElementById('closeModal').addEventListener('click', closeModal);
         document.getElementById('saveBtn').addEventListener('click', saveChanges);
+
+        // Event Listener สำหรับปุ่ม +
+        document.getElementById('addBtn').addEventListener('click', openAddModal);
 
         // ปิด modal เมื่อคลิกนอก modal content
         document.getElementById('detailModal').addEventListener('click', (e) => {
@@ -1078,7 +1183,6 @@
             const booked = data.filter(d => d.status === 'booked').length;
             const paid = data.filter(d => d.status === 'paid').length;
 
-            // ถ้ามี element เหล่านี้ในหน้า
             const availableEl = document.getElementById('availableCount');
             const bookedEl = document.getElementById('bookedCount');
             const paidEl = document.getElementById('paidCount');
