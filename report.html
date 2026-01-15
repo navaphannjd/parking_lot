@@ -1099,7 +1099,7 @@
                     const row = document.createElement('tr');
                     const statusClass = item.status === 'paid' ? 'status-paid' : 'status-unpaid';
                     const statusText = item.status === 'paid' ? 'ชำระแล้ว' :
-                        item.status === 'booked' ? 'ยังไม่ได้ชำระ' : '-';
+                        item.status === 'booked' ? 'รอชำระ' : '-';
 
                     row.innerHTML = `
                 <td><strong>Slot ${item.slot}</strong></td>
@@ -1145,7 +1145,7 @@
                     history.forEach(record => {
                         const row = document.createElement('tr');
                         const statusClass = record.paid > 0 ? 'status-paid' : 'status-unpaid';
-                        const statusText = record.paid > 0 ? 'ชำระแล้ว' : 'ยังไม่ได้ชำระ';
+                        const statusText = record.paid > 0 ? 'ชำระแล้ว' : 'รอชำระ';
 
                         row.innerHTML = `
                 <td><strong>Slot ${currentSlot.slot}</strong></td>
@@ -1168,7 +1168,7 @@
                     bookerRecords.forEach(item => {
                         const row = document.createElement('tr');
                         const statusClass = item.status === 'paid' ? 'status-paid' : 'status-unpaid';
-                        const statusText = item.status === 'paid' ? 'ชำระแล้ว' : 'ยังไม่ได้ชำระ';
+                        const statusText = item.status === 'paid' ? 'ชำระแล้ว' : 'รอชำระ';
 
                         row.innerHTML = `
                     <td><strong>Slot ${item.slot}</strong></td>
