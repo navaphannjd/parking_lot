@@ -862,6 +862,25 @@
         const dropdownMenu = document.getElementById('dropdownMenu');
         const CLOUD_NAME = "dsnpelcth";
         const UPLOAD_PRESET = "Bank Receipt";
+        // Submenu Toggle
+        const rentalMenu = document.getElementById('rentalMenu');
+        const rentalSubmenu = document.getElementById('rentalSubmenu');
+
+        rentalMenu.addEventListener('click', () => {
+            rentalMenu.classList.toggle('active');
+            rentalSubmenu.classList.toggle('active');
+        });
+
+        // เพิ่ม active class ให้ submenu item ตามหน้าปัจจุบัน
+        const currentPage = window.location.pathname.split('/').pop();
+        const submenuItems = document.querySelectorAll('.submenu-item');
+
+        submenuItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href === currentPage) {
+                item.classList.add('active');
+            }
+        });
 
         let selectedFile = null;
         let uploadedImageUrl = null;

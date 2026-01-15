@@ -919,6 +919,25 @@
         const overlay = document.getElementById('overlay');
         const userProfile = document.getElementById('userProfile');
         const dropdownMenu = document.getElementById('dropdownMenu');
+        // Submenu Toggle
+        const rentalMenu = document.getElementById('rentalMenu');
+        const rentalSubmenu = document.getElementById('rentalSubmenu');
+
+        rentalMenu.addEventListener('click', () => {
+            rentalMenu.classList.toggle('active');
+            rentalSubmenu.classList.toggle('active');
+        });
+
+        // เพิ่ม active class ให้ submenu item ตามหน้าปัจจุบัน
+        const currentPage = window.location.pathname.split('/').pop();
+        const submenuItems = document.querySelectorAll('.submenu-item');
+
+        submenuItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href === currentPage) {
+                item.classList.add('active');
+            }
+        });
 
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
