@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ - Parking System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -308,7 +309,7 @@
     <!-- หน้า Login พนักงาน -->
     <div id="staffLogin" class="login-container">
         <div class="login-header">
-            <div class="icon">🚗</div>
+            <div class="icon"><i class="fa-solid fa-car"></i></div>
             <h1>เข้าสู่ระบบ</h1>
         </div>
         <div class="login-body">
@@ -319,7 +320,7 @@
                 <div class="form-group">
                     <label>ชื่อผู้ใช้</label>
                     <div class="input-wrapper">
-                        <span class="icon">👤</span>
+                        <span class="icon"><i class="fa-solid fa-user"></i></span>
                         <input type="text" id="staffUsername" placeholder="กรุณากรอกชื่อผู้ใช้" >
                     </div>
                 </div>
@@ -327,7 +328,7 @@
                 <div class="form-group">
                     <label>รหัสผ่าน</label>
                     <div class="input-wrapper">
-                        <span class="icon">🔒</span>
+                        <span class="icon"><i class="fa-solid fa-lock"></i></span>
                         <input type="password" id="staffPassword" placeholder="กรุณากรอกรหัสผ่าน" >
                     </div>
                 </div>
@@ -335,10 +336,6 @@
                 <button type="submit" class="btn-login">
                     เข้าสู่ระบบ
                 </button>
-
-                <div class="register">
-                    <a href="#" class="register-btn">สมัครสมาชิก</a>
-                </div>
             </form>
 
             <div class="divider">
@@ -346,7 +343,7 @@
             </div>
 
             <button class="btn-customer" onclick="showCustomerLogin()">
-                <span>💳</span>
+                <span><i class="fa-solid fa-credit-card"></i></span>
                 <span>แจ้งชำระเงิน</span>
             </button>
         </div>
@@ -355,7 +352,7 @@
     <!-- หน้า Login ลูกค้า -->
     <div id="customerLogin" class="login-container customer-login hidden">
         <div class="login-header">
-            <div class="icon">💳</div>
+            <div class="icon"><i class="fa-solid fa-credit-card"></i></div>
             <h1>แจ้งชำระเงิน</h1>
         </div>
         <div class="login-body">
@@ -366,7 +363,7 @@
                 <div class="form-group">
                     <label>ชื่อผู้ใช้</label>
                     <div class="input-wrapper">
-                        <span class="icon">👤</span>
+                        <span class="icon"><i class="fa-solid fa-user"></i></span>
                         <input type="text" id="customerSlot" placeholder="กรุณากรอกชื่อผู้ใช้" required>
                     </div>
                 </div>
@@ -374,7 +371,7 @@
                 <div class="form-group">
                     <label>รหัสผ่าน</label>
                     <div class="input-wrapper">
-                        <span class="icon">🔒</span>
+                        <span class="icon"><i class="fa-solid fa-lock"></i></span>
                         <input type="text" id="customerPlate" placeholder="กรุณากรอกรหัสผ่าน" required>
                     </div>
                 </div>
@@ -384,7 +381,7 @@
                 </button>
 
                 <div class="register">
-                    <a href="#" class="register-btn">สมัครสมาชิก</a>
+                    <a href="register.html" class="register-btn">สมัครสมาชิก</a>
                 </div>
 
                 <button type="button" class="btn-back" onclick="showStaffLogin()">
