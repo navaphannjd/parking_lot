@@ -84,6 +84,55 @@
             text-align: center;
         }
 
+        /* Submenu Styles */
+        .menu-item.has-submenu {
+            position: relative;
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .submenu.active {
+            max-height: 300px;
+        }
+
+        .submenu-item {
+            padding: 12px 25px 12px 60px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .submenu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding-left: 65px;
+        }
+
+        .submenu-item.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-item .arrow {
+            margin-left: auto;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .menu-item.has-submenu.active .arrow {
+            transform: rotate(180deg);
+        }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -694,24 +743,31 @@
 </head>
 
 <body>
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h2>🚗 Parking</h2>
-            <p>ระบบจองที่จอดรถ</p>
         </div>
         <nav class="sidebar-menu">
-            <a class="menu-item" href="main.html">
-                <span class="icon">🏠</span>
-                <span>หน้าหลัก</span>
-            </a>
-            <a class="menu-item active" href="billing.html">
-                <span class="icon">💳</span>
-                <span>รายการเรียกเก็บเงิน</span>
-            </a>
-            <a class="menu-item" href="report.html">
-                <span class="icon">📊</span>
-                <span>รายงาน</span>
-            </a>
+            <div class="menu-item has-submenu active" id="rentalMenu">
+                <span class="icon">🏢</span>
+                <span>Rental</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="submenu active" id="rentalSubmenu">
+                <a class="submenu-item" href="main.html">
+                    <span>🚗</span>
+                    <span>Item</span>
+                </a>
+                <a class="submenu-item active" href="billing.html">
+                    <span>💳</span>
+                    <span>Billing</span>
+                </a>
+                <a class="submenu-item" href="report.html">
+                    <span>📊</span>
+                    <span>Report</span>
+                </a>
+            </div>
         </nav>
     </div>
 
