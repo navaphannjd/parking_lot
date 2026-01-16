@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบจองที่จอดรถ</title>
+    <link rel="stylesheet" href="sidebar.css">
     <style>
         * {
             margin: 0;
@@ -17,140 +18,6 @@
             background: white;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            left: -280px;
-            top: 0;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            transition: left 0.3s ease;
-            z-index: 1000;
-        }
-
-        .sidebar.active {
-            left: 0;
-        }
-
-        .sidebar-header {
-            padding: 30px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-header h2 {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .sidebar-header p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-        }
-
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .menu-item {
-            padding: 15px 25px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding-left: 30px;
-        }
-
-        .menu-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-left: 4px solid white;
-        }
-
-        .menu-item .icon {
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
-        }
-
-        /* Submenu Styles */
-        .menu-item.has-submenu {
-            position: relative;
-        }
-
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .submenu.active {
-            max-height: 300px;
-        }
-
-        .submenu-item {
-            padding: 12px 25px 12px 60px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .submenu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding-left: 65px;
-        }
-
-        .submenu-item.active {
-            color: white;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .menu-item .arrow {
-            margin-left: auto;
-            font-size: 14px;
-            transition: transform 0.3s;
-        }
-
-        .menu-item.has-submenu.active .arrow {
-            transform: rotate(180deg);
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
         }
 
         /* Top Bar */
@@ -735,36 +602,6 @@
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2>🚗 Parking</h2>
-        </div>
-        <nav class="sidebar-menu">
-            <div class="menu-item has-submenu active" id="rentalMenu">
-                <span class="icon">🏢</span>
-                <span>Rental</span>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="submenu active" id="rentalSubmenu">
-                <a class="submenu-item active" href="main.html">
-                    <span>🚗</span>
-                    <span>Item</span>
-                </a>
-                <a class="submenu-item" href="billing.html">
-                    <span>💳</span>
-                    <span>Billing</span>
-                </a>
-                <a class="submenu-item" href="report.html">
-                    <span>📊</span>
-                    <span>Report</span>
-                </a>
-            </div>
-        </nav>
-    </div>
-
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
 
     <!-- Top Bar -->
     <div class="topbar">
@@ -905,44 +742,9 @@
         </div>
     </div>
 
+    <script src="sidebar.js"></script>
+
     <script>
-        // Sidebar Toggle
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-
-        // Submenu Toggle
-        const rentalMenu = document.getElementById('rentalMenu');
-        const rentalSubmenu = document.getElementById('rentalSubmenu');
-
-        rentalMenu.addEventListener('click', () => {
-            rentalMenu.classList.toggle('active');
-            rentalSubmenu.classList.toggle('active');
-        });
-
-        // เพิ่ม active class ให้ submenu item ตามหน้าปัจจุบัน
-        const currentPage = window.location.pathname.split('/').pop();
-        const submenuItems = document.querySelectorAll('.submenu-item');
-
-        submenuItems.forEach(item => {
-            const href = item.getAttribute('href');
-            if (href === currentPage) {
-                item.classList.add('active');
-            }
-        });
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
-
-        overlay.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
         // User Profile Dropdown
         const userProfile = document.getElementById('userProfile');
         const dropdownMenu = document.getElementById('dropdownMenu');
