@@ -360,6 +360,21 @@
             padding: 30px;
         }
 
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
@@ -460,6 +475,33 @@
 
         .btn-cancel:hover {
             background: #5a6268;
+        }
+
+        .btn-filter {
+            background: white;
+            color: #667eea;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            min-width: 48px;
+            height: 48px;
+        }
+
+        .btn-filter:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-filter.active {
+            background: #667eea;
+            color: white;
         }
 
         /* Responsive Design for Mobile */
@@ -650,12 +692,12 @@
 
             <div class="search-bar">
                 <input type="text" class="search-input" placeholder="ค้นหาเลขที่จอด, ชื่อผู้จอง..." id="searchInput">
-                <select class="filter-select" id="statusFilter">
-                    <option value="all">ทั้งหมด</option>
-                    <option value="available">ว่าง</option>
-                    <option value="booked">รอชำระ</option>
-                    <option value="paid">ชำระแล้ว</option>
-                </select>
+                <button class="btn-filter" id="filterBtn" title="กรองข้อมูล">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                </button>
                 <button class="btn-add" id="addBtn">
                     <span style="font-size: 20px; font-weight: bold;">+</span>
                 </button>
@@ -738,6 +780,36 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-save" id="saveBtn">เพิ่มข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับกรองข้อมูล -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔍 กรองข้อมูล</h2>
+                <button class="close-btn" id="closeFilterModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>เลือกเดือน-ปี</label>
+                    <input type="month" id="filterMonth" class="form-control" placeholder="เลือกเดือนและปี">
+                </div>
+
+                <div class="form-group">
+                    <label>สถานะ</label>
+                    <select id="filterStatus" class="form-control">
+                        <option value="all">ทั้งหมด</option>
+                        <option value="available">ว่าง</option>
+                        <option value="booked">รอชำระ</option>
+                        <option value="paid">ชำระแล้ว</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="clearFilterBtn">ล้างตัวกรอง</button>
+                <button type="button" class="btn-save" id="applyFilterBtn">ใช้ตัวกรอง</button>
             </div>
         </div>
     </div>
@@ -964,16 +1036,35 @@
             if (paidEl) paidEl.textContent = paid;
         }
 
+        // ตัวแปรเก็บค่า filter
+        let currentFilters = {
+            monthYear: '', // เก็บในรูปแบบ YYYY-MM
+            status: 'all'
+        };
+
         function filterData() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value;
 
             let filtered = parkingData;
 
-            if (statusFilter !== 'all') {
-                filtered = filtered.filter(item => item.status === statusFilter);
+            // กรองตามสถานะ
+            if (currentFilters.status !== 'all') {
+                filtered = filtered.filter(item => item.status === currentFilters.status);
             }
 
+            // กรองตามเดือน-ปี
+            if (currentFilters.monthYear) {
+                filtered = filtered.filter(item => {
+                    if (item.payDate === '-') return false;
+
+                    // แปลง payDate (YYYY-MM-DD) เป็น YYYY-MM เพื่อเทียบ
+                    const payMonthYear = item.payDate.substring(0, 7); // เอาแค่ YYYY-MM
+
+                    return payMonthYear === currentFilters.monthYear;
+                });
+            }
+
+            // กรองตามคำค้นหา
             if (searchTerm) {
                 filtered = filtered.filter(item =>
                     item.slot.toString().includes(searchTerm) ||
@@ -982,10 +1073,85 @@
             }
 
             renderTable(filtered);
+            updateFilterButton();
         }
 
+        function updateFilterButton() {
+            const filterBtn = document.getElementById('filterBtn');
+            const hasActiveFilter = currentFilters.monthYear !== '' ||
+                currentFilters.status !== 'all';
+
+            if (hasActiveFilter) {
+                filterBtn.classList.add('active');
+            } else {
+                filterBtn.classList.remove('active');
+            }
+        }
+
+        // เปิด Filter Modal
+        function openFilterModal() {
+            const modal = document.getElementById('filterModal');
+
+            // ถ้ายังไม่มีการกรอง ให้ตั้งค่า default เป็นเดือน-ปีปัจจุบัน
+            if (!currentFilters.monthYear) {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0'); // เติม 0 ข้างหน้าถ้าเป็นเลขหลักเดียว
+                const currentMonthYear = `${year}-${month}`; // รูปแบบ YYYY-MM
+
+                document.getElementById('filterMonth').value = currentMonthYear;
+            } else {
+                // ตั้งค่าเริ่มต้นจาก current filters
+                document.getElementById('filterMonth').value = currentFilters.monthYear;
+            }
+
+            document.getElementById('filterStatus').value = currentFilters.status;
+
+            modal.classList.add('active');
+        }
+
+        // ปิด Filter Modal
+        function closeFilterModal() {
+            document.getElementById('filterModal').classList.remove('active');
+        }
+
+        // ใช้ตัวกรอง
+        function applyFilter() {
+            currentFilters.monthYear = document.getElementById('filterMonth').value;
+            currentFilters.status = document.getElementById('filterStatus').value;
+
+            filterData();
+            closeFilterModal();
+        }
+
+        // ล้างตัวกรอง
+        function clearFilter() {
+            currentFilters = {
+                monthYear: '',
+                status: 'all'
+            };
+
+            document.getElementById('filterMonth').value = '';
+            document.getElementById('filterStatus').value = 'all';
+
+            filterData();
+            closeFilterModal();
+        }
+
+        // Event Listeners สำหรับ Filter Modal
+        document.getElementById('filterBtn').addEventListener('click', openFilterModal);
+        document.getElementById('closeFilterModal').addEventListener('click', closeFilterModal);
+        document.getElementById('applyFilterBtn').addEventListener('click', applyFilter);
+        document.getElementById('clearFilterBtn').addEventListener('click', clearFilter);
+
+        // ปิด modal เมื่อคลิกนอก modal
+        document.getElementById('filterModal').addEventListener('click', (e) => {
+            if (e.target.id === 'filterModal') {
+                closeFilterModal();
+            }
+        });
+
         document.getElementById('searchInput').addEventListener('input', filterData);
-        document.getElementById('statusFilter').addEventListener('change', filterData);
 
         // เริ่มต้นแสดงข้อมูล
         renderTable(parkingData);
