@@ -409,7 +409,7 @@
             if (username === staffCredentials.username && password === staffCredentials.password) {
                 // Login สำเร็จ - ไปหน้าหลัก
                 alert('เข้าสู่ระบบสำเร็จ!');
-                window.location.href = 'main.html';
+                window.location.href = 'item.html';
             } else {
                 // Login ไม่สำเร็จ
                 errorMsg.classList.add('show');
@@ -431,7 +431,7 @@
             if (slot && plate) {
                 // Login สำเร็จ - ไปหน้าแจ้งชำระเงิน
                 alert('เข้าสู่ระบบสำเร็จ!');
-                window.location.href = 'billing.html?slot=' + slot + '&plate=' + plate;
+                window.location.href = 'invoice.html?slot=' + slot + '&plate=' + plate;
             } else {
                 errorMsg.classList.add('show');
                 setTimeout(() => {
