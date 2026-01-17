@@ -13,13 +13,17 @@ function createSidebar() {
                     <span class="arrow">▼</span>
                 </div>
                 <div class="submenu active" id="rentalSubmenu">
-                    <a class="submenu-item" href="main.html" data-page="main.html">
+                    <a class="submenu-item" href="item.html" data-page="item.html">
                         <span>🚗</span>
                         <span>Item</span>
                     </a>
-                    <a class="submenu-item" href="billing.html" data-page="billing.html,payment.html">
+                    <a class="submenu-item" href="order.html" data-page="order.html">
+                        <span>🚗</span>
+                        <span>Order</span>
+                    </a>
+                    <a class="submenu-item" href="invoice.html" data-page="invoice.html,payment.html">
                         <span>💳</span>
-                        <span>Billing</span>
+                        <span>Invoice</span>
                     </a>
                     <a class="submenu-item" href="report.html" data-page="report.html">
                         <span>📊</span>

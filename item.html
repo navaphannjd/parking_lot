@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจองที่จอดรถ</title>
+    <link rel="stylesheet" href="sidebar.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #667eea;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .user-profile:hover {
+            background: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid #e9ecef;
+            color: #dc3545;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-header h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tbody tr {
+            transition: all 0.3s;
+        }
+
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-available {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-booked {
+            background: #ffcdcd;
+            color: #850404;
+        }
+
+        .status-paid {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        .btn-filter {
+            background: white;
+            color: #667eea;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            min-width: 48px;
+            height: 48px;
+        }
+
+        .btn-filter:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-filter.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Responsive Design for Mobile */
+        @media screen and (max-width: 768px) {
+            .topbar {
+                padding: 12px 15px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .page-header {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .search-bar {
+                flex-wrap: wrap;
+                /* แก้ไขจาก flex-direction: column */
+            }
+
+            .search-input {
+                flex: 1 1 100%;
+                /* ให้ search input อยู่คนเดียวบรรทัดแรก */
+                min-width: 100%;
+            }
+
+            .filter-select {
+                flex: 1;
+                /* ให้ dropdown ยืดตามพื้นที่ */
+                min-width: 0;
+                /* ลบ min-width เดิม */
+            }
+
+            /* ตารางเลื่อนซ้ายขวาได้ */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 800px;
+            }
+
+            th,
+            td {
+                white-space: nowrap;
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            /* Modal สำหรับมือถือ */
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 20px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                padding: 15px 20px;
+                flex-direction: column;
+            }
+
+            .btn-save,
+            .btn-cancel {
+                width: 100%;
+            }
+
+            .btn-add {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+
+            /* Sidebar สำหรับมือถือ */
+            .sidebar {
+                width: 250px;
+                left: -250px;
+            }
+
+            .dropdown-menu {
+                right: -10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.3em;
+            }
+
+            .modal-header h2 {
+                font-size: 18px;
+            }
+
+            .sidebar {
+                width: 220px;
+                left: -220px;
+            }
+
+            th,
+            td {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="dropdown">
+            <div class="user-profile" id="userProfile">
+                <div class="user-info">
+                    <div class="user-name">สมชาย ใจดี</div>
+                    <div class="user-role">ผู้ดูแลระบบ</div>
+                </div>
+                <div class="user-avatar">SC</div>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item">
+                    <span>👤</span>
+                    <span>โปรไฟล์</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>🔔</span>
+                    <span>การแจ้งเตือน</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>⚙️</span>
+                    <span>ตั้งค่าบัญชี</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>🚪</span>
+                    <span>ออกจากระบบ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>🚗 Item</h1>
+            <p>รายการสินค้า</p>
+        </div>
+
+        <div class="content">
+
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="ค้นหาเลขที่จอด, ชื่อผู้จอง..." id="searchInput">
+                <button class="btn-filter" id="filterBtn" title="กรองข้อมูล">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                </button>
+                <button class="btn-add" id="addBtn">
+                    <span style="font-size: 20px; font-weight: bold;">+</span>
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table id="parkingTable">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>ผู้จอง</th>
+                            <th>ราคา/เดือน</th>
+                            <th>จำนวนเงินที่จ่าย</th>
+                            <th>วันที่จ่าย</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">🚗 Add Item</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="parkingForm">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="modalSlotName" placeholder="กรอกชื่อ Item" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Client Name, Client Surname</label>
+                        <input type="text" id="modalName" placeholder="กรอกชื่อ-นามสกุล" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note</label>
+                        <input type="text" id="modalPlate" placeholder="เช่น กก-1234" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fee</label>
+                        <input type="number" id="modalPrice" min="0" step="100" placeholder="2000" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Paid Amount</label>
+                            <input type="number" id="modalPaid" min="0" step="100" value="0" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Paid Date</label>
+                            <input type="date" id="modalPayDate" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <div class="form-row">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 13px; color: #666;">From</label>
+                                <input type="date" id="modalBookDateFrom" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 13px; color: #666;">To</label>
+                                <input type="date" id="modalBookDateTo" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-save" id="saveBtn">เพิ่มข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal สำหรับกรองข้อมูล -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔍 กรองข้อมูล</h2>
+                <button class="close-btn" id="closeFilterModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>เลือกเดือน-ปี</label>
+                    <input type="month" id="filterMonth" class="form-control" placeholder="เลือกเดือนและปี">
+                </div>
+
+                <div class="form-group">
+                    <label>สถานะ</label>
+                    <select id="filterStatus" class="form-control">
+                        <option value="all">ทั้งหมด</option>
+                        <option value="available">ว่าง</option>
+                        <option value="booked">รอชำระ</option>
+                        <option value="paid">ชำระแล้ว</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="clearFilterBtn">ล้างตัวกรอง</button>
+                <button type="button" class="btn-save" id="applyFilterBtn">ใช้ตัวกรอง</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="sidebar.js"></script>
+
+    <script>
+        // User Profile Dropdown
+        const userProfile = document.getElementById('userProfile');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        userProfile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!userProfile.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
+
+        // Parking Data
+        const parkingData = [
+            { slot: 1, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 2, status: 'paid', name: 'สมชาย ใจดี', plate: 'กก-1234', price: 2000, paid: 2000, payDate: '2026-01-05', bookDate: '2025-12-20', expDate: '2026-02-05' },
+            { slot: 3, status: 'booked', name: 'สมหญิง รักสวย', plate: 'ขข-5678', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-10', expDate: '-' },
+            { slot: 4, status: 'paid', name: 'ประยุทธ์ มั่นคง', plate: 'คค-9012', price: 2500, paid: 2500, payDate: '2026-01-03', bookDate: '2025-12-15', expDate: '2026-02-03' },
+            { slot: 5, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 6, status: 'paid', name: 'วิไล สุขสม', plate: 'งง-3456', price: 2000, paid: 2000, payDate: '2026-01-07', bookDate: '2025-12-28', expDate: '2026-02-07' },
+            { slot: 7, status: 'booked', name: 'จิตติ มีเงิน', plate: 'จจ-7890', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-12', expDate: '-' },
+            { slot: 8, status: 'paid', name: 'สุดา รักงาม', plate: 'ฉฉ-2345', price: 2000, paid: 2000, payDate: '2026-01-02', bookDate: '2025-12-18', expDate: '2026-02-02' },
+            { slot: 9, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 10, status: 'paid', name: 'ธนา รำรวย', plate: 'ชช-6789', price: 3000, paid: 3000, payDate: '2026-01-01', bookDate: '2025-12-10', expDate: '2026-02-01' },
+            { slot: 11, status: 'booked', name: 'อัชฌลี ยิ้มแย้ม', plate: 'ซซ-0123', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-11', expDate: '-' },
+            { slot: 12, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 13, status: 'paid', name: 'วัชระ กล้าหาญ', plate: 'ฌฌ-4567', price: 2000, paid: 2000, payDate: '2026-01-06', bookDate: '2025-12-25', expDate: '2026-02-06' },
+            { slot: 14, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 15, status: 'booked', name: 'มาลี สวยงาม', plate: 'ญญ-8901', price: 2500, paid: 0, payDate: '-', bookDate: '2026-01-09', expDate: '-' },
+            { slot: 16, status: 'paid', name: 'สมศักดิ์ เจริญ', plate: 'ฎฎ-3456', price: 2000, paid: 2000, payDate: '2026-01-04', bookDate: '2025-12-22', expDate: '2026-02-04' },
+            { slot: 17, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 18, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 19, status: 'booked', name: 'นิดา น่ารัก', plate: 'ฏฏ-7890', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-13', expDate: '-' },
+            { slot: 20, status: 'paid', name: 'ชัยวัฒน์ ชนะ', plate: 'ฐฐ-2345', price: 2000, paid: 2000, payDate: '2026-01-08', bookDate: '2025-12-30', expDate: '2026-02-08' },
+            { slot: 21, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 22, status: 'booked', name: 'สุนีย์ แสงจันทร์', plate: 'ฑฑ-6789', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-14', expDate: '-' },
+            { slot: 23, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 24, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 25, status: 'booked', name: 'ภูมิ ดีเลิศ', plate: 'ฒฒ-0123', price: 2500, paid: 0, payDate: '-', bookDate: '2026-01-08', expDate: '-' },
+            { slot: 26, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 27, status: 'booked', name: 'อรุณ รุ่งเรือง', plate: 'ณณ-4567', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-11', expDate: '-' },
+            { slot: 28, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' },
+            { slot: 29, status: 'booked', name: 'ดวงใจ สดใส', plate: 'ดด-8901', price: 2000, paid: 0, payDate: '-', bookDate: '2026-01-12', expDate: '-' },
+            { slot: 30, status: 'available', name: '-', plate: '-', price: 2000, paid: 0, payDate: '-', bookDate: '-', expDate: '-' }
+        ];
+
+        let isEditMode = false; // ตัวแปรเช็คว่าเป็นโหมดแก้ไขหรือเพิ่มใหม่
+        let currentEditSlot = null;
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+
+                const statusClass = item.status === 'available' ? 'status-available' :
+                    item.status === 'booked' ? 'status-booked' : 'status-paid';
+                const statusText = item.status === 'available' ? 'ว่าง' :
+                    item.status === 'booked' ? 'รอชำระ' : 'ชำระแล้ว';
+
+                row.innerHTML = `
+                    <td><strong>Slot ${item.slot}</strong></td>
+                    <td>${item.name}</td>
+                    <td>${item.price.toLocaleString()} บาท</td>
+                    <td>${item.paid > 0 ? item.paid.toLocaleString() + ' บาท' : '-'}</td>
+                    <td>${item.payDate}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            updateStats(data);
+        }
+
+        // ฟังก์ชันเปิด Modal สำหรับเพิ่มข้อมูลใหม่
+        function openAddModal() {
+            isEditMode = false;
+            currentEditSlot = null;
+            const modal = document.getElementById('detailModal');
+
+            // เปลี่ยนหัวข้อ Modal
+            document.getElementById('modalTitle').textContent = '🚗 เพิ่มข้อมูลที่จอดรถ';
+
+            // รีเซ็ตฟอร์ม
+            document.getElementById('parkingForm').reset();
+
+            // ตั้งค่าราคาเริ่มต้น
+            document.getElementById('modalPrice').value = 2000;
+            document.getElementById('modalPaid').value = 0;
+
+            // เปิดใช้งานทุก input
+            enableAllInputs();
+
+            modal.classList.add('active');
+        }
+
+        // ฟังก์ชันเปิดใช้งานทุก input
+        function enableAllInputs() {
+            document.getElementById('modalSlotName').disabled = false;
+            document.getElementById('modalName').disabled = false;
+            document.getElementById('modalPlate').disabled = false;
+            document.getElementById('modalPrice').disabled = false;
+            document.getElementById('modalBookDateFrom').disabled = false;
+            document.getElementById('modalBookDateTo').disabled = false;
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            isEditMode = false;
+            currentEditSlot = null;
+        }
+
+        function saveChanges() {
+            const slotName = document.getElementById('modalSlotName').value.trim();
+            const name = document.getElementById('modalName').value.trim();
+            const plate = document.getElementById('modalPlate').value.trim();
+            const price = parseInt(document.getElementById('modalPrice').value);
+            const paid = parseInt(document.getElementById('modalPaid').value) || 0;
+            const payDate = document.getElementById('modalPayDate').value || '-';
+            const bookDateFrom = document.getElementById('modalBookDateFrom').value;
+            const bookDateTo = document.getElementById('modalBookDateTo').value;
+
+            // ตรวจสอบข้อมูลบังคับ
+            if (!slotName || !name || !plate || !price || !bookDateFrom || !bookDateTo) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน (Slot Name, ชื่อ, ทะเบียน, ค่าเช่า, วันที่จอง)');
+                return;
+            }
+
+            // ตรวจสอบวันที่
+            if (new Date(bookDateTo) < new Date(bookDateFrom)) {
+                alert('วันที่สิ้นสุดต้องมากกว่าหรือเท่ากับวันที่เริ่มต้น');
+                return;
+            }
+
+            // กำหนด status
+            let status = 'booked'; // ค่าเริ่มต้น
+            if (paid > 0 && paid >= price) {
+                status = 'paid';
+            } else if (paid === 0) {
+                status = 'booked';
+            }
+
+            // หา slot number ที่ว่าง (เพิ่มข้อมูลใหม่)
+            let newSlotNumber = 1;
+            const usedSlots = parkingData.map(item => item.slot).sort((a, b) => a - b);
+
+            // หา slot ที่ว่างหรือใช้ slot ถัดไป
+            for (let i = 0; i < usedSlots.length; i++) {
+                if (usedSlots[i] !== i + 1) {
+                    newSlotNumber = i + 1;
+                    break;
+                }
+            }
+            if (newSlotNumber === 1 && usedSlots.length > 0) {
+                newSlotNumber = usedSlots[usedSlots.length - 1] + 1;
+            }
+
+            // สร้างข้อมูลใหม่
+            const newData = {
+                slot: newSlotNumber,
+                slotName: slotName,
+                status: status,
+                name: name,
+                plate: plate,
+                price: price,
+                paid: paid,
+                payDate: payDate,
+                bookDate: bookDateFrom,
+                expDate: bookDateTo
+            };
+
+            // เพิ่มข้อมูลใหม่
+            parkingData.push(newData);
+
+            // เรียงข้อมูลตาม slot number
+            parkingData.sort((a, b) => a.slot - b.slot);
+
+            // รีเฟรชตาราง
+            filterData();
+
+            // แสดงข้อความสำเร็จ
+            alert('เพิ่มข้อมูลเรียบร้อยแล้ว');
+
+            closeModal();
+        }
+
+        // Event Listeners สำหรับ Modal
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('saveBtn').addEventListener('click', saveChanges);
+
+        // Event Listener สำหรับปุ่ม +
+        document.getElementById('addBtn').addEventListener('click', openAddModal);
+
+        // ปิด modal เมื่อคลิกนอก modal content
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') {
+                closeModal();
+            }
+        });
+
+        function updateStats(data) {
+            const available = data.filter(d => d.status === 'available').length;
+            const booked = data.filter(d => d.status === 'booked').length;
+            const paid = data.filter(d => d.status === 'paid').length;
+
+            const availableEl = document.getElementById('availableCount');
+            const bookedEl = document.getElementById('bookedCount');
+            const paidEl = document.getElementById('paidCount');
+
+            if (availableEl) availableEl.textContent = available;
+            if (bookedEl) bookedEl.textContent = booked;
+            if (paidEl) paidEl.textContent = paid;
+        }
+
+        // ตัวแปรเก็บค่า filter
+        let currentFilters = {
+            monthYear: '', // เก็บในรูปแบบ YYYY-MM
+            status: 'all'
+        };
+
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = parkingData;
+
+            // กรองตามสถานะ
+            if (currentFilters.status !== 'all') {
+                filtered = filtered.filter(item => item.status === currentFilters.status);
+            }
+
+            // กรองตามเดือน-ปี
+            if (currentFilters.monthYear) {
+                filtered = filtered.filter(item => {
+                    if (item.payDate === '-') return false;
+
+                    // แปลง payDate (YYYY-MM-DD) เป็น YYYY-MM เพื่อเทียบ
+                    const payMonthYear = item.payDate.substring(0, 7); // เอาแค่ YYYY-MM
+
+                    return payMonthYear === currentFilters.monthYear;
+                });
+            }
+
+            // กรองตามคำค้นหา
+            if (searchTerm) {
+                filtered = filtered.filter(item =>
+                    item.slot.toString().includes(searchTerm) ||
+                    item.name.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderTable(filtered);
+            updateFilterButton();
+        }
+
+        function updateFilterButton() {
+            const filterBtn = document.getElementById('filterBtn');
+            const hasActiveFilter = currentFilters.monthYear !== '' ||
+                currentFilters.status !== 'all';
+
+            if (hasActiveFilter) {
+                filterBtn.classList.add('active');
+            } else {
+                filterBtn.classList.remove('active');
+            }
+        }
+
+        // เปิด Filter Modal
+        function openFilterModal() {
+            const modal = document.getElementById('filterModal');
+
+            // ถ้ายังไม่มีการกรอง ให้ตั้งค่า default เป็นเดือน-ปีปัจจุบัน
+            if (!currentFilters.monthYear) {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0'); // เติม 0 ข้างหน้าถ้าเป็นเลขหลักเดียว
+                const currentMonthYear = `${year}-${month}`; // รูปแบบ YYYY-MM
+
+                document.getElementById('filterMonth').value = currentMonthYear;
+            } else {
+                // ตั้งค่าเริ่มต้นจาก current filters
+                document.getElementById('filterMonth').value = currentFilters.monthYear;
+            }
+
+            document.getElementById('filterStatus').value = currentFilters.status;
+
+            modal.classList.add('active');
+        }
+
+        // ปิด Filter Modal
+        function closeFilterModal() {
+            document.getElementById('filterModal').classList.remove('active');
+        }
+
+        // ใช้ตัวกรอง
+        function applyFilter() {
+            currentFilters.monthYear = document.getElementById('filterMonth').value;
+            currentFilters.status = document.getElementById('filterStatus').value;
+
+            filterData();
+            closeFilterModal();
+        }
+
+        // ล้างตัวกรอง
+        function clearFilter() {
+            currentFilters = {
+                monthYear: '',
+                status: 'all'
+            };
+
+            document.getElementById('filterMonth').value = '';
+            document.getElementById('filterStatus').value = 'all';
+
+            filterData();
+            closeFilterModal();
+        }
+
+        // Event Listeners สำหรับ Filter Modal
+        document.getElementById('filterBtn').addEventListener('click', openFilterModal);
+        document.getElementById('closeFilterModal').addEventListener('click', closeFilterModal);
+        document.getElementById('applyFilterBtn').addEventListener('click', applyFilter);
+        document.getElementById('clearFilterBtn').addEventListener('click', clearFilter);
+
+        // ปิด modal เมื่อคลิกนอก modal
+        document.getElementById('filterModal').addEventListener('click', (e) => {
+            if (e.target.id === 'filterModal') {
+                closeFilterModal();
+            }
+        });
+
+        document.getElementById('searchInput').addEventListener('input', filterData);
+
+        // เริ่มต้นแสดงข้อมูล
+        renderTable(parkingData);
+    </script>
+</body>
+
+</html>
