@@ -13,7 +13,7 @@ function createSidebar() {
                     <span class="arrow">▼</span>
                 </div>
                 <div class="submenu active" id="rentalSubmenu">
-                    <a class="submenu-item" href="item.html" data-page="item.html">
+                    <a class="submenu-item" href="item.html" data-page="item.html,item-add.html,item-edit.html">
                         <span><i class="fa-solid fa-dolly"></i></span>
                         <span>Item</span>
                     </a>
@@ -21,11 +21,11 @@ function createSidebar() {
                         <span><i class="fa-solid fa-user-group"></i></span>
                         <span>Client</span>
                     </a>
-                    <a class="submenu-item" href="order.html" data-page="order.html">
+                    <a class="submenu-item" href="order.html" data-page="order.html,order-add.html,order-edit.html">
                         <span><i class="fa-solid fa-boxes-packing"></i></span>
                         <span>Order</span>
                     </a>
-                    <a class="submenu-item" href="invoice.html" data-page="invoice.html,payment.html">
+                    <a class="submenu-item" href="invoice.html" data-page="invoice.html,invoice-edit.html,payment.html">
                         <span><i class="fa-solid fa-file-invoice"></i></span>
                         <span>Invoice</span>
                     </a>
