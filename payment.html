@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แจ้งชำระเงิน - ระบบจองที่จอดรถ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="sidebar.css">
     <style>
         * {
@@ -20,6 +21,7 @@
             overflow-x: hidden;
         }
 
+        /* Top Bar */
         .topbar {
             position: sticky;
             top: 0;
@@ -105,6 +107,7 @@
             color: #666;
         }
 
+        /* Dropdown Menu */
         .dropdown {
             position: relative;
         }
@@ -154,48 +157,76 @@
             background: #f8f9fa;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        /* Content */
+        .content {
             padding: 20px;
         }
 
-        .page-header {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .page-header h1 {
+        .section-title {
             color: #667eea;
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .page-header p {
-            color: #666;
-        }
-
-        .payment-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: bold;
         }
 
         .payment-card {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .payment-card h2 {
+        .card-section {
+            margin-bottom: 30px;
+        }
+
+        .card-section h3 {
             color: #667eea;
-            margin-bottom: 20px;
-            font-size: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .bank-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .bank-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .bank-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .bank-info-label {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .bank-info-value {
+            color: #333;
         }
 
         .form-group {
@@ -207,17 +238,19 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #333;
+            font-size: 14px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
+            padding: 12px 15px;
             border: 2px solid #e9ecef;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             transition: all 0.3s;
+            font-family: inherit;
         }
 
         .form-group input:focus,
@@ -233,13 +266,13 @@
             border-radius: 12px;
             padding: 40px;
             text-align: center;
-            background: white;
+            background: #f8f9ff;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .upload-area:hover {
-            background: #f8f9fa;
+            background: #f0f4ff;
             border-color: #764ba2;
         }
 
@@ -253,134 +286,76 @@
             margin-bottom: 15px;
         }
 
+        .upload-text {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-subtext {
+            font-size: 13px;
+            color: #666;
+        }
+
         .preview-image {
             max-width: 100%;
             max-height: 300px;
             border-radius: 8px;
             margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             padding: 15px 40px;
             border-radius: 8px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .info-box {
-            background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .required {
+            color: #dc2626;
         }
 
-        .bank-info {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        .bank-info p {
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .bank-info strong {
-            color: #667eea;
-        }
-
-
-        /* Responsive Design for Mobile */
-        @media screen and (max-width: 768px) {
-            .topbar {
-                padding: 12px 15px;
-            }
-
-            .user-info {
-                display: none;
-            }
-
-            .user-avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-
-            .container {
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content {
                 padding: 15px;
-                max-width: 100%;
-                overflow-x: hidden;
             }
 
-            .page-header {
-                padding: 20px;
-                margin-bottom: 15px;
-                max-width: 100%;
-            }
-
-            .page-header h1 {
-                font-size: 1.5em;
-                word-wrap: break-word;
-            }
-
-            .payment-container {
-                gap: 20px;
-                max-width: 100%;
+            .section-title {
+                font-size: 20px;
             }
 
             .payment-card {
                 padding: 20px;
-                max-width: 100%;
-                overflow-x: hidden;
             }
 
-            .payment-card h2 {
-                font-size: 18px;
+            .card-section h3 {
+                font-size: 16px;
             }
 
-            .info-box {
-                max-width: 100%;
-                overflow-x: hidden;
-            }
-
-            .bank-info {
-                max-width: 100%;
-            }
-
-            .bank-info p {
+            .bank-info-row {
                 flex-direction: column;
                 gap: 5px;
-                word-wrap: break-word;
-            }
-
-            .form-group {
-                max-width: 100%;
-            }
-
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                max-width: 100%;
-                box-sizing: border-box;
             }
 
             .upload-area {
                 padding: 30px 20px;
-                max-width: 100%;
             }
 
             .upload-icon {
@@ -388,60 +363,36 @@
             }
 
             .btn-submit {
+                font-size: 15px;
                 padding: 12px 30px;
-                font-size: 16px;
-                max-width: 100%;
-            }
-
-            /* ตารางเลื่อนซ้ายขวาได้ - มี wrapper ครอบ */
-            .table-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                margin: 0 -20px;
-                padding: 0 20px;
-            }
-
-            /* Sidebar สำหรับมือถือ */
-            .sidebar {
-                width: 250px;
-                left: -250px;
-            }
-
-            .dropdown-menu {
-                right: -10px;
             }
         }
 
-        @media screen and (max-width: 480px) {
-            .container {
+        @media (max-width: 480px) {
+            .content {
                 padding: 10px;
             }
 
-            .page-header {
-                padding: 15px;
-            }
-
-            .page-header h1 {
-                font-size: 1.3em;
+            .section-title {
+                font-size: 18px;
             }
 
             .payment-card {
                 padding: 15px;
             }
 
-            .payment-card h2 {
-                font-size: 16px;
+            .card-section h3 {
+                font-size: 15px;
             }
 
             .form-group label {
-                font-size: 14px;
+                font-size: 13px;
             }
 
             .form-group input,
-            .form-group select,
-            .form-group textarea {
-                font-size: 14px;
-                padding: 10px;
+            .form-group select {
+                font-size: 13px;
+                padding: 10px 12px;
             }
 
             .upload-area {
@@ -453,34 +404,14 @@
             }
 
             .btn-submit {
-                font-size: 15px;
+                font-size: 14px;
                 padding: 12px 20px;
-            }
-
-            .sidebar {
-                width: 220px;
-                left: -220px;
-            }
-
-            /* ตารางยังคงเลื่อนได้ */
-            .table-container {
-                margin: 0 -15px;
-                padding: 0 15px;
-            }
-
-            .info-box h3 {
-                font-size: 14px;
-            }
-
-            .bank-info p {
-                font-size: 14px;
             }
         }
     </style>
 </head>
 
 <body>
-
     <div class="topbar">
         <div class="hamburger" id="hamburger">
             <span></span>
@@ -517,62 +448,84 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>💳 #Invoice-2026-001</h1>
+    <div class="content">
+        <div class="content-header">
+            <div class="section-title">
+                <span style="cursor: pointer;" onclick="window.location.href='invoice.html'">Invoice</span> >
+                #Invoice-2026-001
+            </div>
         </div>
 
-        <div class="payment-container">
-            <div class="payment-card">
-                <h2>📝 ฟอร์มแจ้งชำระเงิน</h2>
-
+        <div class="payment-card">
+            <div class="card-section">
+                <h3>
+                    <i class="fa-solid fa-building-columns"></i>
+                    ข้อมูลบัญชีสำหรับโอนเงิน
+                </h3>
                 <div class="info-box">
-                    <h3 style="margin-bottom: 10px;">ข้อมูลบัญชีสำหรับโอนเงิน</h3>
                     <div class="bank-info">
-                        <p><strong>ธนาคาร:</strong> <span>กสิกรไทย</span></p>
-                        <p><strong>เลขที่บัญชี:</strong> <span>123-4-56789-0</span></p>
-                        <p><strong>ชื่อบัญชี:</strong> <span>บริษัท ลานจอดรถบางกอก จำกัด</span></p>
-                        <p><strong>พร้อมเพย์:</strong> <span>0812345678</span></p>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">ธนาคาร:</span>
+                            <span class="bank-info-value">กสิกรไทย</span>
+                        </div>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">เลขที่บัญชี:</span>
+                            <span class="bank-info-value">123-4-56789-0</span>
+                        </div>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">ชื่อบัญชี:</span>
+                            <span class="bank-info-value">บริษัท ลานจอดรถบางกอก จำกัด</span>
+                        </div>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">พร้อมเพย์:</span>
+                            <span class="bank-info-value">0812345678</span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="card-section">
+                <h3>
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    ฟอร์มแจ้งชำระเงิน
+                </h3>
                 <form id="paymentForm">
                     <div class="form-group">
-                        <label>จำนวนเงินที่โอน (บาท) *</label>
+                        <label>จำนวนเงินที่โอน (บาท) <span class="required">*</span></label>
                         <input type="number" id="amount" placeholder="2000" required>
                     </div>
 
                     <div class="form-group">
-                        <label>วันที่โอน *</label>
+                        <label>วันที่โอน <span class="required">*</span></label>
                         <input type="date" id="paymentDate" required>
                     </div>
 
                     <div class="form-group">
-                        <label>เวลาที่โอน *</label>
+                        <label>เวลาที่โอน <span class="required">*</span></label>
                         <input type="time" id="paymentTime" required>
                     </div>
 
                     <div class="form-group">
-                        <label>อัพโหลดหลักฐานการโอนเงิน *</label>
+                        <label>อัพโหลดหลักฐานการโอนเงิน <span class="required">*</span></label>
                         <div class="upload-area" id="uploadArea">
                             <div class="upload-icon">📤</div>
-                            <p><strong>คลิกหรือลากไฟล์มาที่นี่</strong></p>
-                            <p style="font-size: 14px; color: #666; margin-top: 5px;">รองรับไฟล์ JPG, PNG (ขนาดไม่เกิน
-                                5MB)</p>
+                            <p class="upload-text">คลิกหรือลากไฟล์มาที่นี่</p>
+                            <p class="upload-subtext">รองรับไฟล์ JPG, PNG (ขนาดไม่เกิน 5MB)</p>
                             <input type="file" id="fileInput" accept="image/*" style="display: none;">
                         </div>
                         <img id="preview" class="preview-image" style="display: none;">
                     </div>
 
-                    <button type="submit" class="btn-submit">ส่งข้อมูลการชำระเงิน</button>
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        ส่งข้อมูลการชำระเงิน
+                    </button>
                 </form>
             </div>
-
         </div>
     </div>
 
     <script src="sidebar.js"></script>
-
     <script>
         // User Profile Dropdown
         const userProfile = document.getElementById('userProfile');
@@ -591,11 +544,9 @@
 
         const CLOUD_NAME = "dsnpelcth";
         const UPLOAD_PRESET = "Bank Receipt";
-        
 
         let selectedFile = null;
         let uploadedImageUrl = null;
-
 
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
@@ -655,7 +606,7 @@
             }
 
             const data = await response.json();
-            return data.secure_url; // URL รูป
+            return data.secure_url;
         }
 
         document.getElementById('paymentForm').addEventListener('submit', async (e) => {
@@ -667,14 +618,10 @@
             }
 
             try {
-                // อัปโหลดรูป
                 const imageUrl = await uploadToCloudinary(selectedFile);
                 uploadedImageUrl = imageUrl;
 
                 console.log("Cloudinary URL:", imageUrl);
-
-                // 👉 ตรงนี้เอา imageUrl ไปเก็บ Firebase Firestore ต่อได้
-                // เช่น savePayment(imageUrl);
 
                 alert('ส่งข้อมูลการแจ้งชำระเงินเรียบร้อยแล้ว!');
 

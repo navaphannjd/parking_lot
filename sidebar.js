@@ -4,30 +4,34 @@ function createSidebar() {
     const sidebarHTML = `
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h2>🚗 Parking</h2>
+                <h2><i class="fa-solid fa-mobile-screen-button"></i> Application</h2>
             </div>
             <nav class="sidebar-menu">
                 <div class="menu-item has-submenu active" id="rentalMenu">
-                    <span class="icon">🏢</span>
+                    <span class="icon"><i class="fa-solid fa-box-open"></i></span>
                     <span>Rental</span>
                     <span class="arrow">▼</span>
                 </div>
                 <div class="submenu active" id="rentalSubmenu">
                     <a class="submenu-item" href="item.html" data-page="item.html">
-                        <span>🚗</span>
+                        <span><i class="fa-solid fa-dolly"></i></span>
                         <span>Item</span>
                     </a>
+                    <a class="submenu-item" href="client.html" data-page="client.html">
+                        <span><i class="fa-solid fa-user-group"></i></span>
+                        <span>Client</span>
+                    </a>
                     <a class="submenu-item" href="order.html" data-page="order.html">
-                        <span>🚗</span>
+                        <span><i class="fa-solid fa-boxes-packing"></i></span>
                         <span>Order</span>
                     </a>
                     <a class="submenu-item" href="invoice.html" data-page="invoice.html,payment.html">
-                        <span>💳</span>
+                        <span><i class="fa-solid fa-file-lines"></i></span>
                         <span>Invoice</span>
                     </a>
-                    <a class="submenu-item" href="report.html" data-page="report.html">
-                        <span>📊</span>
-                        <span>Report</span>
+                    <a class="submenu-item" href="receivement.html" data-page="receivement.html">
+                        <span><i class="fa-solid fa-receipt"></i></span>
+                        <span>Receivement</span>
                     </a>
                 </div>
             </nav>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Setting</title>
+    <title>Client Setting</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="sidebar.css">
     <style>
@@ -446,10 +446,11 @@
         .row-header {
             padding: 15px;
             display: grid;
-            grid-template-columns: 0.3fr 1fr 1fr 1fr 1fr 0.8fr 1.2fr 0.8fr;
+            grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 1fr;
             gap: 12px;
             align-items: center;
             transition: background 0.3s ease;
+            cursor: pointer;
         }
 
         .row-header:hover {
@@ -466,7 +467,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             display: grid;
-            grid-template-columns: 0.3fr 1fr 1fr 1fr 1fr 0.8fr 1.2fr 0.8fr;
+            grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 1fr;
             gap: 12px;
             font-size: 13px;
         }
@@ -476,28 +477,19 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            cursor: pointer;
         }
 
-        .checkbox-cell {
-            display: flex;
-            align-items: center;
-            justify-content: left;
+        .expand-icon {
+            color: #667eea;
+            transition: transform 0.3s ease;
+            font-size: 16px;
         }
 
-        .checkbox-cell input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #667eea;
+        .expand-icon.rotated {
+            transform: rotate(90deg);
         }
 
-        .price-cell {
-            color: #16a34a;
-            font-weight: 600;
-        }
-
-        .status-badge {
+        .type-badge {
             display: inline-block;
             padding: 6px 16px;
             border-radius: 20px;
@@ -506,14 +498,70 @@
             text-align: center;
         }
 
-        .status-paid {
-            background: #dcfce7;
-            color: #16a34a;
+        .type-person {
+            background: #dbeafe;
+            color: #1e40af;
         }
 
-        .status-unpaid {
-            background: #fee2e2;
-            color: #dc2626;
+        .type-corporate {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Collapse Detail Section */
+        .collapse-detail {
+            display: none;
+            background: #f8f9ff;
+            padding: 20px 30px;
+            border-top: 2px solid #e0e7ff;
+            animation: slideDown 0.3s ease;
+        }
+
+        .collapse-detail.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+            }
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .note-section {
+            grid-column: 1 / -1;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e7ff;
         }
 
         @media (max-width: 768px) {
@@ -522,30 +570,19 @@
                 align-items: flex-start;
             }
 
-            .filter-controls {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
             .row-header,
             .column-header {
-                grid-template-columns: 0.3fr 1fr 1fr 1fr 1fr 0.8fr 1.2fr 0.8fr;
+                grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 0.8fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 480px) {
             .section-title {
                 font-size: 20px;
-            }
-
-            .filter-select {
-                min-width: 90px;
-                font-size: 11px;
-                padding: 6px 10px;
-            }
-
-            .filter-label {
-                font-size: 12px;
             }
 
             .add-btn {
@@ -606,10 +643,10 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">Invoice</div>
+            <div class="section-title">Client</div>
             <div class="header-actions">
                 <button class="add-btn" id="addBtn" title="เพิ่มรายการ"
-                    onclick="window.location.href='invoice-add.html'">+</button>
+                    onclick="window.location.href='client-add.html'">+</button>
             </div>
         </div>
 
@@ -617,7 +654,7 @@
         <div class="search-filter-container">
             <div class="search-container">
                 <input type="text" class="search-input" id="searchInput"
-                    placeholder="ค้นหา Invoice No., Order No., ชื่อ, นามสกุล, Item ID...">
+                    placeholder="ค้นหา ID, ชื่อ, นามสกุล, ประเภทลูกค้า...">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
             </div>
             <button class="filter-btn" onclick="openFilterModal()">
@@ -634,15 +671,15 @@
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-label">สถานะ</label>
-                    <div class="checkbox-container" id="statusFilterContainer">
+                    <label class="filter-label">ประเภทลูกค้า</label>
+                    <div class="checkbox-container" id="typeFilterContainer">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-paid" value="Paid">
-                            <label for="status-paid">Paid</label>
+                            <input type="checkbox" id="type-person" value="Person">
+                            <label for="type-person">Person</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-unpaid" value="Unpaid">
-                            <label for="status-unpaid">Unpaid</label>
+                            <input type="checkbox" id="type-corporate" value="Corporate">
+                            <label for="type-corporate">Corporate</label>
                         </div>
                     </div>
                 </div>
@@ -662,72 +699,147 @@
             <div class="table-wrapper" id="tableWrapper">
                 <div class="column-header">
                     <div>#</div>
-                    <div>Invoice No.</div>
-                    <div>Order No.</div>
+                    <div>ID</div>
                     <div>Name</div>
                     <div>Surname</div>
-                    <div>Item ID</div>
-                    <div>Total Amount</div>
-                    <div>Status</div>
+                    <div>Client Type</div>
+                    <div>Withholding Tax</div>
                 </div>
 
-                <!-- Mock Data -->
+                <!-- Client 1 -->
                 <div class="table-row">
-                    <div class="row-header">
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">1</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">INV-2026-001</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">ORD-2026-056</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">สมชาย</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">รักสุข</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">ITM001</div>
-                        <div class="cell price-cell" onclick="viewPayment('INV-2026-001')">฿1,350.00</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">
-                            <span class="status-badge status-paid">Paid</span>
+                    <div class="row-header" onclick="toggleCollapse(this)">
+                        <div class="cell">1</div>
+                        <div class="cell">CLI001</div>
+                        <div class="cell">สมชาย</div>
+                        <div class="cell">ใจดี</div>
+                        <div class="cell">
+                            <span class="type-badge type-person">Person</span>
+                        </div>
+                        <div class="cell">3%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Address</div>
+                                <div class="detail-value">123 ถ.สุขุมวิท แขวงคลองเตย</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Province</div>
+                                <div class="detail-value">กรุงเทพมหานคร</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Postal Code</div>
+                                <div class="detail-value">10110</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Mobile Phone</div>
+                                <div class="detail-value">081-234-5678</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Citizen ID</div>
+                                <div class="detail-value">1-1234-56789-01-2</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Career</div>
+                                <div class="detail-value">พนักงานบริษัท</div>
+                            </div>
+                            <div class="detail-item note-section">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">ลูกค้าประจำ ชำระเงินตรงเวลาเสมอ</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Client 2 -->
                 <div class="table-row">
-                    <div class="row-header">
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">2</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">INV-2026-002</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">ORD-2026-057</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">วรรณา</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">สุขใจ</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">ITM002</div>
-                        <div class="cell price-cell" onclick="viewPayment('INV-2026-002')">฿2,480.00</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-002')">
-                            <span class="status-badge status-unpaid">Unpaid</span>
+                    <div class="row-header" onclick="toggleCollapse(this)">
+                        <div class="cell">2</div>
+                        <div class="cell">CLI002</div>
+                        <div class="cell">บริษัท เทคโนโลยี</div>
+                        <div class="cell">จำกัด</div>
+                        <div class="cell">
+                            <span class="type-badge type-corporate">Corporate</span>
+                        </div>
+                        <div class="cell">1%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Address</div>
+                                <div class="detail-value">456 อาคารไอทีทาวเวอร์ ถ.พระราม 4</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Province</div>
+                                <div class="detail-value">กรุงเทพมหานคร</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Postal Code</div>
+                                <div class="detail-value">10500</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Mobile Phone</div>
+                                <div class="detail-value">02-345-6789</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Citizen ID</div>
+                                <div class="detail-value">0-1055-12345-67-8</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Career</div>
+                                <div class="detail-value">ธุรกิจเทคโนโลยีสารสนเทศ</div>
+                            </div>
+                            <div class="detail-item note-section">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">บริษัทขนาดกลาง มีการสั่งซื้อเป็นประจำทุกเดือน</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Client 3 -->
                 <div class="table-row">
-                    <div class="row-header">
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">3</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">INV-2026-003</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">ORD-2026-058</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">ประยุทธ์</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">มีสุข</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">ITM005</div>
-                        <div class="cell price-cell" onclick="viewPayment('INV-2026-003')">฿890.00</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-003')">
-                            <span class="status-badge status-paid">Paid</span>
+                    <div class="row-header" onclick="toggleCollapse(this)">
+                        <div class="cell">3</div>
+                        <div class="cell">CLI003</div>
+                        <div class="cell">สุดา</div>
+                        <div class="cell">รักสวย</div>
+                        <div class="cell">
+                            <span class="type-badge type-person">Person</span>
                         </div>
+                        <div class="cell">5%</div>
                     </div>
-                </div>
-
-                <div class="table-row">
-                    <div class="row-header">
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">4</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">INV-2026-004</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">ORD-2026-059</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">สุดา</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">ใจดี</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">ITM007</div>
-                        <div class="cell price-cell" onclick="viewPayment('INV-2026-004')">฿3,750.00</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">
-                            <span class="status-badge status-unpaid">Unpaid</span>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Address</div>
+                                <div class="detail-value">789 ม.บ้านสวย ต.สวนดอก</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Province</div>
+                                <div class="detail-value">เชียงใหม่</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Postal Code</div>
+                                <div class="detail-value">50000</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Mobile Phone</div>
+                                <div class="detail-value">089-876-5432</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Citizen ID</div>
+                                <div class="detail-value">5-5012-34567-89-0</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Career</div>
+                                <div class="detail-value">เจ้าของร้านกาแฟ</div>
+                            </div>
+                            <div class="detail-item note-section">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">ชอบสั่งสินค้าออร์แกนิค ให้ความสำคัญกับคุณภาพ</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -738,22 +850,25 @@
 
     <script src="sidebar.js"></script>
     <script>
-        // User dropdown toggle
-        document.getElementById('userProfile').addEventListener('click', function () {
-            document.getElementById('dropdownMenu').classList.toggle('active');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (event) {
-            const dropdown = document.querySelector('.dropdown');
-            if (!dropdown.contains(event.target)) {
-                document.getElementById('dropdownMenu').classList.remove('active');
-            }
-        });
-
-        // View payment function
-        function viewPayment(invoiceNo) {
-            window.location.href = `payment.html?invoice=${encodeURIComponent(invoiceNo)}`;
+        // Toggle collapse detail
+        function toggleCollapse(header) {
+            const row = header.closest('.table-row');
+            const detail = row.querySelector('.collapse-detail');
+            const icon = header.querySelector('.expand-icon');
+            
+            // Close all other open details
+            document.querySelectorAll('.collapse-detail').forEach(d => {
+                if (d !== detail && d.classList.contains('show')) {
+                    d.classList.remove('show');
+                    d.closest('.table-row').querySelector('.expand-icon').classList.remove('rotated');
+                    d.closest('.table-row').querySelector('.row-header').classList.remove('active');
+                }
+            });
+            
+            // Toggle current detail
+            detail.classList.toggle('show');
+            icon.classList.toggle('rotated');
+            header.classList.toggle('active');
         }
 
         // Filter modal functions
@@ -766,7 +881,7 @@
         }
 
         function resetFilters() {
-            document.querySelectorAll('#statusFilterContainer input[type="checkbox"]').forEach(cb => {
+            document.querySelectorAll('#typeFilterContainer input[type="checkbox"]').forEach(cb => {
                 cb.checked = false;
             });
             applyFilters();
@@ -778,24 +893,24 @@
         }
 
         function applyFilters() {
-            const selectedStatuses = [];
-            document.querySelectorAll('#statusFilterContainer input[type="checkbox"]:checked').forEach(cb => {
-                selectedStatuses.push(cb.value);
+            const selectedTypes = [];
+            document.querySelectorAll('#typeFilterContainer input[type="checkbox"]:checked').forEach(cb => {
+                selectedTypes.push(cb.value);
             });
 
             const rows = document.querySelectorAll('.table-row');
 
             rows.forEach(row => {
-                const statusBadge = row.querySelector('.status-badge');
-                const statusText = statusBadge ? statusBadge.textContent.trim() : '';
+                const typeBadge = row.querySelector('.type-badge');
+                const typeText = typeBadge ? typeBadge.textContent.trim() : '';
 
-                if (selectedStatuses.length === 0) {
+                if (selectedTypes.length === 0) {
                     row.style.display = '';
-                } else if (selectedStatuses.length === 2) {
+                } else if (selectedTypes.length === 2) {
                     row.style.display = '';
-                } else if (selectedStatuses.includes('Paid') && statusText === 'Paid') {
+                } else if (selectedTypes.includes('Person') && typeText === 'Person') {
                     row.style.display = '';
-                } else if (selectedStatuses.includes('Unpaid') && statusText === 'Unpaid') {
+                } else if (selectedTypes.includes('Corporate') && typeText === 'Corporate') {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
@@ -820,7 +935,21 @@
             });
         });
 
-        // Click outside to close modal
+        // Dropdown menu toggle
+        document.getElementById('userProfile').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (!e.target.closest('.dropdown')) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Click outside to close filter modal
         window.onclick = function (event) {
             const filterModal = document.getElementById('filterModal');
             if (event.target == filterModal) {
