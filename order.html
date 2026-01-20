@@ -493,7 +493,7 @@
             color: #16a34a;
         }
 
-        .status-unpaid {
+        .status-await {
             background: #fefee2;
             color: #dcd926;
         }
@@ -618,8 +618,8 @@
                             <label for="status-paid">Paid</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-unpaid" value="Unpaid">
-                            <label for="status-unpaid">Await</label>
+                            <input type="checkbox" id="status-await" value="Await">
+                            <label for="status-await">Await</label>
                         </div>
                     </div>
                 </div>
@@ -680,7 +680,7 @@
                         <div class="cell">สั่งซื้อชาเขียว 50 กล่อง</div>
                         <div class="cell">Sarah J.</div>
                         <div class="cell">
-                            <span class="status-badge status-unpaid">Await</span>
+                            <span class="status-badge status-await">Await</span>
                         </div>
                         <div class="cell tax-cell">1%</div>
                     </div>
@@ -716,7 +716,7 @@
                         <div class="cell">น้ำผึ้งออร์แกนิค</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
-                            <span class="status-badge status-unpaid">Await</span>
+                            <span class="status-badge status-await">Await</span>
                         </div>
                         <div class="cell tax-cell">3%</div>
                     </div>
@@ -752,7 +752,7 @@
                         <div class="cell">น้ำมันมะกอกพรีเมียม</div>
                         <div class="cell">David M.</div>
                         <div class="cell">
-                            <span class="status-badge status-unpaid">Await</span>
+                            <span class="status-badge status-await">Await</span>
                         </div>
                         <div class="cell tax-cell">5%</div>
                     </div>
@@ -808,7 +808,7 @@
                     row.style.display = '';
                 } else if (selectedStatuses.includes('Paid') && statusText === 'Paid') {
                     row.style.display = '';
-                } else if (selectedStatuses.includes('Unpaid') && statusText === 'Unpaid') {
+                } else if (selectedStatuses.includes('Await') && statusText === 'Await') {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
