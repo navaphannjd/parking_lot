@@ -446,7 +446,7 @@
         .row-header {
             padding: 15px;
             display: grid;
-            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1.5fr 0.8fr 0.8fr 0.8fr;
+            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr;
             gap: 12px;
             align-items: center;
             transition: background 0.3s ease;
@@ -467,7 +467,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             display: grid;
-            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1.5fr 0.8fr 0.8fr 0.8fr;
+            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr;
             gap: 12px;
             font-size: 13px;
         }
@@ -488,14 +488,19 @@
             text-align: center;
         }
 
-        .status-paid {
+        .status-draft {
+            background: #e2e2e2;
+            color: #636363;
+        }
+
+        .status-active {
             background: #dcfce7;
             color: #16a34a;
         }
 
-        .status-await {
-            background: #fefee2;
-            color: #dcd926;
+        .status-archive {
+            background: #fcfbdc;
+            color: #a1a316;
         }
 
         .date-cell {
@@ -508,6 +513,108 @@
             font-weight: 600;
         }
 
+        /* Collapse Detail Section */
+        .collapse-detail {
+            display: none;
+            background: #f8f9ff;
+            padding: 20px 30px;
+            border-top: 2px solid #e0e7ff;
+            animation: slideDown 0.3s ease;
+        }
+
+        .collapse-detail.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+
+            to {
+                opacity: 1;
+                max-height: 500px;
+            }
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .note-section {
+            grid-column: 1 / -1;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e7ff;
+        }
+
+        .amount-cell {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .vat-cell {
+            color: #ea580c;
+            font-weight: 600;
+        }
+
+        .detail-actions {
+            grid-column: 1 / -1;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e7ff;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .edit-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .edit-btn:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .content-header {
                 flex-direction: row;
@@ -516,7 +623,11 @@
 
             .row-header,
             .column-header {
-                grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1.2fr 0.8fr 0.8fr 0.8fr;
+                grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -540,6 +651,10 @@
             .cell {
                 font-size: 11px;
             }
+
+            .detail-actions {
+            justify-content: flex-start;
+        }
         }
     </style>
 </head>
@@ -614,12 +729,16 @@
                     <label class="filter-label">สถานะการชำระเงิน</label>
                     <div class="checkbox-container" id="statusFilterContainer">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-paid" value="Paid">
-                            <label for="status-paid">Paid</label>
+                            <input type="checkbox" id="status-draft" value="Draft">
+                            <label for="status-draft">Draft</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-await" value="Await">
-                            <label for="status-await">Await</label>
+                            <input type="checkbox" id="status-active" value="Active">
+                            <label for="status-active">Active</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="status-archive" value="Archive">
+                            <label for="status-archive">Archive</label>
                         </div>
                     </div>
                 </div>
@@ -644,117 +763,225 @@
                     <div>Item ID</div>
                     <div>Start Date</div>
                     <div>Valid Date</div>
-                    <div>Note</div>
+                    <div>Total Amount</div>
+                    <div>VAT</div>
                     <div>By User</div>
                     <div>Status</div>
-                    <div>W/H Tax</div>
                 </div>
 
                 <!-- Order 1 -->
                 <div class="table-row">
-                    <div class="row-header" onclick="editOrder('ORD001')">
+                    <div class="row-header" onclick="toggleCollapse(this)">
                         <div class="cell">1</div>
                         <div class="cell">ORD001</div>
                         <div class="cell">CLI001</div>
                         <div class="cell">ITM001</div>
                         <div class="cell date-cell">15/01/2026</div>
                         <div class="cell date-cell">15/02/2026</div>
-                        <div class="cell">คำสั่งซื้อประจำเดือน</div>
+                        <div class="cell amount-cell">฿50,000</div>
+                        <div class="cell vat-cell">3,500</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
-                            <span class="status-badge status-paid">Paid</span>
+                            <span class="status-badge status-draft">Draft</span>
                         </div>
-                        <div class="cell tax-cell">3%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Withholding Tax</div>
+                                <div class="detail-value">3%</div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    แก้ไขข้อมูล
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Order 2 -->
                 <div class="table-row">
-                    <div class="row-header" onclick="editOrder('ORD002')">
+                    <div class="row-header" onclick="toggleCollapse(this)">
                         <div class="cell">2</div>
                         <div class="cell">ORD002</div>
                         <div class="cell">CLI002</div>
                         <div class="cell">ITM002</div>
-                        <div class="cell date-cell">16/01/2026</div>
-                        <div class="cell date-cell">16/03/2026</div>
-                        <div class="cell">สั่งซื้อชาเขียว 50 กล่อง</div>
-                        <div class="cell">Sarah J.</div>
+                        <div class="cell date-cell">10/01/2026</div>
+                        <div class="cell date-cell">10/02/2026</div>
+                        <div class="cell amount-cell">฿12,000</div>
+                        <div class="cell vat-cell">840</div>
+                        <div class="cell">Admin</div>
                         <div class="cell">
-                            <span class="status-badge status-await">Await</span>
+                            <span class="status-badge status-active">Active</span>
                         </div>
-                        <div class="cell tax-cell">1%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Withholding Tax</div>
+                                <div class="detail-value">5%</div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    แก้ไขข้อมูล
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Order 3 -->
                 <div class="table-row">
-                    <div class="row-header" onclick="editOrder('ORD003')">
+                    <div class="row-header" onclick="toggleCollapse(this)">
                         <div class="cell">3</div>
                         <div class="cell">ORD003</div>
                         <div class="cell">CLI003</div>
                         <div class="cell">ITM003</div>
                         <div class="cell date-cell">17/01/2026</div>
                         <div class="cell date-cell">17/02/2026</div>
-                        <div class="cell">ของขวัญวันเกิด</div>
-                        <div class="cell">Michael C.</div>
+                        <div class="cell amount-cell">฿17,000</div>
+                        <div class="cell vat-cell">1,190</div>
+                        <div class="cell">Emma W.</div>
                         <div class="cell">
-                            <span class="status-badge status-paid">Paid</span>
+                            <span class="status-badge status-archive">Archive</span>
                         </div>
-                        <div class="cell tax-cell">5%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Withholding Tax</div>
+                                <div class="detail-value">7%</div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    แก้ไขข้อมูล
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Order 4 -->
                 <div class="table-row">
-                    <div class="row-header" onclick="editOrder('ORD004')">
+                    <div class="row-header" onclick="toggleCollapse(this)">
                         <div class="cell">4</div>
                         <div class="cell">ORD004</div>
-                        <div class="cell">CLI001</div>
+                        <div class="cell">CLI004</div>
                         <div class="cell">ITM004</div>
-                        <div class="cell date-cell">18/01/2026</div>
-                        <div class="cell date-cell">18/04/2026</div>
-                        <div class="cell">น้ำผึ้งออร์แกนิค</div>
+                        <div class="cell date-cell">20/01/2026</div>
+                        <div class="cell date-cell">20/02/2026</div>
+                        <div class="cell amount-cell">฿32,000</div>
+                        <div class="cell vat-cell">2,240</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
-                            <span class="status-badge status-await">Await</span>
+                            <span class="status-badge status-draft">Draft</span>
                         </div>
-                        <div class="cell tax-cell">3%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Withholding Tax</div>
+                                <div class="detail-value">2%</div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    แก้ไขข้อมูล
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Order 5 -->
                 <div class="table-row">
-                    <div class="row-header" onclick="editOrder('ORD005')">
+                    <div class="row-header" onclick="toggleCollapse(this)">
                         <div class="cell">5</div>
                         <div class="cell">ORD005</div>
-                        <div class="cell">CLI002</div>
+                        <div class="cell">CLI005</div>
                         <div class="cell">ITM005</div>
-                        <div class="cell date-cell">19/01/2026</div>
-                        <div class="cell date-cell">19/02/2026</div>
-                        <div class="cell">แก้วเซรามิค 20 ชิ้น</div>
-                        <div class="cell">Emma W.</div>
+                        <div class="cell date-cell">09/01/2026</div>
+                        <div class="cell date-cell">09/02/2026</div>
+                        <div class="cell amount-cell">฿47,000</div>
+                        <div class="cell vat-cell">3,290</div>
+                        <div class="cell">Lux C.</div>
                         <div class="cell">
-                            <span class="status-badge status-paid">Paid</span>
+                            <span class="status-badge status-active">Active</span>
                         </div>
-                        <div class="cell tax-cell">1%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Withholding Tax</div>
+                                <div class="detail-value">12%</div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    แก้ไขข้อมูล
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Order 6 -->
                 <div class="table-row">
-                    <div class="row-header" onclick="editOrder('ORD006')">
+                    <div class="row-header" onclick="toggleCollapse(this)">
                         <div class="cell">6</div>
                         <div class="cell">ORD006</div>
-                        <div class="cell">CLI003</div>
+                        <div class="cell">CLI006</div>
                         <div class="cell">ITM006</div>
-                        <div class="cell date-cell">20/01/2026</div>
-                        <div class="cell date-cell">20/03/2026</div>
-                        <div class="cell">น้ำมันมะกอกพรีเมียม</div>
-                        <div class="cell">David M.</div>
+                        <div class="cell date-cell">10/01/2026</div>
+                        <div class="cell date-cell">10/02/2026</div>
+                        <div class="cell amount-cell">฿55,000</div>
+                        <div class="cell vat-cell">3,850</div>
+                        <div class="cell">Admin</div>
                         <div class="cell">
-                            <span class="status-badge status-await">Await</span>
+                            <span class="status-badge status-active">Active</span>
                         </div>
-                        <div class="cell tax-cell">5%</div>
+                    </div>
+                    <div class="collapse-detail">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Note</div>
+                                <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Withholding Tax</div>
+                                <div class="detail-value">5%</div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    แก้ไขข้อมูล
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -767,6 +994,24 @@
         // Edit order function
         function editOrder(orderId) {
             window.location.href = `order-edit.html?id=${encodeURIComponent(orderId)}`;
+        }
+
+        // Toggle collapse detail
+        function toggleCollapse(header) {
+            const row = header.closest('.table-row');
+            const detail = row.querySelector('.collapse-detail');
+
+            // Close all other open details
+            document.querySelectorAll('.collapse-detail').forEach(d => {
+                if (d !== detail && d.classList.contains('show')) {
+                    d.classList.remove('show');
+                    d.closest('.table-row').querySelector('.row-header').classList.remove('active');
+                }
+            });
+
+            // Toggle current detail
+            detail.classList.toggle('show');
+            header.classList.toggle('active');
         }
 
         // Filter modal functions
@@ -804,11 +1049,13 @@
 
                 if (selectedStatuses.length === 0) {
                     row.style.display = '';
-                } else if (selectedStatuses.length === 2) {
+                } else if (selectedStatuses.length === 3) {
                     row.style.display = '';
-                } else if (selectedStatuses.includes('Paid') && statusText === 'Paid') {
+                } else if (selectedStatuses.includes('Draft') && statusText === 'Draft') {
                     row.style.display = '';
-                } else if (selectedStatuses.includes('Await') && statusText === 'Await') {
+                } else if (selectedStatuses.includes('Active') && statusText === 'Active') {
+                    row.style.display = '';
+                } else if (selectedStatuses.includes('Archive') && statusText === 'Archive') {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
@@ -834,13 +1081,13 @@
         });
 
         // Dropdown menu toggle
-        document.getElementById('userProfile').addEventListener('click', function(e) {
+        document.getElementById('userProfile').addEventListener('click', function (e) {
             e.stopPropagation();
             document.getElementById('dropdownMenu').classList.toggle('active');
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const dropdown = document.getElementById('dropdownMenu');
             if (!e.target.closest('.dropdown')) {
                 dropdown.classList.remove('active');

@@ -507,9 +507,19 @@
             text-align: center;
         }
 
+        .status-draft {
+            background: #e2e2e2;
+            color: #636363;
+        }
+        
         .status-active {
             background: #dcfce7;
             color: #16a34a;
+        }
+
+        .status-archive {
+            background: #fcfbdc;
+            color: #a1a316;
         }
 
         .status-inactive {
@@ -638,12 +648,16 @@
                     <label class="filter-label">สถานะ</label>
                     <div class="checkbox-container" id="statusFilterContainer">
                         <div class="checkbox-item">
+                            <input type="checkbox" id="status-draft" value="Draft">
+                            <label for="status-draft">Draft</label>
+                        </div>
+                        <div class="checkbox-item">
                             <input type="checkbox" id="status-active" value="Active">
                             <label for="status-active">Active</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-inactive" value="Inactive">
-                            <label for="status-inactive">Inactive</label>
+                            <input type="checkbox" id="status-archive" value="Archive">
+                            <label for="status-archive">Archive</label>
                         </div>
                     </div>
                 </div>
@@ -664,7 +678,7 @@
                 <div class="column-header">
                     <div>#</div>
                     <div>ID</div>
-                    <div>Name</div>
+                    <div>Parking Lot</div>
                     <div>Price</div>
                     <div>Issuer</div>
                     <div>Receive Account</div>
@@ -676,7 +690,7 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM001')">1</div>
                         <div class="cell" onclick="editItem('ITM001')">ITM001</div>
-                        <div class="cell" onclick="editItem('ITM001')">Premium Coffee Beans</div>
+                        <div class="cell" onclick="editItem('ITM001')">Slot 1</div>
                         <div class="cell price-cell" onclick="editItem('ITM001')">฿450.00</div>
                         <div class="cell" onclick="editItem('ITM001')">Admin</div>
                         <div class="cell" onclick="editItem('ITM001')">ACC-001-2024</div>
@@ -690,12 +704,12 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM002')">2</div>
                         <div class="cell" onclick="editItem('ITM002')">ITM002</div>
-                        <div class="cell" onclick="editItem('ITM002')">Organic Green Tea</div>
+                        <div class="cell" onclick="editItem('ITM002')">Slot 2</div>
                         <div class="cell price-cell" onclick="editItem('ITM002')">฿280.00</div>
                         <div class="cell" onclick="editItem('ITM002')">Sarah Johnson</div>
                         <div class="cell" onclick="editItem('ITM002')">ACC-002-2024</div>
                         <div class="cell" onclick="editItem('ITM001')">
-                            <span class="status-badge status-active">Active</span>
+                            <span class="status-badge status-draft">Draft</span>
                         </div>
                     </div>
                 </div>
@@ -704,12 +718,12 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM003')">3</div>
                         <div class="cell" onclick="editItem('ITM003')">ITM003</div>
-                        <div class="cell" onclick="editItem('ITM003')">Artisan Chocolate Box</div>
+                        <div class="cell" onclick="editItem('ITM003')">Slot 3</div>
                         <div class="cell price-cell" onclick="editItem('ITM003')">฿650.00</div>
                         <div class="cell" onclick="editItem('ITM003')">Michael Chen</div>
                         <div class="cell" onclick="editItem('ITM003')">ACC-003-2024</div>
                         <div class="cell" onclick="editItem('ITM003')">
-                            <span class="status-badge status-inactive">Inactive</span>
+                            <span class="status-badge status-draft">Draft</span>
                         </div>
                     </div>
                 </div>
@@ -718,7 +732,7 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM004')">4</div>
                         <div class="cell" onclick="editItem('ITM004')">ITM004</div>
-                        <div class="cell" onclick="editItem('ITM004')">Natural Honey Jar</div>
+                        <div class="cell" onclick="editItem('ITM004')">Slot 4</div>
                         <div class="cell price-cell" onclick="editItem('ITM004')">฿320.00</div>
                         <div class="cell" onclick="editItem('ITM004')">Admin</div>
                         <div class="cell" onclick="editItem('ITM004')">ACC-004-2024</div>
@@ -732,12 +746,12 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM005')">5</div>
                         <div class="cell" onclick="editItem('ITM005')">ITM005</div>
-                        <div class="cell" onclick="editItem('ITM005')">Handmade Ceramic Mug</div>
+                        <div class="cell" onclick="editItem('ITM005')">Slot 5</div>
                         <div class="cell price-cell" onclick="editItem('ITM005')">฿890.00</div>
                         <div class="cell" onclick="editItem('ITM005')">Emma Wilson</div>
                         <div class="cell" onclick="editItem('ITM005')">ACC-005-2024</div>
                         <div class="cell" onclick="editItem('ITM003')">
-                            <span class="status-badge status-inactive">Inactive</span>
+                            <span class="status-badge status-archive">Archive</span>
                         </div>
                     </div>
                 </div>
@@ -746,12 +760,12 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM006')">6</div>
                         <div class="cell" onclick="editItem('ITM006')">ITM006</div>
-                        <div class="cell" onclick="editItem('ITM006')">Organic Olive Oil</div>
+                        <div class="cell" onclick="editItem('ITM006')">Slot 6</div>
                         <div class="cell price-cell" onclick="editItem('ITM006')">฿580.00</div>
                         <div class="cell" onclick="editItem('ITM006')">David Martinez</div>
                         <div class="cell" onclick="editItem('ITM006')">ACC-006-2024</div>
                         <div class="cell" onclick="editItem('ITM003')">
-                            <span class="status-badge status-inactive">Inactive</span>
+                            <span class="status-badge status-archive">Archive</span>
                         </div>
                     </div>
                 </div>
@@ -760,7 +774,7 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM007')">7</div>
                         <div class="cell" onclick="editItem('ITM007')">ITM007</div>
-                        <div class="cell" onclick="editItem('ITM007')">Wellness Essential Oil Set</div>
+                        <div class="cell" onclick="editItem('ITM007')">Slot 7</div>
                         <div class="cell price-cell" onclick="editItem('ITM007')">฿1,250.00</div>
                         <div class="cell" onclick="editItem('ITM007')">Lisa Anderson</div>
                         <div class="cell" onclick="editItem('ITM007')">ACC-007-2024</div>
@@ -774,7 +788,7 @@
                     <div class="row-header">
                         <div class="cell" onclick="editItem('ITM008')">8</div>
                         <div class="cell" onclick="editItem('ITM008')">ITM008</div>
-                        <div class="cell" onclick="editItem('ITM008')">Bamboo Kitchen Utensil Set</div>
+                        <div class="cell" onclick="editItem('ITM008')">Slot 8</div>
                         <div class="cell price-cell" onclick="editItem('ITM008')">฿720.00</div>
                         <div class="cell" onclick="editItem('ITM008')">James Brown</div>
                         <div class="cell" onclick="editItem('ITM008')">ACC-008-2024</div>
@@ -832,11 +846,13 @@
 
                 if (selectedStatuses.length === 0) {
                     row.style.display = '';
-                } else if (selectedStatuses.length === 2) {
+                } else if (selectedStatuses.length === 3) {
+                    row.style.display = '';
+                } else if (selectedStatuses.includes('Draft') && statusText === 'Draft') {
                     row.style.display = '';
                 } else if (selectedStatuses.includes('Active') && statusText === 'Active') {
                     row.style.display = '';
-                } else if (selectedStatuses.includes('Inactive') && statusText === 'Inactive') {
+                } else if (selectedStatuses.includes('Archive') && statusText === 'Archive') {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';

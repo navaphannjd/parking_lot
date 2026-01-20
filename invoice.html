@@ -506,6 +506,16 @@
             text-align: center;
         }
 
+        .status-draft {
+            background: #e2e2e2;
+            color: #636363;
+        }
+
+        .status-active {
+            background: #fcfbdc;
+            color: #a1a316;
+        }
+
         .status-paid {
             background: #dcfce7;
             color: #16a34a;
@@ -637,12 +647,16 @@
                     <label class="filter-label">สถานะ</label>
                     <div class="checkbox-container" id="statusFilterContainer">
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-paid" value="Paid">
-                            <label for="status-paid">Paid</label>
+                            <input type="checkbox" id="status-draft" value="Draft">
+                            <label for="status-draft">Draft</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" id="status-unpaid" value="Unpaid">
-                            <label for="status-unpaid">Unpaid</label>
+                            <input type="checkbox" id="status-active" value="Active">
+                            <label for="status-active">Active</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="status-paid" value="Paid">
+                            <label for="status-paid">Paid</label>
                         </div>
                     </div>
                 </div>
@@ -674,15 +688,15 @@
                 <!-- Mock Data -->
                 <div class="table-row">
                     <div class="row-header">
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">1</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">INV-2026-001</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">ORD-2026-056</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">สมชาย</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">รักสุข</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">ITM001</div>
-                        <div class="cell price-cell" onclick="viewPayment('INV-2026-001')">฿1,350.00</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-001')">
-                            <span class="status-badge status-paid">Paid</span>
+                        <div class="cell" onclick="editInvoice()">1</div>
+                        <div class="cell" onclick="editInvoice()">Draft-2026-001</div>
+                        <div class="cell" onclick="editInvoice()">ORD-2026-056</div>
+                        <div class="cell" onclick="editInvoice()">สมชาย</div>
+                        <div class="cell" onclick="editInvoice()">รักสุข</div>
+                        <div class="cell" onclick="editInvoice()">ITM001</div>
+                        <div class="cell price-cell" onclick="editInvoice()">฿1,350.00</div>
+                        <div class="cell" onclick="editInvoice()">
+                            <span class="status-badge status-draft">Draft</span>
                         </div>
                     </div>
                 </div>
@@ -697,7 +711,7 @@
                         <div class="cell" onclick="viewPayment('INV-2026-002')">ITM002</div>
                         <div class="cell price-cell" onclick="viewPayment('INV-2026-002')">฿2,480.00</div>
                         <div class="cell" onclick="viewPayment('INV-2026-002')">
-                            <span class="status-badge status-unpaid">Unpaid</span>
+                            <span class="status-badge status-active">Active</span>
                         </div>
                     </div>
                 </div>
@@ -727,7 +741,7 @@
                         <div class="cell" onclick="viewPayment('INV-2026-004')">ITM007</div>
                         <div class="cell price-cell" onclick="viewPayment('INV-2026-004')">฿3,750.00</div>
                         <div class="cell" onclick="viewPayment('INV-2026-004')">
-                            <span class="status-badge status-unpaid">Unpaid</span>
+                            <span class="status-badge status-active">Active</span>
                         </div>
                     </div>
                 </div>
@@ -754,6 +768,10 @@
         // View payment function
         function viewPayment(invoiceNo) {
             window.location.href = `payment.html?invoice=${encodeURIComponent(invoiceNo)}`;
+        }
+
+        function editInvoice() {
+            window.location.href = `invoice-edit.html`;
         }
 
         // Filter modal functions
@@ -791,7 +809,11 @@
 
                 if (selectedStatuses.length === 0) {
                     row.style.display = '';
-                } else if (selectedStatuses.length === 2) {
+                } else if (selectedStatuses.length === 4) {
+                    row.style.display = '';
+                } else if (selectedStatuses.includes('Draft') && statusText === 'Draft') {
+                    row.style.display = '';
+                } else if (selectedStatuses.includes('Active') && statusText === 'Active') {
                     row.style.display = '';
                 } else if (selectedStatuses.includes('Paid') && statusText === 'Paid') {
                     row.style.display = '';

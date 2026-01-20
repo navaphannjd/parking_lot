@@ -26,12 +26,47 @@ function createSidebar() {
                         <span>Order</span>
                     </a>
                     <a class="submenu-item" href="invoice.html" data-page="invoice.html,payment.html">
-                        <span><i class="fa-solid fa-file-lines"></i></span>
+                        <span><i class="fa-solid fa-file-invoice"></i></span>
                         <span>Invoice</span>
                     </a>
                     <a class="submenu-item" href="receivement.html" data-page="receivement.html">
                         <span><i class="fa-solid fa-receipt"></i></span>
                         <span>Receivement</span>
+                    </a>
+                </div>
+                <div class="menu-item has-submenu" id="OPDMenu">
+                    <span class="icon"><i class="fa-solid fa-hospital"></i></span>
+                    <span>OPD</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="submenu" id="OPDSubmenu">
+                    <a class="submenu-item" href="patient.html" data-page="patient.html">
+                        <span><i class="fa-solid fa-bed"></i></span>
+                        <span>Patient</span>
+                    </a>
+                    <a class="submenu-item" href="service-record.html" data-page="service-record.html">
+                        <span><i class="fa-solid fa-clipboard"></i></span>
+                        <span>Service Record</span>
+                    </a>
+                    <a class="submenu-item" href="payment.html" data-page="payment.html">
+                        <span><i class="fa-solid fa-file-lines"></i></span>
+                        <span>Payment</span>
+                    </a>
+                    <a class="submenu-item" href="appointment-schedule.html" data-page="appointment-schedule.html">
+                        <span><i class="fa-solid fa-calendar-week"></i></span>
+                        <span>Appointment Schedule</span>
+                    </a>
+                    <a class="submenu-item" href="dns-item.html" data-page="dns-item.html">
+                        <span><i class="fa-solid fa-capsules"></i></span>
+                        <span>DNS (Drug&Service) Item</span>
+                    </a>
+                    <a class="submenu-item" href="supplier.html" data-page="supplier.html">
+                        <span><i class="fa-solid fa-truck-field"></i></span>
+                        <span>Supplier</span>
+                    </a>
+                    <a class="submenu-item" href="purchase.html" data-page="purchase.html">
+                        <span><i class="fa-solid fa-shop"></i></span>
+                        <span>Purchase</span>
                     </a>
                 </div>
             </nav>
@@ -78,6 +113,13 @@ function initializeSidebar() {
         rentalMenu.addEventListener('click', () => {
             rentalMenu.classList.toggle('active');
             rentalSubmenu.classList.toggle('active');
+        });
+    }
+
+    if (OPDMenu) {
+        OPDMenu.addEventListener('click', () => {
+            OPDMenu.classList.toggle('active');
+            OPDSubmenu.classList.toggle('active');
         });
     }
 
