@@ -8,6 +8,13 @@
     background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
     transition: left 0.3s ease;
     z-index: 1000;
+    overflow-y: auto; /* เพิ่มบรรทัดนี้ - ให้ sidebar เลื่อนได้ */
+    overflow-x: hidden; /* เพิ่มบรรทัดนี้ - ซ่อน scroll แนวนอน */
+}
+
+/* เพิ่มส่วนนี้ทั้งหมด - ป้องกันการเลื่อนหน้าหลักเมื่อเปิด sidebar */
+body.sidebar-open {
+    overflow: hidden;
 }
 
 .sidebar.active {

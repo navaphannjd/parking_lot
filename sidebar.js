@@ -89,6 +89,8 @@ function initializeSidebar() {
     const overlay = document.getElementById('overlay');
     const rentalMenu = document.getElementById('rentalMenu');
     const rentalSubmenu = document.getElementById('rentalSubmenu');
+    const OPDMenu = document.getElementById('OPDMenu'); // เพิ่มบรรทัดนี้
+    const OPDSubmenu = document.getElementById('OPDSubmenu'); // เพิ่มบรรทัดนี้
 
     // Hamburger toggle
     if (hamburger) {
@@ -96,6 +98,7 @@ function initializeSidebar() {
             hamburger.classList.toggle('active');
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open'); // เพิ่มบรรทัดนี้ - ล็อคการเลื่อนหน้าหลัก
         });
     }
 
@@ -105,6 +108,7 @@ function initializeSidebar() {
             hamburger.classList.remove('active');
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
+            document.body.classList.remove('sidebar-open'); // เพิ่มบรรทัดนี้ - ปลดล็อคการเลื่อนหน้าหลัก
         });
     }
 
