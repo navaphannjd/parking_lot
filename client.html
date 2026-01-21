@@ -446,7 +446,7 @@
         .row-header {
             padding: 15px;
             display: grid;
-            grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 1fr;
+            grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 1fr 0.8fr;
             gap: 12px;
             align-items: center;
             transition: background 0.3s ease;
@@ -467,7 +467,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             display: grid;
-            grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 1fr;
+            grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 1fr 0.8fr;
             gap: 12px;
             font-size: 13px;
         }
@@ -564,6 +564,66 @@
             border-top: 1px solid #e0e7ff;
         }
 
+        /* เพิ่ม CSS ใหม่สำหรับ status badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-draft {
+            background: #e2e2e2;
+            color: #636363;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .detail-actions {
+            grid-column: 1 / -1;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e7ff;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .edit-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .edit-btn:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .content-header {
                 flex-direction: row;
@@ -572,7 +632,7 @@
 
             .row-header,
             .column-header {
-                grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 0.8fr;
+                grid-template-columns: 0.3fr 0.8fr 1.2fr 1.1fr 1.2fr 0.8fr 0.8fr;
             }
 
             .detail-grid {
@@ -704,6 +764,7 @@
                     <div>Surname</div>
                     <div>Client Type</div>
                     <div>Withholding Tax</div>
+                    <div>Status</div>
                 </div>
 
                 <!-- Client 1 -->
@@ -717,9 +778,20 @@
                             <span class="type-badge type-person">Person</span>
                         </div>
                         <div class="cell">3%</div>
+                        <div class="cell">
+                            <span class="status-badge status-draft">Draft</span>
+                        </div>
                     </div>
                     <div class="collapse-detail">
                         <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Login</div>
+                                <div class="detail-value">Somchai@gmail.com</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Password</div>
+                                <div class="detail-value">123456</div>
+                            </div>
                             <div class="detail-item">
                                 <div class="detail-label">Address</div>
                                 <div class="detail-value">123 ถ.สุขุมวิท แขวงคลองเตย</div>
@@ -748,6 +820,12 @@
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">ลูกค้าประจำ ชำระเงินตรงเวลาเสมอ</div>
                             </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editClient()">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    More...
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -763,9 +841,20 @@
                             <span class="type-badge type-corporate">Corporate</span>
                         </div>
                         <div class="cell">1%</div>
+                        <div class="cell">
+                            <span class="status-badge status-active">Active</span>
+                        </div>
                     </div>
                     <div class="collapse-detail">
                         <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Login</div>
+                                <div class="detail-value">Somchai@gmail.com</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Password</div>
+                                <div class="detail-value">123456</div>
+                            </div>
                             <div class="detail-item">
                                 <div class="detail-label">Address</div>
                                 <div class="detail-value">456 อาคารไอทีทาวเวอร์ ถ.พระราม 4</div>
@@ -794,6 +883,12 @@
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">บริษัทขนาดกลาง มีการสั่งซื้อเป็นประจำทุกเดือน</div>
                             </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editClient()">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    More...
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -809,9 +904,20 @@
                             <span class="type-badge type-person">Person</span>
                         </div>
                         <div class="cell">5%</div>
+                        <div class="cell">
+                            <span class="status-badge status-inactive">Inactive</span>
+                        </div>
                     </div>
                     <div class="collapse-detail">
                         <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Login</div>
+                                <div class="detail-value">Somchai@gmail.com</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Password</div>
+                                <div class="detail-value">123456</div>
+                            </div>
                             <div class="detail-item">
                                 <div class="detail-label">Address</div>
                                 <div class="detail-value">789 ม.บ้านสวย ต.สวนดอก</div>
@@ -840,6 +946,12 @@
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">ชอบสั่งสินค้าออร์แกนิค ให้ความสำคัญกับคุณภาพ</div>
                             </div>
+                            <div class="detail-actions">
+                                <button class="edit-btn" onclick="event.stopPropagation(); editClient()">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    More...
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -850,6 +962,10 @@
 
     <script src="sidebar.js"></script>
     <script>
+        function editClient() {
+            window.location.href = `client-edit.html`;
+        }
+
         // Toggle collapse detail
         function toggleCollapse(header) {
             const row = header.closest('.table-row');

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Item</title>
+    <title>Edit Client</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="sidebar.css">
     <style>
@@ -124,7 +124,6 @@
             color: #666;
         }
 
-        /* เพิ่มส่วนนี้แทน topbar และ form styles เดิม */
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -172,7 +171,6 @@
             background: white;
         }
 
-        /* แก้ไขปุ่ม Archive */
         .archive-btn {
             padding: 12px 30px;
             border: none;
@@ -322,54 +320,6 @@
             border-top: 1px solid #e9ecef;
         }
 
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-cancel {
-            background: #f3f4f6;
-            color: #333;
-        }
-
-        .btn-cancel:hover {
-            background: #e5e7eb;
-        }
-
-        .btn-save {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-save:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .status-options {
-            display: flex;
-            gap: 15px;
-        }
-
-        #fixedPriceCheckbox:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        .form-label:has(#fixedPriceCheckbox:disabled) {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -377,11 +327,6 @@
 
             .form-actions {
                 flex-direction: column-reverse;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
             }
         }
 
@@ -432,59 +377,101 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">Item Details</div>
+            <div class="section-title">Client Details</div>
             <div class="action-buttons">
                 <button class="action-btn" id="editBtn" onclick="toggleEdit()" title="Edit">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-                <button class="action-btn" onclick="window.location.href='item.html'" title="Back">
+                <button class="action-btn" onclick="window.location.href='client.html'" title="Back">
                     <i class="fa-solid fa-reply"></i>
                 </button>
             </div>
         </div>
 
         <div class="form-container">
-            <!-- เพิ่ม Status Dropdown -->
+            <!-- Status Dropdown -->
             <div class="form-group">
-                <label class="form-label">Item Status</label>
-                <select class="form-select" id="itemStatus" onchange="updateItemStatus()">
+                <label class="form-label">Client Status</label>
+                <select class="form-select" id="clientStatus" onchange="updateClientStatus()">
                     <option value="Draft">Draft</option>
                     <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
                 </select>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">Item ID<span class="required">*</span></label>
-                    <input type="text" class="form-input" id="itemId" placeholder="ITM001" disabled>
+                    <label class="form-label">Client ID<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="clientId" placeholder="CLI001" value="CLI001" disabled>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Item Name<span class="required">*</span></label>
-                    <input type="text" class="form-input" id="parkingLot" placeholder="ชื่อผู้สร้าง" value="Slot 1"
-                        disabled>
+                    <label class="form-label">Client Type<span class="required">*</span></label>
+                    <select class="form-select" id="clientType" disabled>
+                        <option value="Person" selected>Person</option>
+                        <option value="Corporate">Corporate</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">
-                        <input type="checkbox" id="fixedPriceCheckbox" disabled
-                            style="width: 18px; height: 18px; cursor: pointer; accent-color: #667eea; vertical-align: middle; margin-right: 8px;">
-                        Fixed Price
-                    </label>
+                    <label class="form-label">Name<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="name" placeholder="ชื่อ" value="สมชาย" disabled>
                 </div>
 
-                <div class="form-group" id="priceGroup" style="display: none;">
-                    <label class="form-label">
-                        Price (Baht)<span class="required">*</span>
-                    </label>
-                    <input type="number" class="form-input" id="price" placeholder="0.00" step="0.01" min="0">
+                <div class="form-group">
+                    <label class="form-label">Surname<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="surname" placeholder="นามสกุล" value="ใจดี" disabled>
                 </div>
-            </div>
 
-            <div class="form-actions">
-                <button class="archive-btn" onclick="archiveItem()">
-                    <i class="fa-solid fa-box-archive"></i> Archive
-                </button>
+                <div class="form-group">
+                    <label class="form-label">Login (Email)<span class="required">*</span></label>
+                    <input type="email" class="form-input" id="login" placeholder="example@email.com" value="Somchai@gmail.com" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password<span class="required">*</span></label>
+                    <input type="password" class="form-input" id="password" placeholder="********" value="123456" disabled>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Address<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="address" placeholder="ที่อยู่" value="123 ถ.สุขุมวิท แขวงคลองเตย" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Province<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="province" placeholder="จังหวัด" value="กรุงเทพมหานคร" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Postal Code<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="postalCode" placeholder="10110" value="10110" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mobile Phone<span class="required">*</span></label>
+                    <input type="tel" class="form-input" id="mobilePhone" placeholder="081-234-5678" value="081-234-5678" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Citizen ID / Tax ID<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="citizenId" placeholder="1-1234-56789-01-2" value="1-1234-56789-01-2" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Career</label>
+                    <input type="text" class="form-input" id="career" placeholder="อาชีพ" value="พนักงานบริษัท" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Withholding Tax (%)<span class="required">*</span></label>
+                    <input type="number" class="form-input" id="withholdingTax" placeholder="3" value="3" step="0.01" min="0" max="100" disabled>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Note</label>
+                    <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม" disabled>ลูกค้าประจำ ชำระเงินตรงเวลาเสมอ</textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -493,34 +480,25 @@
     <script>
         let isEditMode = false;
 
+        // Toggle Edit Mode
         function toggleEdit() {
             isEditMode = !isEditMode;
             const editBtn = document.getElementById('editBtn');
-            const inputs = ['parkingLot', 'price',];
-            const fixedPriceCheckbox = document.getElementById('fixedPriceCheckbox');
+            const inputs = ['clientType', 'name', 'surname', 'login', 'password', 'address', 'province', 'postalCode', 'mobilePhone', 'citizenId', 'career', 'withholdingTax', 'note'];
 
             if (isEditMode) {
                 // เข้าสู่โหมดแก้ไข
                 editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
                 editBtn.title = 'Save';
 
-                // Enable checkbox
-                fixedPriceCheckbox.disabled = false;
-
                 inputs.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (id !== 'issuer' && id !== 'receiveAccount') {
-                        element.disabled = false;
-                    }
+                    document.getElementById(id).disabled = false;
                 });
             } else {
                 // บันทึกข้อมูล
-                saveItemData();
+                saveClientData();
                 editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
                 editBtn.title = 'Edit';
-
-                // Disable checkbox
-                fixedPriceCheckbox.disabled = true;
 
                 inputs.forEach(id => {
                     document.getElementById(id).disabled = true;
@@ -528,91 +506,112 @@
             }
         }
 
-        // Save Item Data
-        function saveItemData() {
-            const parkingLot = document.getElementById('parkingLot').value.trim();
-            const isFixedPrice = document.getElementById('fixedPriceCheckbox').checked;
-            const price = document.getElementById('price').value;
+        // Save Client Data
+        function saveClientData() {
+            const name = document.getElementById('name').value.trim();
+            const surname = document.getElementById('surname').value.trim();
+            const login = document.getElementById('login').value.trim();
+            const password = document.getElementById('password').value;
+            const address = document.getElementById('address').value.trim();
+            const province = document.getElementById('province').value;
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const mobilePhone = document.getElementById('mobilePhone').value.trim();
+            const citizenId = document.getElementById('citizenId').value.trim();
+            const withholdingTax = document.getElementById('withholdingTax').value;
 
             // Validation
-            if (!parkingLot) {
-                alert('กรุณากรอก Item Name');
+            if (!name) {
+                alert('กรุณากรอก Name');
                 return;
             }
 
-            // ตรวจสอบราคาเฉพาะเมื่อเลือก Fixed Price
-            if (isFixedPrice && (!price || price <= 0)) {
-                alert('กรุณากรอก Price ที่ถูกต้อง');
-                document.getElementById('price').focus();
+            if (!surname) {
+                alert('กรุณากรอก Surname');
+                return;
+            }
+
+            if (!login) {
+                alert('กรุณากรอก Login (Email)');
+                return;
+            }
+
+            if (!password) {
+                alert('กรุณากรอก Password');
+                return;
+            }
+
+            if (!address) {
+                alert('กรุณากรอก Address');
+                return;
+            }
+
+            if (!province) {
+                alert('กรุณาเลือก Province');
+                return;
+            }
+
+            if (!postalCode) {
+                alert('กรุณากรอก Postal Code');
+                return;
+            }
+
+            if (!mobilePhone) {
+                alert('กรุณากรอก Mobile Phone');
+                return;
+            }
+
+            if (!citizenId) {
+                alert('กรุณากรอก Citizen ID / Tax ID');
+                return;
+            }
+
+            if (!withholdingTax || withholdingTax < 0 || withholdingTax > 100) {
+                alert('กรุณากรอก Withholding Tax ที่ถูกต้อง (0-100)');
                 return;
             }
 
             const formData = {
-                itemId: document.getElementById('itemId').value,
-                parkingLot: parkingLot,
-                isFixedPrice: isFixedPrice,
-                price: isFixedPrice ? price : null,
+                clientId: document.getElementById('clientId').value,
+                clientType: document.getElementById('clientType').value,
+                name: name,
+                surname: surname,
+                login: login,
+                password: password,
+                address: address,
+                province: province,
+                postalCode: postalCode,
+                mobilePhone: mobilePhone,
+                citizenId: citizenId,
+                career: document.getElementById('career').value.trim(),
+                withholdingTax: withholdingTax,
+                note: document.getElementById('note').value.trim(),
+                status: document.getElementById('clientStatus').value
             };
 
             console.log('Saving data:', formData);
             alert('บันทึกข้อมูลสำเร็จ!');
         }
 
-        // Update Item Status
-        function updateItemStatus() {
-            const status = document.getElementById('itemStatus').value;
+        // Update Client Status
+        function updateClientStatus() {
+            const status = document.getElementById('clientStatus').value;
             console.log('Status changed to:', status);
             alert(`เปลี่ยนสถานะเป็น ${status} สำเร็จ`);
         }
 
-        // Archive Item
-        function archiveItem() {
-            if (!confirm('คุณต้องการ Archive Item นี้ใช่หรือไม่?')) {
+        // Archive Client
+        function archiveClient() {
+            if (!confirm('คุณต้องการ Archive Client นี้ใช่หรือไม่?')) {
                 return;
             }
 
             // เปลี่ยนสถานะเป็น Archive
-            document.getElementById('itemStatus').value = 'Archive';
+            document.getElementById('clientStatus').value = 'Archive';
             alert('Archive สำเร็จ!');
 
             // ถ้าต้องการกลับไปหน้า list
-            // window.location.href = 'item.html';
+            // window.location.href = 'client.html';
         }
-
-        // Toggle price field based on checkbox
-        document.getElementById('fixedPriceCheckbox').addEventListener('change', function () {
-            const priceGroup = document.getElementById('priceGroup');
-            const priceInput = document.getElementById('price');
-
-            if (this.checked) {
-                priceGroup.style.display = 'flex';
-                priceInput.required = true;
-            } else {
-                priceGroup.style.display = 'none';
-                priceInput.required = false;
-                priceInput.value = ''; // Clear price when unchecked
-            }
-        });
-
-        // Load initial state from existing data (if needed)
-        window.addEventListener('load', function () {
-            // ตัวอย่าง: ถ้ามีข้อมูลเดิมที่มี price อยู่แล้ว ให้ติ๊ก checkbox
-            const existingPrice = document.getElementById('price').value;
-            if (existingPrice) {
-                document.getElementById('fixedPriceCheckbox').checked = true;
-                document.getElementById('priceGroup').style.display = 'flex';
-                document.getElementById('price').required = true;
-            }
-        });
-
-        // Auto-generate Item ID
-        function generateItemId() {
-            const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            document.getElementById('itemId').value = `ITM${randomNum}`;
-        }
-
-        // Generate ID when page loads
-        window.addEventListener('load', generateItemId);
 
         // Dropdown menu toggle
         document.getElementById('userProfile').addEventListener('click', function (e) {

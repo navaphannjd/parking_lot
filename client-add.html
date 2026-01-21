@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item</title>
+    <title>Add Client</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="sidebar.css">
     <style>
@@ -243,73 +243,6 @@
             margin-top: 5px;
         }
 
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-cancel {
-            background: #f3f4f6;
-            color: #333;
-        }
-
-        .btn-cancel:hover {
-            background: #e5e7eb;
-        }
-
-        .btn-save {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-save:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .status-options {
-            display: flex;
-            gap: 15px;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .radio-option input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #667eea;
-        }
-
-        .radio-option label {
-            cursor: pointer;
-            font-size: 14px;
-            color: #333;
-        }
-
-        /* เพิ่มส่วนนี้แทน topbar styles เดิม */
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -341,18 +274,34 @@
             transform: scale(0.95);
         }
 
+        .radio-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .form-actions {
-                flex-direction: column-reverse;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
             }
         }
 
@@ -403,48 +352,121 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">Add New Item</div>
+            <div class="section-title">Add New Client</div>
             <div class="action-buttons">
                 <button class="action-btn" onclick="saveAndRedirect()" title="Save">
                     <i class="fa-solid fa-floppy-disk"></i>
                 </button>
-                <button class="action-btn" onclick="window.location.href='item.html'" title="Back">
+                <button class="action-btn" onclick="window.location.href='client.html'" title="Back">
                     <i class="fa-solid fa-reply"></i>
                 </button>
             </div>
         </div>
 
         <div class="form-container">
-            <form id="itemForm">
+            <form id="clientForm">
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">
-                            Item ID<span class="required">*</span>
+                            Client ID<span class="required">*</span>
                         </label>
-                        <input type="text" class="form-input" id="itemId" placeholder="ITM001" required readonly>
+                        <input type="text" class="form-input" id="clientId" placeholder="CLI001" required readonly>
                         <span class="form-help">รหัสจะถูกสร้างอัตโนมัติ</span>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">
-                            Item Name<span class="required">*</span>
+                            Client Type<span class="required">*</span>
                         </label>
-                        <input type="text" class="form-input" id="parkingLot" placeholder="ชื่อลานจอดรถ" required>
+                        <select class="form-select" id="clientType" required>
+                            <option value="">เลือกประเภทลูกค้า</option>
+                            <option value="Person">Person</option>
+                            <option value="Corporate">Corporate</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">
-                            <input type="checkbox" id="fixedPriceCheckbox"
-                                style="width: 18px; height: 18px; cursor: pointer; accent-color: #667eea; vertical-align: middle; margin-right: 8px;">
-                            Fixed Price
+                            Name<span class="required">*</span>
                         </label>
+                        <input type="text" class="form-input" id="name" placeholder="ชื่อ" required>
                     </div>
 
-                    <div class="form-group" id="priceGroup" style="display: none;">
+                    <div class="form-group">
                         <label class="form-label">
-                            Price (Baht)<span class="required">*</span>
+                            Surname<span class="required">*</span>
                         </label>
-                        <input type="number" class="form-input" id="price" placeholder="0.00" step="0.01" min="0">
+                        <input type="text" class="form-input" id="surname" placeholder="นามสกุล" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Login (Email)<span class="required">*</span>
+                        </label>
+                        <input type="email" class="form-input" id="login" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Password<span class="required">*</span>
+                        </label>
+                        <input type="password" class="form-input" id="password" placeholder="********" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            Address<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="address" placeholder="ที่อยู่" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Postal Code<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="province" placeholder="กรุงเทพมหานคร" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Postal Code<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="postalCode" placeholder="10110" pattern="[0-9]{5}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Mobile Phone<span class="required">*</span>
+                        </label>
+                        <input type="tel" class="form-input" id="mobilePhone" placeholder="081-234-5678" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Citizen ID / Tax ID<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="citizenId" placeholder="1-1234-56789-01-2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Career
+                        </label>
+                        <input type="text" class="form-input" id="career" placeholder="อาชีพ">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Withholding Tax (%)<span class="required">*</span>
+                        </label>
+                        <input type="number" class="form-input" id="withholdingTax" placeholder="3" step="0.01" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            Note
+                        </label>
+                        <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม"></textarea>
                     </div>
                 </div>
             </form>
@@ -453,66 +475,123 @@
 
     <script src="sidebar.js"></script>
     <script>
-        // Auto-generate Item ID
-        function generateItemId() {
+        // Auto-generate Client ID
+        function generateClientId() {
             const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            document.getElementById('itemId').value = `ITM${randomNum}`;
+            document.getElementById('clientId').value = `CLI${randomNum}`;
         }
 
         // Generate ID when page loads
-        window.addEventListener('load', generateItemId);
+        window.addEventListener('load', generateClientId);
 
         // Save and Redirect function
         function saveAndRedirect() {
-            const parkingLot = document.getElementById('parkingLot').value.trim();
-            const price = document.getElementById('price').value;
-            const isFixedPrice = document.getElementById('fixedPriceCheckbox').checked;
+            const name = document.getElementById('name').value.trim();
+            const surname = document.getElementById('surname').value.trim();
+            const login = document.getElementById('login').value.trim();
+            const password = document.getElementById('password').value;
+            const address = document.getElementById('address').value.trim();
+            const province = document.getElementById('province').value;
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const mobilePhone = document.getElementById('mobilePhone').value.trim();
+            const citizenId = document.getElementById('citizenId').value.trim();
+            const withholdingTax = document.getElementById('withholdingTax').value;
 
-            if (!parkingLot) {
-                alert('กรุณากรอก Parking Lot Name');
-                document.getElementById('parkingLot').focus();
+            // Validation
+            if (!name) {
+                alert('กรุณากรอก Name');
+                document.getElementById('name').focus();
                 return;
             }
 
-            // ตรวจสอบราคาเฉพาะเมื่อเลือก Fixed Price
-            if (isFixedPrice && (!price || price <= 0)) {
-                alert('กรุณากรอก Price ที่ถูกต้อง');
-                document.getElementById('price').focus();
+            if (!surname) {
+                alert('กรุณากรอก Surname');
+                document.getElementById('surname').focus();
+                return;
+            }
+
+            const clientType = document.getElementById('clientType').value;
+            if (!clientType) {
+                alert('กรุณาเลือก Client Type');
+                document.getElementById('clientType').focus();
+                return;
+            }
+
+            if (!login) {
+                alert('กรุณากรอก Login (Email)');
+                document.getElementById('login').focus();
+                return;
+            }
+
+            if (!password) {
+                alert('กรุณากรอก Password');
+                document.getElementById('password').focus();
+                return;
+            }
+
+            if (!address) {
+                alert('กรุณากรอก Address');
+                document.getElementById('address').focus();
+                return;
+            }
+
+            if (!province) {
+                alert('กรุณาเลือก Province');
+                document.getElementById('province').focus();
+                return;
+            }
+
+            if (!postalCode) {
+                alert('กรุณากรอก Postal Code');
+                document.getElementById('postalCode').focus();
+                return;
+            }
+
+            if (!mobilePhone) {
+                alert('กรุณากรอก Mobile Phone');
+                document.getElementById('mobilePhone').focus();
+                return;
+            }
+
+            if (!citizenId) {
+                alert('กรุณากรอก Citizen ID / Tax ID');
+                document.getElementById('citizenId').focus();
+                return;
+            }
+
+            if (!withholdingTax || withholdingTax < 0 || withholdingTax > 100) {
+                alert('กรุณากรอก Withholding Tax ที่ถูกต้อง (0-100)');
+                document.getElementById('withholdingTax').focus();
                 return;
             }
 
             // รวบรวมข้อมูล
             const formData = {
-                itemId: document.getElementById('itemId').value,
-                parkingLot: parkingLot,
-                isFixedPrice: isFixedPrice,
-                price: isFixedPrice ? price : null
+                clientId: document.getElementById('clientId').value,
+                clientType: document.getElementById('clientType').value,
+                name: name,
+                surname: surname,
+                login: login,
+                password: password,
+                address: address,
+                province: province,
+                postalCode: postalCode,
+                mobilePhone: mobilePhone,
+                citizenId: citizenId,
+                career: document.getElementById('career').value.trim(),
+                withholdingTax: withholdingTax,
+                note: document.getElementById('note').value.trim()
             };
 
             console.log('Form Data:', formData);
 
             alert('บันทึกข้อมูลสำเร็จ!');
-            window.location.href = 'item.html';
+            window.location.href = 'client.html';
         }
-
-        // Toggle price field based on checkbox
-        document.getElementById('fixedPriceCheckbox').addEventListener('change', function () {
-            const priceGroup = document.getElementById('priceGroup');
-            const priceInput = document.getElementById('price');
-
-            if (this.checked) {
-                priceGroup.style.display = 'flex';
-                priceInput.required = true;
-            } else {
-                priceGroup.style.display = 'none';
-                priceInput.required = false;
-                priceInput.value = ''; // Clear price when unchecked
-            }
-        });
 
         // Handle Enter key to save
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
+            if (e.key === 'Enter' && !e.shiftKey && document.activeElement.tagName !== 'TEXTAREA') {
                 e.preventDefault();
                 saveAndRedirect();
             }

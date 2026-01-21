@@ -29,9 +29,13 @@ function createSidebar() {
                         <span><i class="fa-solid fa-file-invoice"></i></span>
                         <span>Invoice</span>
                     </a>
-                    <a class="submenu-item" href="receivement.html" data-page="receivement.html">
+                    <a class="submenu-item" href="receivement.html" data-page="receivement.html,receivement-add,receivement-edit">
                         <span><i class="fa-solid fa-receipt"></i></span>
                         <span>Receivement</span>
+                    </a>
+                    <a class="submenu-item" href="document.html" data-page="document.html">
+                        <span><i class="fa-solid fa-file"></i></span>
+                        <span>Document</span>
                     </a>
                 </div>
                 <div class="menu-item has-submenu" id="OPDMenu">
