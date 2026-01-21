@@ -816,40 +816,13 @@
                 <button class="action-btn" id="saveBtn" onclick="printInvoice()" title="Print">
                     <i class="fa-solid fa-print"></i>
                 </button>
-                <button class="action-btn" onclick="downloadPDF()" title="Download">
+                <button class="action-btn" onclick="downloadPDF(event)" title="Download">
                     <i class="fa-solid fa-file-pdf"></i>
                 </button>
             </div>
         </div>
 
         <div class="payment-card">
-            <div class="card-section">
-                <h3>
-                    <i class="fa-solid fa-building-columns"></i>
-                    ข้อมูลบัญชีสำหรับโอนเงิน
-                </h3>
-                <div class="info-box">
-                    <div class="bank-info">
-                        <div class="bank-info-row">
-                            <span class="bank-info-label">ธนาคาร:</span>
-                            <span class="bank-info-value">กสิกรไทย</span>
-                        </div>
-                        <div class="bank-info-row">
-                            <span class="bank-info-label">เลขที่บัญชี:</span>
-                            <span class="bank-info-value">123-4-56789-0</span>
-                        </div>
-                        <div class="bank-info-row">
-                            <span class="bank-info-label">ชื่อบัญชี:</span>
-                            <span class="bank-info-value">บริษัท ลานจอดรถบางกอก จำกัด</span>
-                        </div>
-                        <div class="bank-info-row">
-                            <span class="bank-info-label">พร้อมเพย์:</span>
-                            <span class="bank-info-value">0812345678</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Invoice Display -->
             <div class="invoice-container" id="invoiceContainer">
                 <div class="invoice-header">
@@ -877,7 +850,6 @@
                             ReadyIDC Co.,Ltd. 39/12 Bond Street Rd, Bangphlod, Pakkret,<br>
                             Nonthaburi Thailand 11120
                         </div>
-                        <span class="status-badge status-paid">Status: Paid</span>
                     </div>
                 </div>
 
@@ -924,10 +896,6 @@
                         <span>Total:</span>
                         <span>267.50 THB</span>
                     </div>
-                    <div class="summary-row">
-                        <span style="color: #28a745; font-weight: 600;">Balance:</span>
-                        <span style="color: #28a745; font-weight: 600;">0.00 THB</span>
-                    </div>
                 </div>
 
                 <div class="invoice-footer">
@@ -952,6 +920,33 @@
                     </div>
                     <div style="margin-top: 15px; font-size: 12px; color: #666; font-style: italic;">
                         Included VAT 7%
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-section">
+                <h3>
+                    <i class="fa-solid fa-building-columns"></i>
+                    ข้อมูลบัญชีสำหรับโอนเงิน
+                </h3>
+                <div class="info-box">
+                    <div class="bank-info">
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">ธนาคาร:</span>
+                            <span class="bank-info-value">กสิกรไทย</span>
+                        </div>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">เลขที่บัญชี:</span>
+                            <span class="bank-info-value">123-4-56789-0</span>
+                        </div>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">ชื่อบัญชี:</span>
+                            <span class="bank-info-value">บริษัท ลานจอดรถบางกอก จำกัด</span>
+                        </div>
+                        <div class="bank-info-row">
+                            <span class="bank-info-label">พร้อมเพย์:</span>
+                            <span class="bank-info-value">0812345678</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1065,14 +1060,16 @@
         }
 
         // Download PDF Function
-        async function downloadPDF() {
-            // แสดงข้อความกำลังสร้าง PDF
-            const originalText = event.target.innerHTML;
-            event.target.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            event.target.disabled = true;
+        // Download PDF Function
+        async function downloadPDF(event) {
+            // หาปุ่มที่ถูกคลิก
+            const button = event.currentTarget;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            button.disabled = true;
 
             try {
-                // ใช้ html2pdf.js library (ต้องเพิ่ม CDN)
+                // ใช้ html2pdf.js library
                 const element = document.getElementById('invoiceContainer');
                 const opt = {
                     margin: 10,
@@ -1094,8 +1091,8 @@
                 console.error('Error generating PDF:', error);
                 alert('เกิดข้อผิดพลาดในการสร้าง PDF กรุณาลองใหม่อีกครั้ง');
             } finally {
-                event.target.innerHTML = originalText;
-                event.target.disabled = false;
+                button.innerHTML = originalText;
+                button.disabled = false;
             }
         }
 
