@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Receivement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="sidebar.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Top Bar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #667eea;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .user-profile:hover {
+            background: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid #e9ecef;
+            color: #dc3545;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #dc3545;
+            margin-left: 4px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Invoice Selection */
+        .invoice-search-container {
+            position: relative;
+        }
+
+        .invoice-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-suggestions.show {
+            display: block;
+        }
+
+        .invoice-suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .invoice-suggestion-item:hover {
+            background: #f8f9ff;
+        }
+
+        .invoice-suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-invoice-no {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .suggestion-details {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 13px;
+        }
+
+        /* Payment Method Selection */
+        .payment-method-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .payment-method-option {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .payment-method-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .payment-method-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .payment-method-option input[type="radio"] {
+            display: none;
+        }
+
+        .payment-method-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .payment-method-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #f0f4ff;
+            border-color: #764ba2;
+        }
+
+        .upload-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .upload-text {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-subtext {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-input-hidden {
+            display: none;
+        }
+
+        /* Bank Transfer Fields */
+        #bankTransferFields {
+            display: none;
+        }
+
+        #bankTransferFields.show {
+            display: contents;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-cancel {
+            background: #f3f4f6;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-save {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .payment-method-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 20px;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+
+            .upload-icon {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="dropdown">
+            <div class="user-profile" id="userProfile">
+                <div class="user-info">
+                    <div class="user-name">สมชาย ใจดี</div>
+                    <div class="user-role">ผู้ดูแลระบบ</div>
+                </div>
+                <div class="user-avatar">SC</div>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item">
+                    <span><i class="fa-solid fa-user"></i></span>
+                    <span>โปรไฟล์</span>
+                </div>
+                <div class="dropdown-item">
+                    <span><i class="fa-solid fa-bell"></i></span>
+                    <span>การแจ้งเตือน</span>
+                </div>
+                <div class="dropdown-item">
+                    <span><i class="fa-solid fa-gear"></i></span>
+                    <span>ตั้งค่าบัญชี</span>
+                </div>
+                <div class="dropdown-item">
+                    <span><i class="fa-solid fa-door-open"></i></span>
+                    <span>ออกจากระบบ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="content-header">
+            <div class="section-title">Add New Receivement</div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="saveAndRedirect()" title="Save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+                <button class="action-btn" onclick="window.location.href='receivement.html'" title="Back">
+                    <i class="fa-solid fa-reply"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="receivementForm">
+                <!-- Invoice Information -->
+                <div class="info-box" id="invoiceInfoBox" style="display: none;">
+                    <div class="info-box-title">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Invoice Information
+                    </div>
+                    <div class="info-box-content">
+                        <div class="info-row">
+                            <span class="info-label">Invoice No.:</span>
+                            <span class="info-value" id="displayInvoiceNo">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Order No.:</span>
+                            <span class="info-value" id="displayOrderNo">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Invoice Amount:</span>
+                            <span class="info-value" id="displayInvoiceAmount">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Customer Name:</span>
+                            <span class="info-value" id="displayCustomerName">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Receivement ID<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="receivementId" placeholder="RCV-001" required readonly>
+                        <span class="form-help">รหัสจะถูกสร้างอัตโนมัติ</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Invoice No.<span class="required">*</span>
+                        </label>
+                        <div class="invoice-search-container">
+                            <input type="text" class="form-input" id="invoiceNo" placeholder="ค้นหา Invoice No." required autocomplete="off">
+                            <div class="invoice-suggestions" id="invoiceSuggestions"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Receive Date<span class="required">*</span>
+                        </label>
+                        <input type="date" class="form-input" id="receiveDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Receive Time<span class="required">*</span>
+                        </label>
+                        <input type="time" class="form-input" id="receiveTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Receive Amount (Baht)<span class="required">*</span>
+                        </label>
+                        <input type="number" class="form-input" id="receiveAmount" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            Payment Method<span class="required">*</span>
+                        </label>
+                        <div class="payment-method-container">
+                            <label class="payment-method-option" data-method="cash">
+                                <input type="radio" name="paymentMethod" value="cash" required>
+                                <div class="payment-method-icon">💵</div>
+                                <div class="payment-method-label">Cash / เงินสด</div>
+                            </label>
+                            <label class="payment-method-option" data-method="transfer">
+                                <input type="radio" name="paymentMethod" value="transfer" required>
+                                <div class="payment-method-icon">🏦</div>
+                                <div class="payment-method-label">Bank Transfer / โอนเงิน</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Fields (แสดงเมื่อเลือก Bank Transfer) -->
+                    <div id="bankTransferFields">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Receive Account<span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="receiveAccount" placeholder="044-3-81036-6">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Bank Name
+                            </label>
+                            <select class="form-select" id="bankName">
+                                <option value="">เลือกธนาคาร</option>
+                                <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย</option>
+                                <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
+                                <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
+                                <option value="ธนาคารทหารไทยธนชาต">ธนาคารทหารไทยธนชาต</option>
+                                <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
+                                <option value="ธนาคารกรุงศรีอยุธยา">ธนาคารกรุงศรีอยุธยา</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Payment Slip / หลักฐานการโอนเงิน
+                            </label>
+                            <div class="upload-area" id="uploadArea">
+                                <div class="upload-icon">📤</div>
+                                <p class="upload-text">คลิกหรือลากไฟล์มาที่นี่</p>
+                                <p class="upload-subtext">รองรับไฟล์ JPG, PNG (ขนาดไม่เกิน 5MB)</p>
+                                <input type="file" id="fileInput" accept="image/*" class="file-input-hidden">
+                            </div>
+                            <img id="preview" class="preview-image" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            Note
+                        </label>
+                        <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Mock Invoice Data
+        const invoices = [
+            { invoiceNo: 'INV-2024-001', orderNo: 'ORD-2024-056', amount: 1350.00, customer: 'สมชาย รักสุข' },
+            { invoiceNo: 'INV-2024-002', orderNo: 'ORD-2024-057', amount: 2450.00, customer: 'สมหญิง ใจดี' },
+            { invoiceNo: 'INV-2024-003', orderNo: 'ORD-2024-058', amount: 890.00, customer: 'วิชัย มั่นคง' },
+            { invoiceNo: 'INV-2024-004', orderNo: 'ORD-2024-059', amount: 3280.00, customer: 'นิดา สวยงาม' },
+            { invoiceNo: 'INV-2024-005', orderNo: 'ORD-2024-062', amount: 2450.00, customer: 'ประยุทธ์ เก่งมาก' }
+        ];
+
+        // Generate Receivement ID
+        function generateReceivementId() {
+            const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            document.getElementById('receivementId').value = `RCV-${randomNum}`;
+        }
+
+        // Set Default Date and Time
+        function setDefaultDateTime() {
+            const now = new Date();
+            document.getElementById('receiveDate').valueAsDate = now;
+            document.getElementById('receiveTime').value = now.toTimeString().slice(0, 5);
+        }
+
+        // Invoice Search with Suggestions
+        const invoiceInput = document.getElementById('invoiceNo');
+        const suggestionsBox = document.getElementById('invoiceSuggestions');
+
+        invoiceInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase().trim();
+
+            if (searchTerm.length === 0) {
+                suggestionsBox.classList.remove('show');
+                suggestionsBox.innerHTML = '';
+                return;
+            }
+
+            const filtered = invoices.filter(inv =>
+                inv.invoiceNo.toLowerCase().includes(searchTerm) ||
+                inv.orderNo.toLowerCase().includes(searchTerm) ||
+                inv.customer.toLowerCase().includes(searchTerm)
+            );
+
+            if (filtered.length > 0) {
+                suggestionsBox.innerHTML = filtered.map(inv => `
+                    <div class="invoice-suggestion-item" onclick="selectInvoice('${inv.invoiceNo}')">
+                        <div class="suggestion-invoice-no">${inv.invoiceNo}</div>
+                        <div class="suggestion-details">Order: ${inv.orderNo} | Amount: ฿${inv.amount.toFixed(2)} | ${inv.customer}</div>
+                    </div>
+                `).join('');
+                suggestionsBox.classList.add('show');
+            } else {
+                suggestionsBox.innerHTML = '<div style="padding: 12px 15px; color: #999;">ไม่พบ Invoice</div>';
+                suggestionsBox.classList.add('show');
+            }
+        });
+
+        // Select Invoice
+        function selectInvoice(invoiceNo) {
+            const invoice = invoices.find(inv => inv.invoiceNo === invoiceNo);
+            if (invoice) {
+                document.getElementById('invoiceNo').value = invoiceNo;
+                document.getElementById('receiveAmount').value = invoice.amount.toFixed(2);
+
+                // Show invoice info
+                document.getElementById('invoiceInfoBox').style.display = 'block';
+                document.getElementById('displayInvoiceNo').textContent = invoice.invoiceNo;
+                document.getElementById('displayOrderNo').textContent = invoice.orderNo;
+                document.getElementById('displayInvoiceAmount').textContent = `฿${invoice.amount.toFixed(2)}`;
+                document.getElementById('displayCustomerName').textContent = invoice.customer;
+
+                suggestionsBox.classList.remove('show');
+            }
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.invoice-search-container')) {
+                suggestionsBox.classList.remove('show');
+            }
+        });
+
+        // Payment Method Selection
+        const paymentOptions = document.querySelectorAll('.payment-method-option');
+        const bankTransferFields = document.getElementById('bankTransferFields');
+
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function () {
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+
+                const method = this.dataset.method;
+                if (method === 'transfer') {
+                    bankTransferFields.classList.add('show');
+                    document.getElementById('receiveAccount').required = true;
+                } else {
+                    bankTransferFields.classList.remove('show');
+                    document.getElementById('receiveAccount').required = false;
+                }
+            });
+        });
+
+        // File Upload
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        let selectedFile = null;
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#764ba2';
+            uploadArea.style.background = '#f0f4ff';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#667eea';
+            uploadArea.style.background = '#f8f9ff';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#667eea';
+            uploadArea.style.background = '#f8f9ff';
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        function handleFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('กรุณาเลือกไฟล์รูปภาพ');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('ไฟล์ต้องไม่เกิน 5MB');
+                return;
+            }
+
+            selectedFile = file;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Save and Redirect
+        function saveAndRedirect() {
+            const form = document.getElementById('receivementForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+            if (!paymentMethod) {
+                alert('กรุณาเลือกวิธีการชำระเงิน');
+                return;
+            }
+
+            // Validate bank transfer fields
+            if (paymentMethod.value === 'transfer') {
+                const receiveAccount = document.getElementById('receiveAccount').value.trim();
+                if (!receiveAccount) {
+                    alert('กรุณากรอกบัญชีที่รับเงิน');
+                    document.getElementById('receiveAccount').focus();
+                    return;
+                }
+            }
+
+            const formData = {
+                receivementId: document.getElementById('receivementId').value,
+                invoiceNo: document.getElementById('invoiceNo').value,
+                receiveDate: document.getElementById('receiveDate').value,
+                receiveTime: document.getElementById('receiveTime').value,
+                receiveAmount: document.getElementById('receiveAmount').value,
+                paymentMethod: paymentMethod.value,
+                receiveAccount: document.getElementById('receiveAccount').value || null,
+                bankName: document.getElementById('bankName').value || null,
+                note: document.getElementById('note').value.trim(),
+                slipUploaded: selectedFile ? true : false
+            };
+
+            console.log('Saving data:', formData);
+            alert('บันทึกข้อมูลสำเร็จ!');
+            window.location.href = 'receivement.html';
+        }
+
+        // Form Submit
+        document.getElementById('receivementForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            saveAndRedirect();
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            generateReceivementId();
+            setDefaultDateTime();
+        });
+
+        // Dropdown menu toggle
+        document.getElementById('userProfile').addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (!e.target.closest('.dropdown')) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Handle Enter key to save
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey && document.activeElement.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                saveAndRedirect();
+            }
+        });
+    </script>
+</body>
+
+</html>

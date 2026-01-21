@@ -426,7 +426,7 @@
         .row-header {
             padding: 15px;
             display: grid;
-            grid-template-columns: 0.3fr 0.8fr 1fr 1fr 1.2fr 1.5fr 1fr;
+            grid-template-columns: 0.3fr 0.8fr 1fr 1fr 1.2fr 1.5fr 1fr 0.8fr;
             gap: 12px;
             align-items: center;
             transition: background 0.3s ease;
@@ -446,7 +446,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             display: grid;
-            grid-template-columns: 0.3fr 0.8fr 1fr 1fr 1.2fr 1.5fr 1fr;
+            grid-template-columns: 0.3fr 0.8fr 1fr 1fr 1.2fr 1.5fr 1fr 0.8fr;
             gap: 12px;
             font-size: 13px;
         }
@@ -469,6 +469,25 @@
             font-weight: 500;
         }
 
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-draft {
+            background: #e2e2e2;
+            color: #636363;
+        }
+        
+        .status-complete {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
         @media (max-width: 768px) {
             .content-header {
                 flex-direction: row;
@@ -482,7 +501,7 @@
 
             .row-header,
             .column-header {
-                grid-template-columns: 0.3fr 0.8fr 1fr 1fr 1.2fr 1.5fr 1fr;
+                grid-template-columns: 0.3fr 0.8fr 1fr 1fr 1.2fr 1.5fr 1fr 0.8fr;
             }
         }
 
@@ -617,6 +636,7 @@
                     <div>Receive Amount</div>
                     <div>Receive Account</div>
                     <div>Receive Date</div>
+                    <div>Status</div>
                 </div>
 
                 <!-- Mock Data -->
@@ -629,6 +649,9 @@
                         <div class="cell amount-cell" onclick="editReceive('RCV-001')">฿1,350.00</div>
                         <div class="cell" onclick="editReceive('RCV-001')">ACC-001-2024</div>
                         <div class="cell date-cell" onclick="editReceive('RCV-001')">15/01/2026</div>
+                        <div class="cell" onclick="editReceive('RCV-001')">
+                            <span class="status-badge status-complete">Complete</span>
+                        </div>
                     </div>
                 </div>
 
@@ -641,6 +664,9 @@
                         <div class="cell amount-cell" onclick="editReceive('RCV-002')">฿890.00</div>
                         <div class="cell" onclick="editReceive('RCV-002')">ACC-005-2024</div>
                         <div class="cell date-cell" onclick="editReceive('RCV-002')">16/01/2026</div>
+                        <div class="cell" onclick="editReceive('RCV-001')">
+                            <span class="status-badge status-complete">Complete</span>
+                        </div>
                     </div>
                 </div>
 
@@ -653,6 +679,9 @@
                         <div class="cell amount-cell" onclick="editReceive('RCV-003')">฿2,450.00</div>
                         <div class="cell" onclick="editReceive('RCV-003')">ACC-002-2024</div>
                         <div class="cell date-cell" onclick="editReceive('RCV-003')">17/01/2026</div>
+                        <div class="cell" onclick="editReceive('RCV-001')">
+                            <span class="status-badge status-complete">Complete</span>
+                        </div>
                     </div>
                 </div>
 
@@ -665,6 +694,9 @@
                         <div class="cell amount-cell" onclick="editReceive('RCV-004')">฿3,280.00</div>
                         <div class="cell" onclick="editReceive('RCV-004')">ACC-003-2024</div>
                         <div class="cell date-cell" onclick="editReceive('RCV-004')">18/01/2026</div>
+                        <div class="cell" onclick="editReceive('RCV-001')">
+                            <span class="status-badge status-complete">Complete</span>
+                        </div>
                     </div>
                 </div>
 
@@ -677,6 +709,9 @@
                         <div class="cell amount-cell" onclick="editReceive('RCV-005')">฿1,750.00</div>
                         <div class="cell" onclick="editReceive('RCV-005')">ACC-001-2024</div>
                         <div class="cell date-cell" onclick="editReceive('RCV-005')">19/01/2026</div>
+                        <div class="cell" onclick="editReceive('RCV-001')">
+                            <span class="status-badge status-draft">Draft</span>
+                        </div>
                     </div>
                 </div>
 
@@ -689,6 +724,9 @@
                         <div class="cell amount-cell" onclick="editReceive('RCV-006')">฿4,500.00</div>
                         <div class="cell" onclick="editReceive('RCV-006')">ACC-004-2024</div>
                         <div class="cell date-cell" onclick="editReceive('RCV-006')">20/01/2026</div>
+                        <div class="cell" onclick="editReceive('RCV-001')">
+                            <span class="status-badge status-draft">Draft</span>
+                        </div>
                     </div>
                 </div>
 
