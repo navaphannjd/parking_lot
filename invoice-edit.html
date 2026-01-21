@@ -124,6 +124,90 @@
             color: #666;
         }
 
+        /* เพิ่มส่วนนี้แทน topbar styles เดิม */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .form-input:disabled,
+        .form-select:disabled,
+        .form-textarea:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #666;
+        }
+
+        .form-input:not(:disabled):focus,
+        .form-select:not(:disabled):focus,
+        .form-textarea:not(:disabled):focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .item-input:disabled,
+        .item-price:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #666;
+        }
+
+        /* แก้ไขปุ่ม Active */
+        .active-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #10b981;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .active-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .active-btn:active {
+            transform: translateY(0);
+        }
+
+        .active-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         /* Dropdown Menu */
         .dropdown {
             position: relative;
@@ -482,71 +566,71 @@
         }
 
         /* Mobile Card Layout for Items Table */
-@media (max-width: 768px) {
-    .items-table-container {
-        padding: 10px;
-    }
+        @media (max-width: 768px) {
+            .items-table-container {
+                padding: 10px;
+            }
 
-    .items-table thead {
-        display: none;
-    }
+            .items-table thead {
+                display: none;
+            }
 
-    .items-table,
-    .items-table tbody,
-    .items-table tr,
-    .items-table td {
-        display: block;
-        width: 100%;
-    }
+            .items-table,
+            .items-table tbody,
+            .items-table tr,
+            .items-table td {
+                display: block;
+                width: 100%;
+            }
 
-    .items-table tr {
-        margin-bottom: 15px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 15px;
-        background: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
+            .items-table tr {
+                margin-bottom: 15px;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 15px;
+                background: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
 
-    .items-table td {
-        padding: 8px 0;
-        border: none;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
+            .items-table td {
+                padding: 8px 0;
+                border: none;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
 
-    .items-table td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #667eea;
-        font-size: 12px;
-        text-transform: uppercase;
-    }
+            .items-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #667eea;
+                font-size: 12px;
+                text-transform: uppercase;
+            }
 
-    .item-number {
-        text-align: left;
-        font-size: 16px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e5e7eb;
-    }
+            .item-number {
+                text-align: left;
+                font-size: 16px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #e5e7eb;
+            }
 
-    .item-number::before {
-        content: "รายการที่ ";
-    }
+            .item-number::before {
+                content: "รายการที่ ";
+            }
 
-    .item-input,
-    .item-price {
-        font-size: 14px;
-        padding: 10px 12px;
-    }
+            .item-input,
+            .item-price {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
 
-    .btn-remove-item {
-        width: 100%;
-        height: 40px;
-        margin: 8px 0 0 0;
-    }
-}
+            .btn-remove-item {
+                width: 100%;
+                height: 40px;
+                margin: 8px 0 0 0;
+            }
+        }
 
         @media (max-width: 480px) {
             .section-title {
@@ -613,9 +697,14 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">
-                <span style="cursor: pointer;" onclick="window.location.href='invoice.html'">Invoice</span> >
-                Edit Invoice
+            <div class="section-title">Invoice Details</div>
+            <div class="action-buttons">
+                <button class="action-btn" id="editBtn" onclick="toggleEdit()" title="Edit">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="action-btn" onclick="window.location.href='invoice.html'" title="Back">
+                    <i class="fa-solid fa-reply"></i>
+                </button>
             </div>
         </div>
 
@@ -623,37 +712,28 @@
             <form id="invoiceForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">
-                            Invoice No.<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="invoiceNo" placeholder="INV-2026-001" required readonly>
+                        <label class="form-label">Invoice No.<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="invoiceNo" placeholder="INV-2026-001" disabled>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">
-                            Order No.<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="orderNo" placeholder="ORD-2026-001" required>
+                        <label class="form-label">Order No.<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="orderNo" placeholder="ORD-2026-001" disabled>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">
-                            Name<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="name" placeholder="ชื่อ" required value="สมชาย">
+                        <label class="form-label">Name<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="name" placeholder="ชื่อ" value="สมชาย" disabled>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">
-                            Surname<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="surname" placeholder="นามสกุล" required value="รักสุข">
+                        <label class="form-label">Surname<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="surname" placeholder="นามสกุล" value="รักสุข"
+                            disabled>
                     </div>
 
                     <div class="form-group full-width">
-                        <label class="form-label">
-                            Item<span class="required">*</span>
-                        </label>
+                        <label class="form-label">Item<span class="required">*</span></label>
                         <div class="items-table-container">
                             <table class="items-table">
                                 <thead>
@@ -667,13 +747,15 @@
                                 <tbody id="itemsTableBody">
                                     <tr class="item-row">
                                         <td class="item-number">1</td>
-                                        <td><input type="text" class="item-input" placeholder="Item Name" required></td>
-                                        <td><input type="number" class="item-price" placeholder="0.00" step="0.01" min="0" required></td>
-                                        <td><button type="button" class="btn-remove-item" onclick="removeItem(this)" disabled>×</button></td>
+                                        <td><input type="text" class="item-input" placeholder="Item Name" disabled></td>
+                                        <td><input type="number" class="item-price" placeholder="0.00" step="0.01"
+                                                min="0" disabled></td>
+                                        <td><button type="button" class="btn-remove-item" onclick="removeItem(this)"
+                                                disabled>×</button></td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn-add-item" onclick="addItem()">
+                            <button type="button" class="btn-add-item" id="addItemBtn" onclick="addItem()" disabled>
                                 <i class="fa-solid fa-plus"></i> Add Item
                             </button>
                         </div>
@@ -696,36 +778,11 @@
                         </div>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label class="form-label">
-                            Status<span class="required">*</span>
-                        </label>
-                        <div class="status-options">
-                            <div class="radio-option">
-                                <input type="radio" id="statusDraft" name="status" value="Draft" checked>
-                                <label for="statusDraft">Draft</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusActive" name="status" value="Active">
-                                <label for="statusActive">Active</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusPaid" name="status" value="Paid">
-                                <label for="statusPaid">Paid</label>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="window.location.href='invoice.html'">
-                        <i class="fa-solid fa-times"></i>
-                        ยกเลิก
-                    </button>
-                    <button type="submit" class="btn btn-save">
-                        <i class="fa-solid fa-save"></i>
-                        บันทึก
+                    <button type="button" class="active-btn" id="activateBtn" onclick="activateInvoice()">
+                        <i class="fa-solid fa-check-circle"></i> Active
                     </button>
                 </div>
             </form>
@@ -735,19 +792,121 @@
     <script src="sidebar.js"></script>
     <script>
         let itemCount = 1;
+        let isEditMode = false;
+
+        // Toggle Edit Mode
+        function toggleEdit() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('editBtn');
+            const editableInputs = ['name', 'surname'];
+            const statusRadios = document.querySelectorAll('input[name="status"]');
+            const itemInputs = document.querySelectorAll('.item-input, .item-price');
+            const removeButtons = document.querySelectorAll('.btn-remove-item');
+            const addItemBtn = document.getElementById('addItemBtn');
+
+            if (isEditMode) {
+                // เข้าสู่โหมดแก้ไข
+                editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+                editBtn.title = 'Save';
+
+                // Enable editable fields
+                editableInputs.forEach(id => {
+                    document.getElementById(id).disabled = false;
+                });
+
+                // Enable status radios
+                statusRadios.forEach(radio => radio.disabled = false);
+
+                // Enable item inputs
+                itemInputs.forEach(input => input.disabled = false);
+
+                // Enable remove buttons (except if only 1 item)
+                updateRemoveButtons();
+
+                // Enable add item button
+                addItemBtn.disabled = false;
+            } else {
+                // บันทึกข้อมูล
+                saveInvoiceData();
+
+                editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
+                editBtn.title = 'Edit';
+
+                // Disable all fields
+                editableInputs.forEach(id => {
+                    document.getElementById(id).disabled = true;
+                });
+
+                statusRadios.forEach(radio => radio.disabled = true);
+                itemInputs.forEach(input => input.disabled = true);
+                removeButtons.forEach(btn => btn.disabled = true);
+                addItemBtn.disabled = true;
+            }
+        }
+
+        // Save Invoice Data
+        function saveInvoiceData() {
+            // Collect all items
+            const items = [];
+            const itemRows = document.querySelectorAll('.item-row');
+            itemRows.forEach(row => {
+                const itemName = row.querySelector('.item-input').value;
+                const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0;
+                items.push({ name: itemName, price: itemPrice });
+            });
+
+            const formData = {
+                invoiceNo: document.getElementById('invoiceNo').value,
+                orderNo: document.getElementById('orderNo').value,
+                name: document.getElementById('name').value,
+                surname: document.getElementById('surname').value,
+                items: items,
+                totalAmount: document.getElementById('totalAmount').textContent.replace('฿', ''),
+                vatAmount: document.getElementById('vatAmount').textContent.replace('฿', ''),
+                netAmount: document.getElementById('netAmount').textContent.replace('฿', ''),
+            };
+
+            console.log('Saving data:', formData);
+            alert('บันทึกข้อมูลสำเร็จ!');
+        }
+
+        // Activate Invoice
+        function activateInvoice() {
+
+
+            if (!confirm('คุณต้องการเปลี่ยนสถานะเป็น Active ใช่หรือไม่?')) {
+                return;
+            }
+
+            // เปลี่ยน Invoice No. จาก Draft เป็น INV
+            const invoiceNo = document.getElementById('invoiceNo').value;
+            if (invoiceNo.startsWith('Draft-')) {
+                const currentYear = new Date().getFullYear();
+                const currentNum = invoiceNo.split('-').pop();
+                document.getElementById('invoiceNo').value = `INV-${currentYear}-${currentNum}`;
+            }
+
+            alert('เปลี่ยนสถานะเป็น Active สำเร็จ!');
+
+            // Disable activate button after activation
+            document.getElementById('activateBtn').disabled = true;
+            document.getElementById('activateBtn').style.background = '#d1d5db';
+        }
 
         // Add new item row
         function addItem() {
+            if (!isEditMode) return;
+
             itemCount++;
             const tableBody = document.getElementById('itemsTableBody');
             const newRow = document.createElement('tr');
             newRow.className = 'item-row';
             newRow.innerHTML = `
-                <td class="item-number">${itemCount}</td>
-                <td><input type="text" class="item-input" placeholder="ชื่อรายการ" required></td>
-                <td><input type="number" class="item-price" placeholder="0.00" step="0.01" min="0" required oninput="calculateTotal()"></td>
-                <td><button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button></td>
-            `;
+        <td class="item-number">${itemCount}</td>
+        <td><input type="text" class="item-input" placeholder="Item Name" ${!isEditMode ? 'disabled' : ''}></td>
+        <td><input type="number" class="item-price" placeholder="0.00" step="0.01" min="0" oninput="calculateTotal()" ${!isEditMode ? 'disabled' : ''}></td>
+        <td><button type="button" class="btn-remove-item" onclick="removeItem(this)" ${!isEditMode ? 'disabled' : ''}>×</button></td>
+    `;
             tableBody.appendChild(newRow);
             updateRemoveButtons();
             calculateTotal();
@@ -755,6 +914,8 @@
 
         // Remove item row
         function removeItem(button) {
+            if (!isEditMode) return;
+
             const row = button.closest('tr');
             row.remove();
             updateItemNumbers();
@@ -775,9 +936,9 @@
         function updateRemoveButtons() {
             const rows = document.querySelectorAll('.item-row');
             const removeButtons = document.querySelectorAll('.btn-remove-item');
-            
-            if (rows.length === 1) {
-                removeButtons[0].disabled = true;
+
+            if (!isEditMode || rows.length === 1) {
+                removeButtons.forEach(btn => btn.disabled = true);
             } else {
                 removeButtons.forEach(btn => btn.disabled = false);
             }
@@ -787,103 +948,82 @@
         function calculateTotal() {
             const prices = document.querySelectorAll('.item-price');
             let total = 0;
-            
+
             prices.forEach(price => {
                 const value = parseFloat(price.value) || 0;
                 total += value;
             });
-            
+
             const tax = total * 0.07;
             const netAmount = total + tax;
-            
+
             document.getElementById('totalAmount').textContent = `฿${total.toFixed(2)}`;
             document.getElementById('vatAmount').textContent = `฿${tax.toFixed(2)}`;
             document.getElementById('netAmount').textContent = `฿${netAmount.toFixed(2)}`;
         }
 
         // Add event listeners to initial price input
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const initialPrice = document.querySelector('.item-price');
             if (initialPrice) {
                 initialPrice.addEventListener('input', calculateTotal);
             }
+
+            // Check initial status to disable/enable activate button
+            checkActivateButtonState();
+        });
+
+        // Check if activate button should be disabled
+        function checkActivateButtonState() {
+            const currentStatus = document.querySelector('input[name="status"]:checked');
+            const activateBtn = document.getElementById('activateBtn');
+
+            if (currentStatus && (currentStatus.value === 'Active' || currentStatus.value === 'Paid')) {
+                activateBtn.disabled = true;
+                activateBtn.style.background = '#d1d5db';
+            }
+        }
+
+        // Update invoice number when status changes (for future use)
+        document.querySelectorAll('input[name="status"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                const currentYear = new Date().getFullYear();
+                const currentNum = document.getElementById('invoiceNo').value.split('-').pop();
+
+                if (this.value === 'Draft') {
+                    document.getElementById('invoiceNo').value = `Draft-${currentYear}-${currentNum}`;
+                } else {
+                    document.getElementById('invoiceNo').value = `INV-${currentYear}-${currentNum}`;
+                }
+
+                checkActivateButtonState();
+            });
         });
 
         // Auto-generate Invoice No.
         function generateInvoiceNo() {
             const currentYear = new Date().getFullYear();
             const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            
-            // Generate invoice number based on status
+
+            // Check current status
             const statusRadios = document.querySelectorAll('input[name="status"]');
             let prefix = 'Draft';
-            
+
             statusRadios.forEach(radio => {
-                if (radio.checked && radio.value === 'Draft') {
-                    prefix = 'Draft';
-                } else if (radio.checked && radio.value !== 'Draft') {
-                    prefix = 'INV';
+                if (radio.checked) {
+                    prefix = radio.value === 'Draft' ? 'Draft' : 'INV';
                 }
             });
-            
+
             document.getElementById('invoiceNo').value = `${prefix}-${currentYear}-${randomNum}`;
         }
 
-        // Update invoice number when status changes
-        document.querySelectorAll('input[name="status"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const currentYear = new Date().getFullYear();
-                const currentNum = document.getElementById('invoiceNo').value.split('-').pop();
-                
-                if (this.value === 'Draft') {
-                    document.getElementById('invoiceNo').value = `Draft-${currentYear}-${currentNum}`;
-                } else {
-                    document.getElementById('invoiceNo').value = `INV-${currentYear}-${currentNum}`;
-                }
-            });
-        });
-
         // Generate Invoice No. when page loads
-        window.addEventListener('load', generateInvoiceNo);
+        window.addEventListener('load', () => {
+            generateInvoiceNo();
 
-        // Form submission
-        document.getElementById('invoiceForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Collect all items
-            const items = [];
-            const itemRows = document.querySelectorAll('.item-row');
-            itemRows.forEach(row => {
-                const itemName = row.querySelector('.item-input').value;
-                const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0;
-                items.push({ name: itemName, price: itemPrice });
-            });
-
-            // Calculate totals
-            const total = parseFloat(document.getElementById('totalAmount').textContent.replace('฿', ''));
-            const tax = parseFloat(document.getElementById('vatAmount').textContent.replace('฿', ''));
-            const netAmount = parseFloat(document.getElementById('netAmount').textContent.replace('฿', ''));
-
-            const formData = {
-                invoiceNo: document.getElementById('invoiceNo').value,
-                orderNo: document.getElementById('orderNo').value,
-                name: document.getElementById('name').value,
-                surname: document.getElementById('surname').value,
-                items: items,
-                totalAmount: total,
-                vatAmount: tax,
-                netAmount: netAmount,
-                status: document.querySelector('input[name="status"]:checked').value,
-                note: document.getElementById('note').value
-            };
-
-            console.log('Form Data:', formData);
-
-            // Show success message
-            alert('บันทึกข้อมูลสำเร็จ!');
-
-            // Redirect back to invoice list
-            window.location.href = 'invoice.html';
+            // Set default status to Draft
+            document.getElementById('statusDraft').checked = true;
         });
 
         // Dropdown menu toggle

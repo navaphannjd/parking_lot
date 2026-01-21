@@ -309,6 +309,38 @@
             color: #333;
         }
 
+        /* เพิ่มส่วนนี้แทน topbar styles เดิม */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -371,9 +403,14 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">
-                <span style="cursor: pointer;" onclick="window.location.href='order.html'">Order</span> >
-                Add Order
+            <div class="section-title">Add New Order</div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="saveAndRedirect()" title="Save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+                <button class="action-btn" onclick="window.location.href='order.html'" title="Back">
+                    <i class="fa-solid fa-reply"></i>
+                </button>
             </div>
         </div>
 
@@ -399,7 +436,8 @@
                         <label class="form-label">
                             W/H Tax (%)<span class="required">*</span>
                         </label>
-                        <input type="number" class="form-input" id="whTax" placeholder="0" step="1" min="0" max="100" required readonly>
+                        <input type="number" class="form-input" id="whTax" placeholder="0" step="1" min="0" max="100"
+                            required readonly>
                     </div>
 
                     <div class="form-group">
@@ -423,43 +461,12 @@
                         <input type="date" class="form-input" id="validDate" required>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            Status<span class="required">*</span>
-                        </label>
-                        <div class="status-options">
-                            <div class="radio-option">
-                                <input type="radio" id="statusDraft" name="status" value="Draft" checked>
-                                <label for="statusDraft">Draft</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusActive" name="status" value="Active">
-                                <label for="statusActive">Active</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusArchive" name="status" value="Archive">
-                                <label for="statusArchive">Archive</label>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form-group full-width">
                         <label class="form-label">
                             Note
                         </label>
                         <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
                     </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="window.location.href='order.html'">
-                        <i class="fa-solid fa-times"></i>
-                        ยกเลิก
-                    </button>
-                    <button type="submit" class="btn btn-save">
-                        <i class="fa-solid fa-save"></i>
-                        บันทึก
-                    </button>
                 </div>
             </form>
         </div>
@@ -473,45 +480,93 @@
             document.getElementById('orderNo').value = `ORD${randomNum}`;
         }
 
-        // Generate Order No. when page loads
-        window.addEventListener('load', () => {
-            generateOrderNo();
-            
-            // Set default dates
+        // Set default dates
+        function setDefaultDates() {
             const today = new Date();
             const startDateInput = document.getElementById('startDate');
             const validDateInput = document.getElementById('validDate');
-            
+
             startDateInput.value = today.toISOString().split('T')[0];
-            
+
             const nextMonth = new Date(today);
             nextMonth.setMonth(nextMonth.getMonth() + 1);
             validDateInput.value = nextMonth.toISOString().split('T')[0];
-        });
+        }
 
-        // Form submission
-        document.getElementById('orderForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Save and Redirect function
+        function saveAndRedirect() {
+            // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+            const clientId = document.getElementById('clientId').value.trim();
+            const itemId = document.getElementById('itemId').value.trim();
+            const startDate = document.getElementById('startDate').value;
+            const validDate = document.getElementById('validDate').value;
 
+            if (!clientId) {
+                alert('กรุณากรอก Client ID');
+                document.getElementById('clientId').focus();
+                return;
+            }
+
+            if (!itemId) {
+                alert('กรุณากรอก Item ID');
+                document.getElementById('itemId').focus();
+                return;
+            }
+
+            if (!startDate) {
+                alert('กรุณาเลือก Start Date');
+                document.getElementById('startDate').focus();
+                return;
+            }
+
+            if (!validDate) {
+                alert('กรุณาเลือก Valid Date');
+                document.getElementById('validDate').focus();
+                return;
+            }
+
+            // ตรวจสอบว่า Valid Date ต้องมากกว่า Start Date
+            if (new Date(validDate) <= new Date(startDate)) {
+                alert('Valid Date ต้องมากกว่า Start Date');
+                document.getElementById('validDate').focus();
+                return;
+            }
+
+            // รวบรวมข้อมูล
             const formData = {
                 orderNo: document.getElementById('orderNo').value,
-                clientId: document.getElementById('clientId').value,
-                itemId: document.getElementById('itemId').value,
-                startDate: document.getElementById('startDate').value,
-                validDate: document.getElementById('validDate').value,
-                whTax: document.getElementById('whTax').value,
-                byUser: document.getElementById('byUser').value,
-                status: document.querySelector('input[name="status"]:checked').value,
-                note: document.getElementById('note').value
+                clientId: clientId,
+                itemId: itemId,
+                startDate: startDate,
+                validDate: validDate,
+                whTax: document.getElementById('whTax').value || '0',
+                note: document.getElementById('note').value.trim()
             };
 
             console.log('Form Data:', formData);
 
-            // Show success message
+            // แสดงข้อความสำเร็จ
             alert('บันทึกข้อมูลสำเร็จ!');
 
-            // Redirect back to order list
+            // กลับไปหน้า order list
             window.location.href = 'order.html';
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            generateOrderNo();
+            setDefaultDates();
+
+            // Set default W/H Tax to 7%
+            document.getElementById('whTax').value = '7';
+        });
+
+        // Handle Enter key to save
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey && document.activeElement.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                saveAndRedirect();
+            }
         });
 
         // Dropdown menu toggle

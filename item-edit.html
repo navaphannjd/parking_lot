@@ -124,6 +124,77 @@
             color: #666;
         }
 
+        /* เพิ่มส่วนนี้แทน topbar และ form styles เดิม */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .form-input:disabled,
+        .form-select:disabled,
+        .form-textarea:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #666;
+        }
+
+        .form-input:not(:disabled):focus,
+        .form-select:not(:disabled):focus,
+        .form-textarea:not(:disabled):focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        /* แก้ไขปุ่ม Archive */
+        .archive-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #ff9800;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .archive-btn:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        }
+
+        .archive-btn:active {
+            transform: translateY(0);
+        }
+
         /* Dropdown Menu */
         .dropdown {
             position: relative;
@@ -371,88 +442,132 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">
-                <span style="cursor: pointer;" onclick="window.location.href='item.html'">Item</span> >
-                Edit Item
+            <div class="section-title">Item Details</div>
+            <div class="action-buttons">
+                <button class="action-btn" id="editBtn" onclick="toggleEdit()" title="Edit">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="action-btn" onclick="window.location.href='item.html'" title="Back">
+                    <i class="fa-solid fa-reply"></i>
+                </button>
             </div>
         </div>
 
         <div class="form-container">
-            <form id="itemForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">
-                            Item ID<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="itemId" placeholder="ITM001" required readonly>
-                        <span class="form-help">รหัสจะถูกสร้างอัตโนมัติ</span>
-                    </div>
+            <!-- เพิ่ม Status Dropdown -->
+            <div class="form-group">
+                <label class="form-label">Item Status</label>
+                <select class="form-select" id="itemStatus" onchange="updateItemStatus()">
+                    <option value="Draft">Draft</option>
+                    <option value="Active">Active</option>
+                </select>
+            </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            Parking Lot<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="parkingLot" placeholder="ชื่อผู้สร้าง" value="Slot 1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Price (Baht)<span class="required">*</span>
-                        </label>
-                        <input type="number" class="form-input" id="price" placeholder="0.00" step="0.01" min="0" value="2000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Issuer<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="issuer" placeholder="ชื่อผู้สร้าง" value="Admin" required readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Receive Account<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="receiveAccount" placeholder="บัญชีที่รับเงิน" value="044-3-81036-6" required readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Status<span class="required">*</span>
-                        </label>
-                        <div class="status-options">
-                            <div class="radio-option">
-                                <input type="radio" id="statusDraft" name="status" value="Draft">
-                                <label for="statusDraft">Draft</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusActive" name="status" value="Active" checked>
-                                <label for="statusActive">Active</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusArchive" name="status" value="Archive">
-                                <label for="statusArchive">Archive</label>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Item ID<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="itemId" placeholder="ITM001" disabled>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="window.location.href='item.html'">
-                        <i class="fa-solid fa-times"></i>
-                        ยกเลิก
-                    </button>
-                    <button type="submit" class="btn btn-save">
-                        <i class="fa-solid fa-save"></i>
-                        บันทึก
-                    </button>
+                <div class="form-group">
+                    <label class="form-label">Parking Lot<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="parkingLot" placeholder="ชื่อผู้สร้าง" value="Slot 1"
+                        disabled>
                 </div>
-            </form>
+
+                <div class="form-group">
+                    <label class="form-label">Price (Baht)<span class="required">*</span></label>
+                    <input type="number" class="form-input" id="price" placeholder="0.00" step="0.01" min="0"
+                        value="2000" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Issuer<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="issuer" placeholder="ชื่อผู้สร้าง" value="Admin" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Receive Account<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="receiveAccount" placeholder="บัญชีที่รับเงิน"
+                        value="044-3-81036-6" disabled>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="archive-btn" onclick="archiveItem()">
+                    <i class="fa-solid fa-box-archive"></i> Archive
+                </button>
+            </div>
         </div>
     </div>
 
     <script src="sidebar.js"></script>
     <script>
+        let isEditMode = false;
+
+        // Toggle Edit Mode
+        function toggleEdit() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('editBtn');
+            const inputs = ['parkingLot', 'price', 'issuer', 'receiveAccount'];
+
+            if (isEditMode) {
+                // เข้าสู่โหมดแก้ไข
+                editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+                editBtn.title = 'Save';
+                inputs.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (id !== 'issuer' && id !== 'receiveAccount') {
+                        element.disabled = false;
+                    }
+                });
+            } else {
+                // บันทึกข้อมูล
+                saveItemData();
+                editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
+                editBtn.title = 'Edit';
+                inputs.forEach(id => {
+                    document.getElementById(id).disabled = true;
+                });
+            }
+        }
+
+        // Save Item Data
+        function saveItemData() {
+            const formData = {
+                itemId: document.getElementById('itemId').value,
+                parkingLot: document.getElementById('parkingLot').value,
+                price: document.getElementById('price').value,
+                issuer: document.getElementById('issuer').value,
+                receiveAccount: document.getElementById('receiveAccount').value,
+                status: document.getElementById('itemStatus').value
+            };
+
+            console.log('Saving data:', formData);
+            alert('บันทึกข้อมูลสำเร็จ!');
+        }
+
+        // Update Item Status
+        function updateItemStatus() {
+            const status = document.getElementById('itemStatus').value;
+            console.log('Status changed to:', status);
+            alert(`เปลี่ยนสถานะเป็น ${status} สำเร็จ`);
+        }
+
+        // Archive Item
+        function archiveItem() {
+            if (!confirm('คุณต้องการ Archive Item นี้ใช่หรือไม่?')) {
+                return;
+            }
+
+            // เปลี่ยนสถานะเป็น Archive
+            document.getElementById('itemStatus').value = 'Archive';
+            alert('Archive สำเร็จ!');
+
+            // ถ้าต้องการกลับไปหน้า list
+            // window.location.href = 'item.html';
+        }
+
         // Auto-generate Item ID
         function generateItemId() {
             const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
@@ -461,29 +576,6 @@
 
         // Generate ID when page loads
         window.addEventListener('load', generateItemId);
-
-        // Form submission
-        document.getElementById('itemForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const formData = {
-                itemId: document.getElementById('itemId').value,
-                parkingLot: document.getElementById('parkingLot').value,
-                price: document.getElementById('price').value,
-                issuer: document.getElementById('issuer').value,
-                receiveAccount: document.getElementById('receiveAccount').value,
-                status: document.querySelector('input[name="status"]:checked').value,
-                note: document.getElementById('note').value
-            };
-
-            console.log('Form Data:', formData);
-
-            // Show success message
-            alert('บันทึกข้อมูลสำเร็จ!');
-
-            // Redirect back to item list
-            window.location.href = 'item.html';
-        });
 
         // Dropdown menu toggle
         document.getElementById('userProfile').addEventListener('click', function (e) {

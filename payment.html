@@ -331,6 +331,363 @@
             color: #dc2626;
         }
 
+        /* เพิ่มส่วนนี้หลัง topbar styles */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Invoice Styles */
+        .invoice-container {
+            background: white;
+            padding: 30px 40px;
+            max-width: 210mm;
+            margin: 0 auto 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .company-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #999;
+            letter-spacing: 2px;
+        }
+
+        .invoice-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .invoice-details {
+            text-align: right;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .invoice-number {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .invoice-date {
+            color: #666;
+        }
+
+        .invoice-parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 25px;
+            font-size: 12px;
+        }
+
+        .party-box {
+            background: transparent;
+            padding: 0;
+        }
+
+        .party-title {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .party-info {
+            color: #555;
+            line-height: 1.5;
+            font-size: 12px;
+        }
+
+        .status-line {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline;
+            font-weight: 600;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 12px;
+        }
+
+        .invoice-table thead {
+            background: #666;
+        }
+
+        .invoice-table th {
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: white;
+            border: 1px solid #666;
+        }
+
+        .invoice-table td {
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            font-size: 12px;
+            color: #333;
+            vertical-align: top;
+        }
+
+        .invoice-summary {
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        .summary-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .summary-table td {
+            padding: 5px 0;
+            text-align: right;
+        }
+
+        .summary-table td:first-child {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        .summary-table .total-row td {
+            border-top: 2px solid #333;
+            border-bottom: 2px solid #333;
+            padding: 8px 0;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .summary-table .balance-row td {
+            padding-top: 8px;
+            font-weight: 600;
+        }
+
+        .invoice-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .transaction-table th {
+            background: #f5f5f5;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .transaction-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .transaction-table .balance-row {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .vat-note {
+            margin-top: 12px;
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Print Styles */
+        @media print {
+
+            /* รีเซ็ตทุกอย่าง */
+            * {
+                visibility: visible !important;
+            }
+
+            /* ซ่อนเฉพาะส่วนที่ไม่ต้องการ */
+            .topbar,
+            .content-header,
+            .card-section,
+            .hamburger,
+            .user-profile,
+            .dropdown,
+            .action-buttons {
+                display: none !important;
+            }
+
+            /* ซ่อน sidebar ถ้ามี */
+            .sidebar,
+            nav,
+            aside {
+                display: none !important;
+            }
+
+            /* แสดงเฉพาะ invoice container */
+            body {
+                background: white;
+            }
+
+            .content {
+                padding: 0;
+                margin: 0;
+            }
+
+            .payment-card {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .invoice-container {
+                position: relative;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                padding: 20px;
+                margin: 0;
+                page-break-after: auto;
+            }
+
+            /* แสดงสีพื้นหลังและสี */
+            .invoice-table th {
+                background-color: #667eea !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .party-box,
+            .transaction-info {
+                background-color: #f8f9ff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .status-badge.status-paid {
+                background-color: #d4edda !important;
+                color: #155724 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .company-logo {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ป้องกันการแบ่งหน้า */
+            .invoice-header,
+            .invoice-parties,
+            .invoice-table,
+            .invoice-summary,
+            .invoice-footer {
+                page-break-inside: avoid;
+            }
+
+            .invoice-table tbody tr {
+                page-break-inside: avoid;
+            }
+
+            /* ปรับขนาดตัวอักษร */
+            body {
+                font-size: 12pt;
+            }
+
+            .invoice-table {
+                width: 100%;
+            }
+
+            .invoice-table th,
+            .invoice-table td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .invoice-parties {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .invoice-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .invoice-details {
+                text-align: left;
+            }
+
+            .invoice-table {
+                font-size: 12px;
+            }
+
+            .invoice-table th,
+            .invoice-table td {
+                padding: 10px 8px;
+            }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .content {
@@ -454,6 +811,14 @@
                 <span style="cursor: pointer;" onclick="window.location.href='invoice.html'">Invoice</span> >
                 #Invoice-2026-001
             </div>
+            <div class="action-buttons">
+                <button class="action-btn" id="saveBtn" onclick="printInvoice()" title="Print">
+                    <i class="fa-solid fa-print"></i>
+                </button>
+                <button class="action-btn" onclick="downloadPDF()" title="Download">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
+            </div>
         </div>
 
         <div class="payment-card">
@@ -480,6 +845,112 @@
                             <span class="bank-info-label">พร้อมเพย์:</span>
                             <span class="bank-info-value">0812345678</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Display -->
+            <div class="invoice-container" id="invoiceContainer">
+                <div class="invoice-header">
+                    <div>
+                        <div class="company-logo">Thames</div>
+                    </div>
+                    <div class="invoice-details">
+                        <div class="invoice-number">Invoice 417004</div>
+                        <div class="invoice-date">Date of Invoice: 23/12/2025</div>
+                        <div class="invoice-date">Due Date: 30/12/2025</div>
+                    </div>
+                </div>
+
+                <div class="invoice-parties">
+                    <div class="party-box">
+                        <div class="party-title">To:</div>
+                        <div class="party-info">
+                            Navaphan Noyindee Be Condo Phahonyothin Phontage Rd, Khlong<br>
+                            Nueng, Khlong Luang District, Pathum Thani 12120 Thailand
+                        </div>
+                    </div>
+                    <div class="party-box">
+                        <div class="party-title">From:</div>
+                        <div class="party-info">
+                            ReadyIDC Co.,Ltd. 39/12 Bond Street Rd, Bangphlod, Pakkret,<br>
+                            Nonthaburi Thailand 11120
+                        </div>
+                        <span class="status-badge status-paid">Status: Paid</span>
+                    </div>
+                </div>
+
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th style="text-align: center;">VAT</th>
+                            <th style="text-align: right;">Unit cost</th>
+                            <th style="text-align: center;">Qty</th>
+                            <th style="text-align: right;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                VPS Business SSD (Linux) - VPS-LXS+ - webserver (IP : 45.136.237.60) (30/12/2025 -
+                                29/01/2026)<br>
+                                + OS Template: Ubuntu 22.04<br>
+                                + Control Panel (License): None
+                            </td>
+                            <td style="text-align: center;">Yes</td>
+                            <td style="text-align: right;">250.00 THB</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: right;">250.00 THB</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="invoice-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>250.00 THB</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Credit:</span>
+                        <span>0.00 THB</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>VAT (7.00%):</span>
+                        <span>17.50 THB</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>267.50 THB</span>
+                    </div>
+                    <div class="summary-row">
+                        <span style="color: #28a745; font-weight: 600;">Balance:</span>
+                        <span style="color: #28a745; font-weight: 600;">0.00 THB</span>
+                    </div>
+                </div>
+
+                <div class="invoice-footer">
+                    <div class="party-title">Related transactions:</div>
+                    <div class="transaction-info">
+                        <div class="transaction-row">
+                            <span class="transaction-label">Transaction Date:</span>
+                            <span class="transaction-value">28/12/2025</span>
+                        </div>
+                        <div class="transaction-row">
+                            <span class="transaction-label">Gateway:</span>
+                            <span class="transaction-value">Credit/Debit</span>
+                        </div>
+                        <div class="transaction-row">
+                            <span class="transaction-label">Transaction ID:</span>
+                            <span class="transaction-value">chrg_0GT7ozou7BekonwnzHo</span>
+                        </div>
+                        <div class="transaction-row">
+                            <span class="transaction-label">Amount:</span>
+                            <span class="transaction-value">267.50 THB</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: #666; font-style: italic;">
+                        Included VAT 7%
                     </div>
                 </div>
             </div>
@@ -585,6 +1056,46 @@
                 uploadArea.style.display = 'none';
             };
             reader.readAsDataURL(file);
+        }
+
+        // Print Invoice Function
+        function printInvoice() {
+            window.print();
+        }
+
+        // Download PDF Function
+        async function downloadPDF() {
+            // แสดงข้อความกำลังสร้าง PDF
+            const originalText = event.target.innerHTML;
+            event.target.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            event.target.disabled = true;
+
+            try {
+                // ใช้ html2pdf.js library (ต้องเพิ่ม CDN)
+                const element = document.getElementById('invoiceContainer');
+                const opt = {
+                    margin: 10,
+                    filename: 'Invoice-417004.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // ถ้ามี html2pdf library
+                if (typeof html2pdf !== 'undefined') {
+                    await html2pdf().set(opt).from(element).save();
+                } else {
+                    // ถ้าไม่มี library ให้ใช้ print แทน
+                    alert('กรุณาใช้ฟังก์ชัน Print แทน หรือติดตั้ง html2pdf library');
+                    window.print();
+                }
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('เกิดข้อผิดพลาดในการสร้าง PDF กรุณาลองใหม่อีกครั้ง');
+            } finally {
+                event.target.innerHTML = originalText;
+                event.target.disabled = false;
+            }
         }
 
         async function uploadToCloudinary(file) {

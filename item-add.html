@@ -309,6 +309,38 @@
             color: #333;
         }
 
+        /* เพิ่มส่วนนี้แทน topbar styles เดิม */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -371,9 +403,14 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">
-                <span style="cursor: pointer;" onclick="window.location.href='item.html'">Item</span> >
-                Add Item
+            <div class="section-title">Add New Item</div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="saveAndRedirect()" title="Save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+                <button class="action-btn" onclick="window.location.href='item.html'" title="Back">
+                    <i class="fa-solid fa-reply"></i>
+                </button>
             </div>
         </div>
 
@@ -399,40 +436,12 @@
                         <label class="form-label">
                             Price (Baht)<span class="required">*</span>
                         </label>
-                        <input type="number" class="form-input" id="price" placeholder="0.00" step="0.01" min="0" required>
+                        <input type="number" class="form-input" id="price" placeholder="0.00" step="0.01" min="0"
+                            required>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            Status<span class="required">*</span>
-                        </label>
-                        <div class="status-options">
-                            <div class="radio-option">
-                                <input type="radio" id="statusDraft" name="status" value="Draft" checked>
-                                <label for="statusDraft">Draft</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusActive" name="status" value="Active">
-                                <label for="statusActive">Active</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusArchive" name="status" value="Archive">
-                                <label for="statusArchive">Archive</label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="window.location.href='item.html'">
-                        <i class="fa-solid fa-times"></i>
-                        ยกเลิก
-                    </button>
-                    <button type="submit" class="btn btn-save">
-                        <i class="fa-solid fa-save"></i>
-                        บันทึก
-                    </button>
-                </div>
             </form>
         </div>
     </div>
@@ -448,27 +457,46 @@
         // Generate ID when page loads
         window.addEventListener('load', generateItemId);
 
-        // Form submission
-        document.getElementById('itemForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Save and Redirect function
+        function saveAndRedirect() {
+            // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+            const parkingLot = document.getElementById('parkingLot').value.trim();
+            const price = document.getElementById('price').value;
 
+            if (!parkingLot) {
+                alert('กรุณากรอก Parking Lot Name');
+                document.getElementById('parkingLot').focus();
+                return;
+            }
+
+            if (!price || price <= 0) {
+                alert('กรุณากรอก Price ที่ถูกต้อง');
+                document.getElementById('price').focus();
+                return;
+            }
+
+            // รวบรวมข้อมูล
             const formData = {
                 itemId: document.getElementById('itemId').value,
-                parkingLot: document.getElementById('parkingLot').value,
-                price: document.getElementById('price').value,
-                issuer: document.getElementById('issuer').value,
-                receiveAccount: document.getElementById('receiveAccount').value,
-                status: document.querySelector('input[name="status"]:checked').value,
-                note: document.getElementById('note').value
+                parkingLot: parkingLot,
+                price: price,
             };
 
             console.log('Form Data:', formData);
 
-            // Show success message
+            // แสดงข้อความสำเร็จ
             alert('บันทึกข้อมูลสำเร็จ!');
 
-            // Redirect back to item list
+            // กลับไปหน้า item list
             window.location.href = 'item.html';
+        }
+
+        // Handle Enter key to save
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                saveAndRedirect();
+            }
         });
 
         // Dropdown menu toggle

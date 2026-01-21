@@ -124,6 +124,77 @@
             color: #666;
         }
 
+        /* เพิ่มส่วนนี้แทน topbar styles เดิม */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .form-input:disabled,
+        .form-select:disabled,
+        .form-textarea:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #666;
+        }
+
+        .form-input:not(:disabled):focus,
+        .form-select:not(:disabled):focus,
+        .form-textarea:not(:disabled):focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        /* แก้ไขปุ่ม Archive */
+        .archive-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #ff9800;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .archive-btn:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        }
+
+        .archive-btn:active {
+            transform: translateY(0);
+        }
+
         /* Dropdown Menu */
         .dropdown {
             position: relative;
@@ -371,153 +442,184 @@
 
     <div class="content">
         <div class="content-header">
-            <div class="section-title">
-                <span style="cursor: pointer;" onclick="window.location.href='order.html'">Order</span> >
-                Edit Order
+            <div class="section-title">Order Details</div>
+            <div class="action-buttons">
+                <button class="action-btn" id="editBtn" onclick="toggleEdit()" title="Edit">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="action-btn" onclick="window.location.href='order.html'" title="Back">
+                    <i class="fa-solid fa-reply"></i>
+                </button>
             </div>
         </div>
 
         <div class="form-container">
-            <form id="orderForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">
-                            Order No.<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="orderNo" placeholder="ORD001" required readonly>
-                    </div>
+            <!-- เพิ่ม Status Dropdown ด้านบนสุด -->
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">Order Status</label>
+                <select class="form-select" id="orderStatus" onchange="updateOrderStatus()">
+                    <option value="Draft">Draft</option>
+                    <option value="Active">Active</option>
+                    <option value="Archive">Archive</option>
+                </select>
+            </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            Client ID<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="clientId" placeholder="CLI001" value="CLI001" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Item ID<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="itemId" placeholder="ITM001" value="ITM001" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Start Date<span class="required">*</span>
-                        </label>
-                        <input type="date" class="form-input" id="startDate" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Valid Date<span class="required">*</span>
-                        </label>
-                        <input type="date" class="form-input" id="validDate" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            W/H Tax (%)<span class="required">*</span>
-                        </label>
-                        <input type="number" class="form-input" id="whTax" placeholder="0" step="1" min="0" max="100" value="7" required readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            By User<span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-input" id="byUser" placeholder="ชื่อผู้สร้าง" value="Admin" required readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            Status<span class="required">*</span>
-                        </label>
-                        <div class="status-options">
-                            <div class="radio-option">
-                                <input type="radio" id="statusDraft" name="status" value="Draft">
-                                <label for="statusDraft">Draft</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusActive" name="status" value="Active" checked>
-                                <label for="statusActive">Active</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" id="statusArchive" name="status" value="Archive">
-                                <label for="statusArchive">Archive</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label class="form-label">
-                            Note
-                        </label>
-                        <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
-                    </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Order No.<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="orderNo" placeholder="ORD001" disabled>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="window.location.href='order.html'">
-                        <i class="fa-solid fa-times"></i>
-                        ยกเลิก
-                    </button>
-                    <button type="submit" class="btn btn-save">
-                        <i class="fa-solid fa-save"></i>
-                        บันทึก
-                    </button>
+                <div class="form-group">
+                    <label class="form-label">Client ID<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="clientId" placeholder="CLI001" value="CLI001" disabled>
                 </div>
-            </form>
+
+                <div class="form-group">
+                    <label class="form-label">W/H Tax (%)<span class="required">*</span></label>
+                    <input type="number" class="form-input" id="whTax" placeholder="0" step="1" min="0" max="100"
+                        value="7" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Item ID<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="itemId" placeholder="ITM001" value="ITM001" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Total Amount<span class="required">*</span></label>
+                    <input type="number" class="form-input" id="totalAmount" placeholder="0" step="1" min="0" max="100"
+                        value="50000" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">VAT<span class="required">*</span></label>
+                    <input type="number" class="form-input" id="vat" placeholder="0" step="1" min="0" max="100"
+                        value="3500" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Start Date<span class="required">*</span></label>
+                    <input type="date" class="form-input" id="startDate" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Valid Date<span class="required">*</span></label>
+                    <input type="date" class="form-input" id="validDate" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">By User<span class="required">*</span></label>
+                    <input type="text" class="form-input" id="byUser" placeholder="ชื่อผู้สร้าง" value="Admin" disabled>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Note</label>
+                    <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"
+                        disabled></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="archive-btn" onclick="archiveOrder()">
+                    <i class="fa-solid fa-box-archive"></i> Archive
+                </button>
+            </div>
         </div>
     </div>
 
     <script src="sidebar.js"></script>
     <script>
+        let isEditMode = false;
+
+        // Toggle Edit Mode
+        function toggleEdit() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('editBtn');
+            const editableInputs = ['clientId', 'itemId', 'startDate', 'validDate', 'note'];
+
+            if (isEditMode) {
+                // เข้าสู่โหมดแก้ไข
+                editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+                editBtn.title = 'Save';
+                editableInputs.forEach(id => {
+                    document.getElementById(id).disabled = false;
+                });
+            } else {
+                // บันทึกข้อมูล
+                saveOrderData();
+                editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
+                editBtn.title = 'Edit';
+                editableInputs.forEach(id => {
+                    document.getElementById(id).disabled = true;
+                });
+            }
+        }
+
+        // Save Order Data
+        function saveOrderData() {
+            const formData = {
+                orderNo: document.getElementById('orderNo').value,
+                clientId: document.getElementById('clientId').value,
+                itemId: document.getElementById('itemId').value,
+                totalAmount: document.getElementById('totalAmount').value,
+                vat: document.getElementById('vat').value,
+                startDate: document.getElementById('startDate').value,
+                validDate: document.getElementById('validDate').value,
+                whTax: document.getElementById('whTax').value,
+                byUser: document.getElementById('byUser').value,
+                status: document.getElementById('orderStatus').value,
+                note: document.getElementById('note').value
+            };
+
+            console.log('Saving data:', formData);
+            alert('บันทึกข้อมูลสำเร็จ!');
+        }
+
+        // Update Order Status
+        function updateOrderStatus() {
+            const status = document.getElementById('orderStatus').value;
+            console.log('Status changed to:', status);
+            alert(`เปลี่ยนสถานะเป็น ${status} สำเร็จ`);
+        }
+
+        // Archive Order
+        function archiveOrder() {
+            if (!confirm('คุณต้องการ Archive Order นี้ใช่หรือไม่?')) {
+                return;
+            }
+
+            // เปลี่ยนสถานะเป็น Archive
+            document.getElementById('orderStatus').value = 'Archive';
+            alert('Archive สำเร็จ!');
+
+            // ถ้าต้องการกลับไปหน้า list
+            // window.location.href = 'order.html';
+        }
+
         // Auto-generate Order No.
         function generateOrderNo() {
             const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
             document.getElementById('orderNo').value = `ORD${randomNum}`;
         }
 
-        // Generate Order No. when page loads
+        // Initialize when page loads
         window.addEventListener('load', () => {
             generateOrderNo();
-            
+
             // Set default dates
             const today = new Date();
             const startDateInput = document.getElementById('startDate');
             const validDateInput = document.getElementById('validDate');
-            
+
             startDateInput.value = today.toISOString().split('T')[0];
-            
+
             const nextMonth = new Date(today);
             nextMonth.setMonth(nextMonth.getMonth() + 1);
             validDateInput.value = nextMonth.toISOString().split('T')[0];
-        });
 
-        // Form submission
-        document.getElementById('orderForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const formData = {
-                orderNo: document.getElementById('orderNo').value,
-                clientId: document.getElementById('clientId').value,
-                itemId: document.getElementById('itemId').value,
-                startDate: document.getElementById('startDate').value,
-                validDate: document.getElementById('validDate').value,
-                whTax: document.getElementById('whTax').value,
-                byUser: document.getElementById('byUser').value,
-                status: document.querySelector('input[name="status"]:checked').value,
-                note: document.getElementById('note').value
-            };
-
-            console.log('Form Data:', formData);
-
-            // Show success message
-            alert('บันทึกข้อมูลสำเร็จ!');
-
-            // Redirect back to order list
-            window.location.href = 'order.html';
+            // Set default status
+            document.getElementById('orderStatus').value = 'Active';
         });
 
         // Dropdown menu toggle
