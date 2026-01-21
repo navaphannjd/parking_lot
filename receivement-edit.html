@@ -708,7 +708,6 @@
             isEditMode = !isEditMode;
             const editBtn = document.getElementById('editBtn');
             const editableInputs = ['receiveDate', 'receiveTime', 'receiveAmount', 'receiveAccount', 'bankName', 'note'];
-            const statusSelect = document.getElementById('receivementStatus');
 
             if (isEditMode) {
                 // เข้าสู่โหมดแก้ไข
@@ -746,7 +745,6 @@
                 receiveAccount: document.getElementById('receiveAccount').value,
                 bankName: document.getElementById('bankName').value,
                 note: document.getElementById('note').value,
-                status: document.getElementById('receivementStatus').value,
                 recordedBy: document.getElementById('recordedBy').value,
                 recordedDate: document.getElementById('recordedDate').value
             };
@@ -755,12 +753,22 @@
             alert('บันทึกข้อมูลสำเร็จ!');
         }
 
-        // Update Status
-        function updateStatus() {
-            if (!isEditMode) return;
+        // Save Receivement Data
+        function saveReceivementData() {
+            const formData = {
+                receivementId: document.getElementById('receivementId').value,
+                receiveDate: document.getElementById('receiveDate').value,
+                receiveTime: document.getElementById('receiveTime').value,
+                receiveAmount: document.getElementById('receiveAmount').value,
+                receiveAccount: document.getElementById('receiveAccount').value,
+                bankName: document.getElementById('bankName').value,
+                note: document.getElementById('note').value,
+                recordedBy: document.getElementById('recordedBy').value,
+                recordedDate: document.getElementById('recordedDate').value
+            };
 
-            const status = document.getElementById('receivementStatus').value;
-            console.log('Status changed to:', status);
+            console.log('Saving data:', formData);
+            alert('เปลี่ยนสถานะเป็น Complete!');
         }
 
         // Modal Functions
