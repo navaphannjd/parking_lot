@@ -577,7 +577,7 @@
                     <span><i class="fa-solid fa-gear"></i></span>
                     <span>ตั้งค่าบัญชี</span>
                 </div>
-                <div class="dropdown-item">
+                <div class="dropdown-item" onclick="logOut()">
                     <span><i class="fa-solid fa-door-open"></i></span>
                     <span>ออกจากระบบ</span>
                 </div>
@@ -793,6 +793,10 @@
         function generateReceivementId() {
             const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
             document.getElementById('receivementId').value = `RCV${randomNum}`;
+        }
+
+        function logOut(){
+            window.location.href = 'index.html'
         }
 
         // Initialize
