@@ -521,6 +521,11 @@
             color: #16a34a;
         }
 
+        .status-complete {
+            background: #bcffd4;
+            color: #0e642d;
+        }
+
         .status-unpaid {
             background: #fee2e2;
             color: #dc2626;
@@ -731,15 +736,15 @@
 
                 <div class="table-row">
                     <div class="row-header">
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">4</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">INV-2026-004</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">ORD-2026-059</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">สุดา</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">ใจดี</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">ITM007</div>
-                        <div class="cell price-cell" onclick="viewPayment('INV-2026-004')">฿3,750.00</div>
-                        <div class="cell" onclick="viewPayment('INV-2026-004')">
-                            <span class="status-badge status-active">Active</span>
+                        <div class="cell" onclick="viewReceipt()">4</div>
+                        <div class="cell" onclick="viewReceipt()">INV-2026-004</div>
+                        <div class="cell" onclick="viewReceipt()">ORD-2026-059</div>
+                        <div class="cell" onclick="viewReceipt()">สุดา</div>
+                        <div class="cell" onclick="viewReceipt()">ใจดี</div>
+                        <div class="cell" onclick="viewReceipt()">ITM007</div>
+                        <div class="cell price-cell" onclick="viewReceipt()">฿3,750.00</div>
+                        <div class="cell" onclick="viewReceipt()">
+                            <span class="status-badge status-complete">Complete</span>
                         </div>
                     </div>
                 </div>
@@ -766,6 +771,10 @@
         // View payment function
         function viewPayment(invoiceNo) {
             window.location.href = `payment.html?invoice=${encodeURIComponent(invoiceNo)}`;
+        }
+
+        function viewReceipt() {
+            window.open('invoice-receipt.html', '_blank');
         }
 
         function editInvoice() {
