@@ -451,6 +451,12 @@
             try {
                 const element = document.getElementById('invoiceContainer');
 
+                // เลื่อนหน้าจอกลับไปด้านบนสุดก่อน
+                window.scrollTo(0, 0);
+
+                // รอให้ browser render ใหม่
+                await new Promise(resolve => setTimeout(resolve, 100));
+
                 // ซ่อนเส้นขอบชั่วคราว
                 element.style.border = 'none';
                 element.style.boxShadow = 'none';
@@ -464,7 +470,11 @@
                         useCORS: true,
                         letterRendering: true,
                         logging: false,
-                        windowHeight: element.scrollHeight
+                        windowHeight: element.scrollHeight,
+                        scrollY: -window.scrollY,
+                        scrollX: -window.scrollX,
+                        width: 210 * 3.7795275591,  // 210mm in pixels at 96dpi
+                        height: element.scrollHeight
                     },
                     jsPDF: {
                         unit: 'mm',
