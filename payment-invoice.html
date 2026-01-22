@@ -14,6 +14,11 @@
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            -webkit-text-size-adjust: none;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
@@ -214,13 +219,13 @@
                 print-color-adjust: exact !important;
                 color-adjust: exact !important;
             }
-            
+
             .invoice-table tbody tr.total-row td {
                 background: #f5f5f5 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            
+
             tr.total-row td[style*="background-color"] {
                 background-color: #d3d3d3 !important;
                 -webkit-print-color-adjust: exact !important;
@@ -410,7 +415,8 @@
                     <td style="text-align: right;">35,100.00</td>
                 </tr>
                 <tr class="total-row">
-                    <td colspan="4" style="text-align: center; background-color: #d3d3d3;">สามหมื่นห้าพันหนึ่งร้อยบาทถ้วน</td>
+                    <td colspan="4" style="text-align: center; background-color: #d3d3d3;">
+                        สามหมื่นห้าพันหนึ่งร้อยบาทถ้วน</td>
                     <td style="text-align: right; background-color: #d3d3d3;">35,100.00</td>
                 </tr>
             </tbody>
@@ -444,25 +450,25 @@
 
             try {
                 const element = document.getElementById('invoiceContainer');
-                
+
                 // ซ่อนเส้นขอบชั่วคราว
                 element.style.border = 'none';
                 element.style.boxShadow = 'none';
-                
+
                 const opt = {
                     margin: 0,
                     filename: 'Invoice-670016.pdf',
                     image: { type: 'jpeg', quality: 1 },
-                    html2canvas: { 
+                    html2canvas: {
                         scale: 3,
                         useCORS: true,
                         letterRendering: true,
                         logging: false,
                         windowHeight: element.scrollHeight
                     },
-                    jsPDF: { 
-                        unit: 'mm', 
-                        format: 'a4', 
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4',
                         orientation: 'portrait',
                         compress: true
                     },
@@ -475,15 +481,15 @@
                     alert('กรุณาใช้ฟังก์ชัน Print แทน หรือติดตั้ง html2pdf library');
                     window.print();
                 }
-                
+
                 // คืนค่าเส้นขอบ
                 element.style.border = '2px solid #666';
                 element.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-                
+
             } catch (error) {
                 console.error('Error generating PDF:', error);
                 alert('เกิดข้อผิดพลาดในการสร้าง PDF กรุณาลองใหม่อีกครั้ง');
-                
+
                 // คืนค่าเส้นขอบกรณีเกิด error
                 element.style.border = '2px solid #666';
                 element.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
