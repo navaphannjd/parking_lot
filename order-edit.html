@@ -38,92 +38,6 @@
             font-weight: bold;
         }
 
-        /* Top Bar */
-        .topbar {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-
-        .hamburger {
-            width: 30px;
-            height: 25px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.3s;
-        }
-
-        .hamburger span {
-            width: 100%;
-            height: 3px;
-            background: #667eea;
-            border-radius: 3px;
-            transition: all 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            padding: 8px 15px;
-            border-radius: 25px;
-            transition: all 0.3s;
-        }
-
-        .user-profile:hover {
-            background: #f8f9fa;
-        }
-
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 15px;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: #666;
-        }
-
         /* เพิ่มส่วนนี้แทน topbar styles เดิม */
         .action-buttons {
             display: flex;
@@ -196,58 +110,8 @@
             transform: translateY(0);
         }
 
-        .archive-btn.show{
+        .archive-btn.show {
             display: block;
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
-        }
-
-        .dropdown-menu.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .dropdown-item:first-child {
-            border-radius: 12px 12px 0 0;
-        }
-
-        .dropdown-item:last-child {
-            border-radius: 0 0 12px 12px;
-            border-top: 1px solid #e9ecef;
-            color: #dc3545;
-        }
-
-        .dropdown-item:hover {
-            background: #f8f9fa;
         }
 
         /* Form Styles */
@@ -453,6 +317,46 @@
             color: #666;
         }
 
+        /* เพิ่มหลัง .item-price styles */
+        .item-vat,
+        .item-wht {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+            cursor: pointer;
+        }
+
+        .item-vat:focus,
+        .item-wht:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .item-vat:disabled,
+        .item-wht:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #666;
+        }
+
+        .wht-cell {
+            transition: all 0.3s ease;
+        }
+
+        .wht-cell.hidden {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .wht-cell.hidden select {
+            visibility: hidden;
+        }
+
         .btn-remove-item {
             width: 36px;
             height: 36px;
@@ -632,6 +536,17 @@
                 height: 40px;
                 margin: 8px 0 0 0;
             }
+
+            .item-vat,
+            .item-wht {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+
+            .wht-cell.hidden {
+                display: none !important;
+                visibility: visible;
+            }
         }
 
         @media (max-width: 480px) {
@@ -661,41 +576,6 @@
 </head>
 
 <body>
-    <div class="topbar">
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-        <div class="dropdown">
-            <div class="user-profile" id="userProfile">
-                <div class="user-info">
-                    <div class="user-name">สมชาย ใจดี</div>
-                    <div class="user-role">ผู้ดูแลระบบ</div>
-                </div>
-                <div class="user-avatar">SC</div>
-            </div>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-user"></i></span>
-                    <span>โปรไฟล์</span>
-                </div>
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-bell"></i></span>
-                    <span>การแจ้งเตือน</span>
-                </div>
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-gear"></i></span>
-                    <span>ตั้งค่าบัญชี</span>
-                </div>
-                <div class="dropdown-item" onclick="logOut()">
-                    <span><i class="fa-solid fa-door-open"></i></span>
-                    <span>ออกจากระบบ</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="content">
         <div class="content-header">
@@ -752,7 +632,9 @@
                                     <tr>
                                         <th style="width: 50px;">#</th>
                                         <th>Item ID</th>
-                                        <th style="width: 200px;">Price (Baht)</th>
+                                        <th style="width: 150px;">Price (Baht)</th>
+                                        <th style="width: 120px;">VAT</th>
+                                        <th style="width: 120px;" class="wht-header">WHT</th>
                                         <th style="width: 80px;">Delete</th>
                                     </tr>
                                 </thead>
@@ -764,6 +646,19 @@
                                         <td data-label="Price"><input type="number" class="item-price"
                                                 placeholder="0.00" step="0.01" min="0" value="10000.00"
                                                 oninput="calculateTotal()" disabled></td>
+                                        <td data-label="VAT">
+                                            <select class="item-vat" onchange="handleVatChange(this)" disabled>
+                                                <option value="none">None</option>
+                                                <option value="include">Include VAT</option>
+                                                <option value="exclude">Exclude VAT</option>
+                                            </select>
+                                        </td>
+                                        <td data-label="WHT" class="wht-cell">
+                                            <select class="item-wht" onchange="calculateTotal()" disabled>
+                                                <option value="no">No</option>
+                                                <option value="yes">Yes</option>
+                                            </select>
+                                        </td>
                                         <td data-label="Delete"><button type="button" class="btn-remove-item"
                                                 onclick="removeItem(this)" disabled>×</button></td>
                                     </tr>
@@ -774,10 +669,23 @@
                                         <td data-label="Price"><input type="number" class="item-price"
                                                 placeholder="0.00" step="0.01" min="0" value="5000.00"
                                                 oninput="calculateTotal()" disabled></td>
+                                        <td data-label="VAT">
+                                            <select class="item-vat" onchange="handleVatChange(this)" disabled>
+                                                <option value="none">None</option>
+                                                <option value="include">Include VAT</option>
+                                                <option value="exclude">Exclude VAT</option>
+                                            </select>
+                                        </td>
+                                        <td data-label="WHT" class="wht-cell">
+                                            <select class="item-wht" onchange="calculateTotal()" disabled>
+                                                <option value="no">No</option>
+                                                <option value="yes">Yes</option>
+                                            </select>
+                                        </td>
                                         <td data-label="Delete"><button type="button" class="btn-remove-item"
                                                 onclick="removeItem(this)" disabled>×</button></td>
                                     </tr>
-                                </tbody>
+                                    </tbody>
                             </table>
                             <button type="button" class="btn-add-item" id="addItemBtn" onclick="addItem()" disabled>
                                 <i class="fa-solid fa-plus"></i> Add Item
@@ -789,19 +697,19 @@
                         <div class="summary-container">
                             <div class="summary-row">
                                 <span class="summary-label">Total Amount:</span>
-                                <span class="summary-value" id="totalAmount">฿15,000.00</span>
+                                <span class="summary-value" id="totalAmount">฿0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span class="summary-label">Vat 7%:</span>
-                                <span class="summary-value" id="vatAmount">฿1,050.00</span>
+                                <span class="summary-label">VAT 7%:</span>
+                                <span class="summary-value" id="vatAmount">฿0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span class="summary-label">Withholding Tax 3%:</span>
-                                <span class="summary-value" id="whTaxAmount">฿450.00</span>
+                                <span class="summary-label">Withholding Tax 5%:</span>
+                                <span class="summary-value" id="whtAmount">฿0.00</span>
                             </div>
                             <div class="summary-row summary-total">
                                 <span class="summary-label">Net Amount:</span>
-                                <span class="summary-value" id="netAmount">฿15,600.00</span>
+                                <span class="summary-value" id="netAmount">฿0.00</span>
                             </div>
                         </div>
                     </div>
@@ -857,7 +765,7 @@
             const archiveBtn = document.querySelector('.archive-btn');
             const editableInputs = ['clientId', 'name', 'citizenId', 'startDate', 'validDate', 'note', 'receiveAccount', 'receiveBank'];
             const orderStatus = document.getElementById('orderStatus');
-            const itemInputs = document.querySelectorAll('.item-input, .item-price');
+            const itemInputs = document.querySelectorAll('.item-input, .item-price, .item-vat, .item-wht');
             const removeButtons = document.querySelectorAll('.btn-remove-item');
             const addItemBtn = document.getElementById('addItemBtn');
 
@@ -914,7 +822,14 @@
             itemRows.forEach(row => {
                 const itemId = row.querySelector('.item-input').value;
                 const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0;
-                items.push({ itemId: itemId, price: itemPrice });
+                const vatType = row.querySelector('.item-vat').value;
+                const whtType = row.querySelector('.item-wht').value;
+                items.push({
+                    itemId: itemId,
+                    price: itemPrice,
+                    vat: vatType,
+                    wht: whtType
+                });
             });
 
             const formData = {
@@ -957,6 +872,19 @@
         <td class="item-number" data-label="">${itemCount}</td>
         <td data-label="Item ID"><input type="text" class="item-input" placeholder="ITM00${itemCount}" ${!isEditMode ? 'disabled' : ''}></td>
         <td data-label="Price"><input type="number" class="item-price" placeholder="0.00" step="0.01" min="0" oninput="calculateTotal()" ${!isEditMode ? 'disabled' : ''}></td>
+        <td data-label="VAT">
+            <select class="item-vat" onchange="handleVatChange(this)" ${!isEditMode ? 'disabled' : ''}>
+                <option value="none">None</option>
+                <option value="include">Include VAT</option>
+                <option value="exclude">Exclude VAT</option>
+            </select>
+        </td>
+        <td data-label="WHT" class="wht-cell">
+            <select class="item-wht" onchange="calculateTotal()" ${!isEditMode ? 'disabled' : ''}>
+                <option value="no">No</option>
+                <option value="yes">Yes (5%)</option>
+            </select>
+        </td>
         <td data-label="Delete"><button type="button" class="btn-remove-item" onclick="removeItem(this)" ${!isEditMode ? 'disabled' : ''}>×</button></td>
     `;
             tableBody.appendChild(newRow);
@@ -996,23 +924,77 @@
             }
         }
 
+        // เพิ่ม function ใหม่สำหรับจัดการ VAT change
+        function handleVatChange(selectElement) {
+            const row = selectElement.closest('tr');
+            const whtCell = row.querySelector('.wht-cell');
+            const whtSelect = row.querySelector('.item-wht');
+
+            if (selectElement.value === 'none') {
+                // แสดง WHT dropdown
+                whtCell.classList.remove('hidden');
+                whtSelect.disabled = !isEditMode;
+            } else {
+                // ซ่อน WHT dropdown
+                whtCell.classList.add('hidden');
+                whtSelect.value = 'no';
+                whtSelect.disabled = true;
+            }
+
+            calculateTotal();
+        }
+
         // Calculate total, tax, and net amount
         function calculateTotal() {
-            const prices = document.querySelectorAll('.item-price');
-            let total = 0;
+            const rows = document.querySelectorAll('.item-row');
+            let totalAmount = 0;
+            let totalVat = 0;
+            let totalWht = 0;
 
-            prices.forEach(price => {
-                const value = parseFloat(price.value) || 0;
-                total += value;
+            rows.forEach(row => {
+                const priceInput = row.querySelector('.item-price');
+                const vatSelect = row.querySelector('.item-vat');
+                const whtSelect = row.querySelector('.item-wht');
+
+                let price = parseFloat(priceInput.value) || 0;
+                const vatType = vatSelect.value;
+                const whtType = whtSelect.value;
+
+                let itemAmount = 0;
+                let itemVat = 0;
+                let itemWht = 0;
+
+                if (vatType === 'none') {
+                    // None: ราคาที่จ่ายคือราคาที่กรอก
+                    itemAmount = price;
+                    itemVat = 0;
+
+                    // ถ้าเลือก WHT
+                    if (whtType === 'yes') {
+                        itemWht = price * 0.05;
+                        itemAmount = price - itemWht;
+                    }
+                } else if (vatType === 'include') {
+                    // Include VAT: ราคารวม VAT แล้ว
+                    // ราคาสินค้า = ราคาที่กรอก / 1.07
+                    itemAmount = price / 1.07;
+                    itemVat = price - itemAmount;
+                } else if (vatType === 'exclude') {
+                    // Exclude VAT: ต้องบวก VAT เพิ่ม
+                    itemAmount = price;
+                    itemVat = price * 0.07;
+                }
+
+                totalAmount += itemAmount;
+                totalVat += itemVat;
+                totalWht += itemWht;
             });
 
-            const vat = total * 0.07; // VAT 7%
-            const whTax = total * 0.03; // Withholding Tax 3%
-            const netAmount = total + vat - whTax;
+            const netAmount = totalAmount + totalVat - totalWht;
 
-            document.getElementById('totalAmount').textContent = `฿${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            document.getElementById('vatAmount').textContent = `฿${vat.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            document.getElementById('whTaxAmount').textContent = `฿${whTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('totalAmount').textContent = `฿${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('vatAmount').textContent = `฿${totalVat.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('whtAmount').textContent = `฿${totalWht.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('netAmount').textContent = `฿${netAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
@@ -1044,23 +1026,11 @@
             calculateTotal();
         });
 
-        function logOut(){
+        function logOut() {
             window.location.href = 'index.html'
         }
 
-        // Dropdown menu toggle
-        document.getElementById('userProfile').addEventListener('click', function (e) {
-            e.stopPropagation();
-            document.getElementById('dropdownMenu').classList.toggle('active');
-        });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (e) {
-            const dropdown = document.getElementById('dropdownMenu');
-            if (!e.target.closest('.dropdown')) {
-                dropdown.classList.remove('active');
-            }
-        });
     </script>
 </body>
 

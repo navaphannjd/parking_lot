@@ -38,142 +38,6 @@
             font-weight: bold;
         }
 
-        /* Top Bar */
-        .topbar {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-
-        .hamburger {
-            width: 30px;
-            height: 25px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.3s;
-        }
-
-        .hamburger span {
-            width: 100%;
-            height: 3px;
-            background: #667eea;
-            border-radius: 3px;
-            transition: all 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            padding: 8px 15px;
-            border-radius: 25px;
-            transition: all 0.3s;
-        }
-
-        .user-profile:hover {
-            background: #f8f9fa;
-        }
-
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 15px;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
-        }
-
-        .dropdown-menu.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .dropdown-item:first-child {
-            border-radius: 12px 12px 0 0;
-        }
-
-        .dropdown-item:last-child {
-            border-radius: 0 0 12px 12px;
-            border-top: 1px solid #e9ecef;
-            color: #dc3545;
-        }
-
-        .dropdown-item:hover {
-            background: #f8f9fa;
-        }
-
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -540,42 +404,7 @@
 </head>
 
 <body>
-    <div class="topbar">
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-        <div class="dropdown">
-            <div class="user-profile" id="userProfile">
-                <div class="user-info">
-                    <div class="user-name">สมชาย ใจดี</div>
-                    <div class="user-role">ผู้ดูแลระบบ</div>
-                </div>
-                <div class="user-avatar">SC</div>
-            </div>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-user"></i></span>
-                    <span>โปรไฟล์</span>
-                </div>
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-bell"></i></span>
-                    <span>การแจ้งเตือน</span>
-                </div>
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-gear"></i></span>
-                    <span>ตั้งค่าบัญชี</span>
-                </div>
-                <div class="dropdown-item" onclick="logOut()">
-                    <span><i class="fa-solid fa-door-open"></i></span>
-                    <span>ออกจากระบบ</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <div class="content">
         <div class="content-header">
             <div class="section-title">Add New Receivement</div>
@@ -671,60 +500,15 @@
                         <input type="number" class="form-input" id="receiveAmount" placeholder="0.00" step="0.01" min="0" required>
                     </div>
 
-                    <div class="form-group full-width">
+                    <div class="form-group">
                         <label class="form-label">
                             Payment Method<span class="required">*</span>
                         </label>
-                        <div class="payment-method-container">
-                            <label class="payment-method-option" data-method="cash">
-                                <input type="radio" name="paymentMethod" value="cash" required>
-                                <div class="payment-method-icon">💵</div>
-                                <div class="payment-method-label">Cash / เงินสด</div>
-                            </label>
-                            <label class="payment-method-option" data-method="transfer">
-                                <input type="radio" name="paymentMethod" value="transfer" required>
-                                <div class="payment-method-icon">🏦</div>
-                                <div class="payment-method-label">Bank Transfer / โอนเงิน</div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Bank Transfer Fields (แสดงเมื่อเลือก Bank Transfer) -->
-                    <div id="bankTransferFields">
-                        <div class="form-group">
-                            <label class="form-label">
-                                Receive Account<span class="required">*</span>
-                            </label>
-                            <input type="text" class="form-input" id="receiveAccount" placeholder="044-3-81036-6">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                Bank Name
-                            </label>
-                            <select class="form-select" id="bankName">
-                                <option value="">เลือกธนาคาร</option>
-                                <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย</option>
-                                <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
-                                <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
-                                <option value="ธนาคารทหารไทยธนชาต">ธนาคารทหารไทยธนชาต</option>
-                                <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
-                                <option value="ธนาคารกรุงศรีอยุธยา">ธนาคารกรุงศรีอยุธยา</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label class="form-label">
-                                Payment Slip / หลักฐานการโอนเงิน
-                            </label>
-                            <div class="upload-area" id="uploadArea">
-                                <div class="upload-icon">📤</div>
-                                <p class="upload-text">คลิกหรือลากไฟล์มาที่นี่</p>
-                                <p class="upload-subtext">รองรับไฟล์ JPG, PNG (ขนาดไม่เกิน 5MB)</p>
-                                <input type="file" id="fileInput" accept="image/*" class="file-input-hidden">
-                            </div>
-                            <img id="preview" class="preview-image" style="display: none;">
-                        </div>
+                        <select class="form-select" id="clientType" required>
+                            <option value="">เลือกประเภทการชำระเงิน</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Cheque">Cheque</option>
+                        </select>
                     </div>
 
                     <div class="form-group full-width">
@@ -818,27 +602,6 @@
             if (!e.target.closest('.invoice-search-container')) {
                 suggestionsBox.classList.remove('show');
             }
-        });
-
-        // Payment Method Selection
-        const paymentOptions = document.querySelectorAll('.payment-method-option');
-        const bankTransferFields = document.getElementById('bankTransferFields');
-
-        paymentOptions.forEach(option => {
-            option.addEventListener('click', function () {
-                paymentOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-                this.querySelector('input[type="radio"]').checked = true;
-
-                const method = this.dataset.method;
-                if (method === 'transfer') {
-                    bankTransferFields.classList.add('show');
-                    document.getElementById('receiveAccount').required = true;
-                } else {
-                    bankTransferFields.classList.remove('show');
-                    document.getElementById('receiveAccount').required = false;
-                }
-            });
         });
 
         // File Upload
@@ -949,19 +712,7 @@
             window.location.href = 'index.html'
         }
 
-        // Dropdown menu toggle
-        document.getElementById('userProfile').addEventListener('click', function (e) {
-            e.stopPropagation();
-            document.getElementById('dropdownMenu').classList.toggle('active');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (e) {
-            const dropdown = document.getElementById('dropdownMenu');
-            if (!e.target.closest('.dropdown')) {
-                dropdown.classList.remove('active');
-            }
-        });
+        
 
         // Handle Enter key to save
         document.addEventListener('keydown', function (e) {

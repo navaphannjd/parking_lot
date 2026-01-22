@@ -38,142 +38,6 @@
             font-weight: bold;
         }
 
-        /* Top Bar */
-        .topbar {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-
-        .hamburger {
-            width: 30px;
-            height: 25px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.3s;
-        }
-
-        .hamburger span {
-            width: 100%;
-            height: 3px;
-            background: #667eea;
-            border-radius: 3px;
-            transition: all 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            padding: 8px 15px;
-            border-radius: 25px;
-            transition: all 0.3s;
-        }
-
-        .user-profile:hover {
-            background: #f8f9fa;
-        }
-
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 15px;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
-        }
-
-        .dropdown-menu.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .dropdown-item:first-child {
-            border-radius: 12px 12px 0 0;
-        }
-
-        .dropdown-item:last-child {
-            border-radius: 0 0 12px 12px;
-            border-top: 1px solid #e9ecef;
-            color: #dc3545;
-        }
-
-        .dropdown-item:hover {
-            background: #f8f9fa;
-        }
-
         /* ==================== SEARCH & FILTER ==================== */
         .search-filter-container {
             display: flex;
@@ -446,7 +310,7 @@
         .row-header {
             padding: 15px;
             display: grid;
-            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr;
+            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr;
             gap: 12px;
             align-items: center;
             transition: background 0.3s ease;
@@ -467,7 +331,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             display: grid;
-            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr;
+            grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr;
             gap: 12px;
             font-size: 13px;
         }
@@ -623,7 +487,7 @@
 
             .row-header,
             .column-header {
-                grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr;
+                grid-template-columns: 0.3fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr;
             }
 
             .detail-grid {
@@ -660,42 +524,7 @@
 </head>
 
 <body>
-    <div class="topbar">
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-        <div class="dropdown">
-            <div class="user-profile" id="userProfile">
-                <div class="user-info">
-                    <div class="user-name">สมชาย ใจดี</div>
-                    <div class="user-role">ผู้ดูแลระบบ</div>
-                </div>
-                <div class="user-avatar">SC</div>
-            </div>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-user"></i></span>
-                    <span>โปรไฟล์</span>
-                </div>
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-bell"></i></span>
-                    <span>การแจ้งเตือน</span>
-                </div>
-                <div class="dropdown-item">
-                    <span><i class="fa-solid fa-gear"></i></span>
-                    <span>ตั้งค่าบัญชี</span>
-                </div>
-                <div class="dropdown-item" onclick="logOut()">
-                    <span><i class="fa-solid fa-door-open"></i></span>
-                    <span>ออกจากระบบ</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <div class="content">
         <div class="content-header">
             <div class="section-title">Order</div>
@@ -765,6 +594,7 @@
                     <div>Valid Date</div>
                     <div>Total Amount</div>
                     <div>VAT</div>
+                    <div>WHT</div>
                     <div>By User</div>
                     <div>Status</div>
                 </div>
@@ -780,6 +610,7 @@
                         <div class="cell date-cell">15/02/2026</div>
                         <div class="cell amount-cell">฿50,000</div>
                         <div class="cell vat-cell">3,500</div>
+                        <div class="cell vat-cell">0</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
                             <span class="status-badge status-draft">Draft</span>
@@ -790,10 +621,6 @@
                             <div class="detail-item">
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Withholding Tax</div>
-                                <div class="detail-value">3%</div>
                             </div>
                             <div class="detail-actions">
                                 <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
@@ -815,7 +642,8 @@
                         <div class="cell date-cell">10/01/2026</div>
                         <div class="cell date-cell">10/02/2026</div>
                         <div class="cell amount-cell">฿12,000</div>
-                        <div class="cell vat-cell">840</div>
+                        <div class="cell vat-cell">0</div>
+                        <div class="cell vat-cell">600</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
                             <span class="status-badge status-active">Active</span>
@@ -826,10 +654,6 @@
                             <div class="detail-item">
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Withholding Tax</div>
-                                <div class="detail-value">5%</div>
                             </div>
                             <div class="detail-actions">
                                 <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
@@ -852,6 +676,7 @@
                         <div class="cell date-cell">17/02/2026</div>
                         <div class="cell amount-cell">฿17,000</div>
                         <div class="cell vat-cell">1,190</div>
+                        <div class="cell vat-cell">0</div>
                         <div class="cell">Emma W.</div>
                         <div class="cell">
                             <span class="status-badge status-archive">Archive</span>
@@ -862,10 +687,6 @@
                             <div class="detail-item">
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Withholding Tax</div>
-                                <div class="detail-value">7%</div>
                             </div>
                             <div class="detail-actions">
                                 <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
@@ -888,6 +709,7 @@
                         <div class="cell date-cell">20/02/2026</div>
                         <div class="cell amount-cell">฿32,000</div>
                         <div class="cell vat-cell">2,240</div>
+                        <div class="cell vat-cell">0</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
                             <span class="status-badge status-draft">Draft</span>
@@ -898,10 +720,6 @@
                             <div class="detail-item">
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Withholding Tax</div>
-                                <div class="detail-value">2%</div>
                             </div>
                             <div class="detail-actions">
                                 <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
@@ -924,6 +742,7 @@
                         <div class="cell date-cell">09/02/2026</div>
                         <div class="cell amount-cell">฿47,000</div>
                         <div class="cell vat-cell">3,290</div>
+                        <div class="cell vat-cell">0</div>
                         <div class="cell">Lux C.</div>
                         <div class="cell">
                             <span class="status-badge status-active">Active</span>
@@ -934,10 +753,6 @@
                             <div class="detail-item">
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Withholding Tax</div>
-                                <div class="detail-value">12%</div>
                             </div>
                             <div class="detail-actions">
                                 <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
@@ -959,7 +774,8 @@
                         <div class="cell date-cell">10/01/2026</div>
                         <div class="cell date-cell">10/02/2026</div>
                         <div class="cell amount-cell">฿55,000</div>
-                        <div class="cell vat-cell">3,850</div>
+                        <div class="cell vat-cell">0</div>
+                        <div class="cell vat-cell">2,750</div>
                         <div class="cell">Admin</div>
                         <div class="cell">
                             <span class="status-badge status-active">Active</span>
@@ -970,10 +786,6 @@
                             <div class="detail-item">
                                 <div class="detail-label">Note</div>
                                 <div class="detail-value">คำสั่งซื้อประจำเดือน</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Withholding Tax</div>
-                                <div class="detail-value">5%</div>
                             </div>
                             <div class="detail-actions">
                                 <button class="edit-btn" onclick="event.stopPropagation(); editOrder('ORD001')">
@@ -1084,19 +896,7 @@
             window.location.href = 'index.html'
         }
 
-        // Dropdown menu toggle
-        document.getElementById('userProfile').addEventListener('click', function (e) {
-            e.stopPropagation();
-            document.getElementById('dropdownMenu').classList.toggle('active');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (e) {
-            const dropdown = document.getElementById('dropdownMenu');
-            if (!e.target.closest('.dropdown')) {
-                dropdown.classList.remove('active');
-            }
-        });
+        
 
         // Click outside to close modal
         window.onclick = function (event) {

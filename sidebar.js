@@ -2,11 +2,54 @@
 
 function createSidebar() {
     const sidebarHTML = `
+        <!-- Header / Topbar -->
+        <div class="header topbar">
+            <div class="header-left">
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="page-title-header" id="pageTitle">Dashboard</div>
+            </div>
+
+            <div class="dropdown">
+                <!-- User Profile แบบง่าย (เฉพาะอวาตาร์) -->
+                <div class="user-profile" id="userProfile">SC</div>
+                
+                <!-- Profile Menu -->
+                <div class="profile-menu dropdown-menu" id="dropdownMenu">
+                    <div class="profile-menu-header dropdown-menu-header">
+                        <div class="profile-menu-name dropdown-menu-name">สมชาย ใจดี</div>
+                        <div class="profile-menu-email">admin@example.com</div>
+                    </div>
+                    <div class="profile-menu-item dropdown-item">
+                        <i class="fa-solid fa-user"></i>
+                        <span>โปรไฟล์</span>
+                    </div>
+                    <div class="profile-menu-item dropdown-item">
+                        <i class="fa-solid fa-bell"></i>
+                        <span>การแจ้งเตือน</span>
+                    </div>
+                    <div class="profile-menu-item dropdown-item">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>ตั้งค่าบัญชี</span>
+                    </div>
+                    <div class="profile-menu-item dropdown-item logout" onclick="logOut()">
+                        <i class="fa-solid fa-door-open"></i>
+                        <span>ออกจากระบบ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h2><i class="fa-solid fa-mobile-screen-button"></i> Application</h2>
+                <i class="fa-solid fa-mobile-screen-button"></i> Application
             </div>
             <nav class="sidebar-menu">
+                <!-- Rental Menu -->
                 <div class="menu-item has-submenu active" id="rentalMenu">
                     <span class="icon"><i class="fa-solid fa-box-open"></i></span>
                     <span>Rental</span>
@@ -14,30 +57,32 @@ function createSidebar() {
                 </div>
                 <div class="submenu active" id="rentalSubmenu">
                     <a class="submenu-item" href="item.html" data-page="item.html,item-add.html,item-edit.html">
-                        <span><i class="fa-solid fa-dolly"></i></span>
+                        <i class="fa-solid fa-dolly"></i>
                         <span>Item</span>
                     </a>
-                    <a class="submenu-item" href="client.html" data-page="client.html">
-                        <span><i class="fa-solid fa-user-group"></i></span>
+                    <a class="submenu-item" href="client.html" data-page="client.html,client-add.html,client-edit.html">
+                        <i class="fa-solid fa-user-group"></i>
                         <span>Client</span>
                     </a>
                     <a class="submenu-item" href="order.html" data-page="order.html,order-add.html,order-edit.html">
-                        <span><i class="fa-solid fa-boxes-packing"></i></span>
+                        <i class="fa-solid fa-boxes-packing"></i>
                         <span>Order</span>
                     </a>
-                    <a class="submenu-item" href="invoice.html" data-page="invoice.html,invoice-edit.html,payment.html">
-                        <span><i class="fa-solid fa-file-invoice"></i></span>
+                    <a class="submenu-item" href="invoice.html" data-page="invoice.html,invoice-add.html,invoice-edit.html,payment.html,payment-invoice.html,invoice-receipt.html">
+                        <i class="fa-solid fa-file-invoice"></i>
                         <span>Invoice</span>
                     </a>
-                    <a class="submenu-item" href="receivement.html" data-page="receivement.html,receivement-add,receivement-edit">
-                        <span><i class="fa-solid fa-receipt"></i></span>
+                    <a class="submenu-item" href="receivement.html" data-page="receivement.html,receivement-add.html,receivement-edit.html">
+                        <i class="fa-solid fa-receipt"></i>
                         <span>Receivement</span>
                     </a>
                     <a class="submenu-item" href="document.html" data-page="document.html">
-                        <span><i class="fa-solid fa-file"></i></span>
+                        <i class="fa-solid fa-file"></i>
                         <span>Document</span>
                     </a>
                 </div>
+
+                <!-- OPD Menu -->
                 <div class="menu-item has-submenu" id="OPDMenu">
                     <span class="icon"><i class="fa-solid fa-hospital"></i></span>
                     <span>OPD</span>
@@ -45,41 +90,42 @@ function createSidebar() {
                 </div>
                 <div class="submenu" id="OPDSubmenu">
                     <a class="submenu-item" href="patient.html" data-page="patient.html">
-                        <span><i class="fa-solid fa-bed"></i></span>
+                        <i class="fa-solid fa-bed"></i>
                         <span>Patient</span>
                     </a>
                     <a class="submenu-item" href="service-record.html" data-page="service-record.html">
-                        <span><i class="fa-solid fa-clipboard"></i></span>
+                        <i class="fa-solid fa-clipboard"></i>
                         <span>Service Record</span>
                     </a>
-                    <a class="submenu-item" href="payment.html" data-page="payment.html">
-                        <span><i class="fa-solid fa-file-lines"></i></span>
+                    <a class="submenu-item" href="opd-payment.html" data-page="opd-payment.html">
+                        <i class="fa-solid fa-file-lines"></i>
                         <span>Payment</span>
                     </a>
                     <a class="submenu-item" href="appointment-schedule.html" data-page="appointment-schedule.html">
-                        <span><i class="fa-solid fa-calendar-week"></i></span>
+                        <i class="fa-solid fa-calendar-week"></i>
                         <span>Appointment Schedule</span>
                     </a>
                     <a class="submenu-item" href="dns-item.html" data-page="dns-item.html">
-                        <span><i class="fa-solid fa-capsules"></i></span>
+                        <i class="fa-solid fa-capsules"></i>
                         <span>DNS (Drug&Service) Item</span>
                     </a>
                     <a class="submenu-item" href="supplier.html" data-page="supplier.html">
-                        <span><i class="fa-solid fa-truck-field"></i></span>
+                        <i class="fa-solid fa-truck-field"></i>
                         <span>Supplier</span>
                     </a>
                     <a class="submenu-item" href="purchase.html" data-page="purchase.html">
-                        <span><i class="fa-solid fa-shop"></i></span>
+                        <i class="fa-solid fa-shop"></i>
                         <span>Purchase</span>
                     </a>
                 </div>
             </nav>
         </div>
 
+        <!-- Overlay -->
         <div class="overlay" id="overlay"></div>
     `;
 
-    // แทรก sidebar ไว้ด้านบนสุดของ body
+    // แทรก topbar และ sidebar ไว้ด้านบนสุดของ body
     document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
     
     // เริ่มต้น sidebar functionality
@@ -93,8 +139,10 @@ function initializeSidebar() {
     const overlay = document.getElementById('overlay');
     const rentalMenu = document.getElementById('rentalMenu');
     const rentalSubmenu = document.getElementById('rentalSubmenu');
-    const OPDMenu = document.getElementById('OPDMenu'); // เพิ่มบรรทัดนี้
-    const OPDSubmenu = document.getElementById('OPDSubmenu'); // เพิ่มบรรทัดนี้
+    const OPDMenu = document.getElementById('OPDMenu');
+    const OPDSubmenu = document.getElementById('OPDSubmenu');
+    const userProfile = document.getElementById('userProfile');
+    const dropdownMenu = document.getElementById('dropdownMenu');
 
     // Hamburger toggle
     if (hamburger) {
@@ -102,7 +150,7 @@ function initializeSidebar() {
             hamburger.classList.toggle('active');
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
-            document.body.classList.toggle('sidebar-open'); // เพิ่มบรรทัดนี้ - ล็อคการเลื่อนหน้าหลัก
+            document.body.classList.toggle('sidebar-open');
         });
     }
 
@@ -112,11 +160,11 @@ function initializeSidebar() {
             hamburger.classList.remove('active');
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
-            document.body.classList.remove('sidebar-open'); // เพิ่มบรรทัดนี้ - ปลดล็อคการเลื่อนหน้าหลัก
+            document.body.classList.remove('sidebar-open');
         });
     }
 
-    // Submenu Toggle
+    // Submenu Toggle - Rental
     if (rentalMenu) {
         rentalMenu.addEventListener('click', () => {
             rentalMenu.classList.toggle('active');
@@ -124,6 +172,7 @@ function initializeSidebar() {
         });
     }
 
+    // Submenu Toggle - OPD
     if (OPDMenu) {
         OPDMenu.addEventListener('click', () => {
             OPDMenu.classList.toggle('active');
@@ -131,40 +180,80 @@ function initializeSidebar() {
         });
     }
 
+    // User Profile Dropdown
+    if (userProfile) {
+        userProfile.addEventListener('click', function (e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+        if (dropdownMenu && !e.target.closest('.dropdown')) {
+            dropdownMenu.classList.remove('active');
+        }
+    });
+
     // ตั้งค่า active submenu item ตามหน้าปัจจุบัน
     setActiveMenuItem();
+    
+    // ตั้งค่า page title
+    updatePageTitle();
 }
 
 // ฟังก์ชันตั้งค่า active menu ตามหน้าปัจจุบัน
 function setActiveMenuItem() {
-    // หาชื่อไฟล์ปัจจุบัน
     const currentPage = window.location.pathname.split('/').pop() || 'main.html';
-    
-    // เอา .html ออกถ้ามี query string (เช่น payment.html?invoice=xxx)
     const currentPageClean = currentPage.split('?')[0];
     
-    console.log('Current page:', currentPageClean); // Debug
+    console.log('Current page:', currentPageClean);
     
-    // หา submenu items ทั้งหมด
     const submenuItems = document.querySelectorAll('.submenu-item');
 
     submenuItems.forEach(item => {
-        // เอา data-page ของแต่ละ item (อาจมีหลายหน้าคั่นด้วย comma)
         const itemPages = item.getAttribute('data-page');
-        
-        // แยกเป็น array (เช่น "billing.html,payment.html" → ["billing.html", "payment.html"])
-        const pageList = itemPages.split(',').map(p => p.trim());
-        
-        console.log('Checking:', pageList, 'vs', currentPageClean); // Debug
-        
-        // ถ้าหน้าปัจจุบันอยู่ใน list นี้ ให้เพิ่ม active
-        if (pageList.includes(currentPageClean)) {
-            item.classList.add('active');
-            console.log('✓ Active:', itemPages, 'for page:', currentPageClean); // Debug
-        } else {
-            item.classList.remove('active');
+        if (itemPages) {
+            const pageList = itemPages.split(',').map(p => p.trim());
+            
+            console.log('Checking:', pageList, 'vs', currentPageClean);
+            
+            if (pageList.includes(currentPageClean)) {
+                item.classList.add('active');
+                console.log('✓ Active:', itemPages, 'for page:', currentPageClean);
+                
+                // เปิด submenu parent ถ้าพบหน้าที่ active
+                const parentSubmenu = item.closest('.submenu');
+                if (parentSubmenu) {
+                    parentSubmenu.classList.add('active');
+                    const parentMenu = parentSubmenu.previousElementSibling;
+                    if (parentMenu && parentMenu.classList.contains('menu-item')) {
+                        parentMenu.classList.add('active');
+                    }
+                }
+            } else {
+                item.classList.remove('active');
+            }
         }
     });
+}
+
+// ฟังก์ชันอัพเดต Page Title
+function updatePageTitle() {
+    const pageTitle = document.getElementById('pageTitle');
+    const activeMenuItem = document.querySelector('.submenu-item.active');
+    
+    if (pageTitle && activeMenuItem) {
+        const title = activeMenuItem.querySelector('span').textContent;
+        pageTitle.textContent = title;
+    }
+}
+
+// ฟังก์ชัน logout (global function)
+function logOut() {
+    if (confirm('คุณต้องการออกจากระบบหรือไม่?')) {
+        window.location.href = 'index.html';
+    }
 }
 
 // โหลด sidebar เมื่อ DOM พร้อม

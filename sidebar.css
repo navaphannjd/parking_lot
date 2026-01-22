@@ -5,19 +5,20 @@
     top: 0;
     width: 280px;
     height: 100dvh;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    background: white;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
     z-index: 1000;
-    overflow-y: auto; /* เพิ่มบรรทัดนี้ - ให้ sidebar เลื่อนได้ */
-    overflow-x: hidden; /* เพิ่มบรรทัดนี้ - ซ่อน scroll แนวนอน */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sidebar-menu {
     padding: 20px 0;
-    padding-bottom: 100px; /* เพิ่มบรรทัดนี้ - เผื่อพื้นที่ด้านล่างในมือถือ */
+    padding-bottom: 100px;
 }
 
-/* เพิ่มส่วนนี้ทั้งหมด - ป้องกันการเลื่อนหน้าหลักเมื่อเปิด sidebar */
+/* ป้องกันการเลื่อนหน้าหลักเมื่อเปิด sidebar */
 body.sidebar-open {
     overflow: hidden;
 }
@@ -27,18 +28,21 @@ body.sidebar-open {
 }
 
 .sidebar-header {
-    padding: 30px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .sidebar-header h2 {
     color: white;
-    font-size: 24px;
+    font-size: 20px;
     margin-bottom: 5px;
 }
 
 .sidebar-header p {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
 }
 
@@ -47,33 +51,35 @@ body.sidebar-open {
 }
 
 .menu-item {
-    padding: 15px 25px;
-    color: rgba(255, 255, 255, 0.8);
+    padding: 15px 20px;
+    color: #333;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 15px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     cursor: pointer;
     font-size: 16px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .menu-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    padding-left: 30px;
+    background: #f8f9ff;
+    padding-left: 25px;
 }
 
 .menu-item.active {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border-left: 4px solid white;
+    background: #f0f4ff;
+    border-left: 4px solid #667eea;
+    color: #667eea;
+    font-weight: 600;
 }
 
 .menu-item .icon {
     font-size: 20px;
     width: 24px;
     text-align: center;
+    color: #667eea;
 }
 
 .menu-item.has-submenu {
@@ -84,44 +90,71 @@ body.sidebar-open {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.1);
+    background: #f8f9ff;
 }
 
 .submenu.active {
     max-height: 500px;
 }
 
+.submenu-item i {
+    color: #667eea; /* เปลี่ยนสีไอคอน submenu */
+    font-size: 16px;
+}
+
 .submenu-item {
-    padding: 12px 25px 12px 60px;
-    color: rgba(255, 255, 255, 0.7);
+    padding: 12px 20px 12px 40px;
+    color: #333;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .submenu-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    padding-left: 65px;
+    background: #e8edff;
+    padding-left: 45px;
 }
 
 .submenu-item.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.15);
+    background: #e0e7ff;
+    color: #667eea;
+    font-weight: 600;
 }
 
 .menu-item .arrow {
     margin-left: auto;
     font-size: 14px;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .menu-item.has-submenu.active .arrow {
     transform: rotate(180deg);
+}
+
+/* Nested Submenu */
+.submenu-nested {
+    background: #e8edff;
+    padding-left: 0;
+}
+
+.submenu-nested .submenu-item {
+    padding-left: 60px;
+    background: #e8edff;
+}
+
+.submenu-nested .submenu-item:hover {
+    background: #d8e3ff;
+    padding-left: 65px;
+}
+
+.submenu-nested .submenu-item.active {
+    background: #d0dcff;
+    padding-left: 60px;
 }
 
 .overlay {
@@ -133,13 +166,235 @@ body.sidebar-open {
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     z-index: 999;
 }
 
 .overlay.active {
     opacity: 1;
     visibility: visible;
+}
+
+/* Top Bar / Header */
+.topbar,
+.header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.page-title-header {
+    display: none;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.page-title-header {
+    font-size: 20px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.hamburger {
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.hamburger:active {
+    transform: scale(0.9);
+}
+
+.hamburger span {
+    width: 100%;
+    height: 3px;
+    background: #667eea;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* User Profile - Simple Avatar Style */
+.user-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.user-profile:hover {
+    transform: scale(1.05);
+}
+
+/* Alternative: User Profile with Avatar and Info */
+.user-profile-full {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.user-profile-full:hover {
+    background: #f8f9fa;
+    transform: scale(1.05);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+.user-role {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Dropdown / Profile Menu */
+.dropdown,
+.profile-menu-container {
+    position: relative;
+}
+
+.dropdown-menu,
+.profile-menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 220px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 101;
+    overflow: hidden;
+}
+
+.dropdown-menu.active,
+.profile-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu-header,
+.profile-menu-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu-name,
+.profile-menu-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.profile-menu-email {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.dropdown-item,
+.profile-menu-item {
+    padding: 14px 20px;
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-item i,
+.profile-menu-item i {
+    width: 20px;
+    color: #667eea;
+    font-size: 16px;
+}
+
+.dropdown-item:hover,
+.profile-menu-item:hover {
+    background: #f8f9ff;
+    padding-left: 25px;
+}
+
+.dropdown-item.logout,
+.profile-menu-item.logout {
+    color: #ff4444;
+    border-bottom: none;
+}
+
+.dropdown-item.logout i,
+.profile-menu-item.logout i {
+    color: #ff4444;
+}
+
+.dropdown-item.logout:hover,
+.profile-menu-item.logout:hover {
+    background: #fff5f5;
 }
 
 /* Responsive Design for Mobile */
