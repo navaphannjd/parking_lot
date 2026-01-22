@@ -183,6 +183,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: none;
         }
 
         .archive-btn:hover {
@@ -193,6 +194,10 @@
 
         .archive-btn:active {
             transform: translateY(0);
+        }
+
+        .archive-btn.show{
+            display: block;
         }
 
         /* Dropdown Menu */
@@ -811,6 +816,20 @@
                         <input type="date" class="form-input" id="validDate" disabled>
                     </div>
 
+                    <div class="form-group">
+                        <label class="form-label">
+                            Receive Account<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="receiveAccount" value="0443810366" required disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Bank<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="receiveBank" value="K Bank" required disabled>
+                    </div>
+
                     <div class="form-group full-width">
                         <label class="form-label">Note</label>
                         <textarea class="form-textarea" id="note" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"
@@ -835,7 +854,8 @@
         function toggleEdit() {
             isEditMode = !isEditMode;
             const editBtn = document.getElementById('editBtn');
-            const editableInputs = ['clientId', 'name', 'citizenId', 'startDate', 'validDate', 'note'];
+            const archiveBtn = document.querySelector('.archive-btn');
+            const editableInputs = ['clientId', 'name', 'citizenId', 'startDate', 'validDate', 'note', 'receiveAccount', 'receiveBank'];
             const orderStatus = document.getElementById('orderStatus');
             const itemInputs = document.querySelectorAll('.item-input, .item-price');
             const removeButtons = document.querySelectorAll('.btn-remove-item');
@@ -845,6 +865,8 @@
                 // เข้าสู่โหมดแก้ไข
                 editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
                 editBtn.title = 'Save';
+
+                archiveBtn.classList.add('show');
 
                 // Enable editable fields
                 editableInputs.forEach(id => {
@@ -868,6 +890,8 @@
                 saveOrderData();
                 editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
                 editBtn.title = 'Edit';
+
+                archiveBtn.classList.remove('show');
 
                 // Disable all fields
                 editableInputs.forEach(id => {

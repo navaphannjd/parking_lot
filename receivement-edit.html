@@ -675,15 +675,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Recorded By</label>
-                    <input type="text" class="form-input" id="recordedBy" value="Admin" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Recorded Date</label>
-                    <input type="datetime-local" class="form-input" id="recordedDate" value="2026-01-15T14:35" disabled>
-                </div>
             </div>
             <div class="form-actions">
                 <button type="button" class="complete-btn" id="activateBtn" onclick="activateInvoice()">
@@ -745,8 +736,6 @@
                 receiveAccount: document.getElementById('receiveAccount').value,
                 bankName: document.getElementById('bankName').value,
                 note: document.getElementById('note').value,
-                recordedBy: document.getElementById('recordedBy').value,
-                recordedDate: document.getElementById('recordedDate').value
             };
 
             console.log('Saving data:', formData);
@@ -763,8 +752,6 @@
                 receiveAccount: document.getElementById('receiveAccount').value,
                 bankName: document.getElementById('bankName').value,
                 note: document.getElementById('note').value,
-                recordedBy: document.getElementById('recordedBy').value,
-                recordedDate: document.getElementById('recordedDate').value
             };
 
             console.log('Saving data:', formData);

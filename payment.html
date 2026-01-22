@@ -367,36 +367,49 @@
         /* Invoice Styles */
         .invoice-container {
             background: white;
-            padding: 30px 40px;
-            max-width: 210mm;
+            padding: 40px;
+            width: 210mm;
+            height: 297mm;
             margin: 0 auto 30px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #666;
+            box-sizing: border-box;
         }
 
         .invoice-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
         }
 
         .company-logo {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: bold;
-            color: #999;
-            letter-spacing: 2px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .company-address {
+            font-size: 11px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
 
         .invoice-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: bold;
             color: #333;
+            background: #d3d3d3;
+            padding: 8px;
+            margin: 10px 0;
         }
 
         .invoice-details {
             text-align: right;
-            font-size: 12px;
-            line-height: 1.5;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-top: 10px;
         }
 
         .invoice-number {
@@ -405,15 +418,15 @@
         }
 
         .invoice-date {
-            color: #666;
+            color: #333;
         }
 
         .invoice-parties {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 25px;
-            font-size: 12px;
+            gap: 20px;
+            margin: 20px 0;
+            font-size: 11px;
         }
 
         .party-box {
@@ -425,162 +438,150 @@
             color: #333;
             font-weight: 600;
             margin-bottom: 5px;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .party-info {
-            color: #555;
-            line-height: 1.5;
-            font-size: 12px;
-        }
-
-        .status-line {
-            margin-top: 10px;
-            font-size: 12px;
-        }
-
-        .status-badge {
-            display: inline;
-            font-weight: 600;
+            color: #333;
+            line-height: 1.6;
+            font-size: 11px;
         }
 
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 12px;
-        }
-
-        .invoice-table thead {
-            background: #666;
+            font-size: 11px;
+            border: 2px solid #333;
         }
 
         .invoice-table th {
             padding: 10px 8px;
-            text-align: left;
+            text-align: center;
             font-weight: 600;
-            font-size: 12px;
-            color: white;
-            border: 1px solid #666;
+            font-size: 11px;
+            color: #333;
+            border: 1px solid #333;
         }
 
         .invoice-table td {
-            padding: 10px 8px;
-            border: 1px solid #ddd;
-            font-size: 12px;
+            padding: 6px 8px;
+            border: 1px solid #333;
+            font-size: 11px;
             color: #333;
             vertical-align: top;
         }
 
-        .invoice-summary {
-            margin: 15px 0;
-            font-size: 12px;
+        .invoice-table tbody {
+            height: 500px;
+            /* เพิ่มความสูงของ tbody */
         }
 
-        .summary-table {
-            width: 100%;
-            margin-top: 10px;
+        .invoice-table tbody tr {
+            height: auto;
         }
 
-        .summary-table td {
-            padding: 5px 0;
-            text-align: right;
+        .invoice-table tbody tr.empty-row td {
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+            border-bottom: none;
+            border-top: none;
+            padding: 6px 8px;
         }
 
-        .summary-table td:first-child {
-            text-align: right;
-            padding-right: 20px;
-        }
-
-        .summary-table .total-row td {
-            border-top: 2px solid #333;
+        .invoice-table tbody tr:last-child td {
             border-bottom: 2px solid #333;
-            padding: 8px 0;
-            font-weight: bold;
-            font-size: 13px;
+            /* เป็นขอบหนาของตาราง */
         }
 
-        .summary-table .balance-row td {
-            padding-top: 8px;
-            font-weight: 600;
+        .invoice-table tbody tr.total-row td {
+            font-weight: bold;
+            background: #f5f5f5;
+            border-top: 2px solid #333;
+            padding: 8px;
+        }
+
+        .invoice-summary {
+            margin: 20px 0;
+            font-size: 11px;
+            border: 2px solid #333;
+            padding: 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            background: #d3d3d3;
+            font-weight: bold;
         }
 
         .invoice-footer {
-            margin-top: 25px;
+            margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid #ddd;
-        }
-
-        .footer-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 12px;
-            color: #333;
-        }
-
-        .transaction-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 8px;
-            font-size: 12px;
-        }
-
-        .transaction-table th {
-            background: #f5f5f5;
-            padding: 8px;
-            text-align: left;
-            font-weight: 600;
-            border: 1px solid #ddd;
-            font-size: 12px;
-        }
-
-        .transaction-table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            font-size: 12px;
-        }
-
-        .transaction-table .balance-row {
-            text-align: right;
-            font-weight: 600;
-        }
-
-        .vat-note {
-            margin-top: 12px;
             font-size: 11px;
-            color: #666;
-            font-style: italic;
+        }
+
+        .footer-note {
+            margin: 15px 0;
+            font-size: 10px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .signature-section {
+            text-align: right;
+            font-size: 11px;
+        }
+
+        .signature-line {
+            margin-top: 60px;
+            padding-top: 10px;
+            border-top: 1px dotted #333;
+            display: inline-block;
+            min-width: 200px;
+            text-align: center;
         }
 
         /* Print Styles */
         @media print {
 
-            /* รีเซ็ตทุกอย่าง */
-            * {
+            /* ซ่อนทุกอย่างก่อน */
+            body * {
+                visibility: hidden !important;
+            }
+
+            /* แสดงเฉพาะ invoice container และ children */
+            .invoice-container,
+            .invoice-container * {
                 visibility: visible !important;
             }
 
-            /* ซ่อนเฉพาะส่วนที่ไม่ต้องการ */
+            /* ซ่อนส่วนที่ไม่ต้องการ */
             .topbar,
             .content-header,
             .card-section,
             .hamburger,
             .user-profile,
             .dropdown,
-            .action-buttons {
-                display: none !important;
-            }
-
-            /* ซ่อน sidebar ถ้ามี */
+            .action-buttons,
             .sidebar,
             nav,
             aside {
                 display: none !important;
+                visibility: hidden !important;
             }
 
-            /* แสดงเฉพาะ invoice container */
+            /* จัด invoice ให้อยู่ที่ตำแหน่งเริ่มต้นของหน้า */
             body {
                 background: white;
+                margin: 0;
+                padding: 0;
             }
 
             .content {
@@ -595,43 +596,33 @@
             }
 
             .invoice-container {
-                position: relative;
+                position: absolute;
                 left: 0;
                 top: 0;
-                width: 100%;
+                width: 210mm;
+                height: 297mm;
                 box-shadow: none;
-                padding: 20px;
+                padding: 40px;
                 margin: 0;
                 page-break-after: auto;
+                border: none;
+                /* ซ่อนขอบตอน print */
             }
 
             /* แสดงสีพื้นหลังและสี */
             .invoice-table th {
-                background-color: #667eea !important;
-                color: white !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
-            .party-box,
-            .transaction-info {
-                background-color: #f8f9ff !important;
+            .invoice-title {
+                background-color: #d3d3d3 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
-            .status-badge.status-paid {
-                background-color: #d4edda !important;
-                color: #155724 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .company-logo {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
+            .summary-row:last-child {
+                background-color: #d3d3d3 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -645,47 +636,10 @@
                 page-break-inside: avoid;
             }
 
-            .invoice-table tbody tr {
-                page-break-inside: avoid;
-            }
-
-            /* ปรับขนาดตัวอักษร */
-            body {
-                font-size: 12pt;
-            }
-
-            .invoice-table {
-                width: 100%;
-            }
-
-            .invoice-table th,
-            .invoice-table td {
-                padding: 10px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .invoice-parties {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .invoice-header {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .invoice-details {
-                text-align: left;
-            }
-
-            .invoice-table {
-                font-size: 12px;
-            }
-
-            .invoice-table th,
-            .invoice-table td {
-                padding: 10px 8px;
+            /* ตั้งค่า page size */
+            @page {
+                size: A4;
+                margin: 0;
             }
         }
 
@@ -826,29 +780,25 @@
             <!-- Invoice Display -->
             <div class="invoice-container" id="invoiceContainer">
                 <div class="invoice-header">
-                    <div>
-                        <div class="company-logo">Thames</div>
-                    </div>
-                    <div class="invoice-details">
-                        <div class="invoice-number">Invoice 417004</div>
-                        <div class="invoice-date">Date of Invoice: 23/12/2025</div>
-                        <div class="invoice-date">Due Date: 30/12/2025</div>
-                    </div>
-                </div>
+                    <div class="invoice-title">ใบแจ้งหนี้/STATEMENT</div>
 
-                <div class="invoice-parties">
-                    <div class="party-box">
-                        <div class="party-title">To:</div>
-                        <div class="party-info">
-                            Navaphan Noyindee Be Condo Phahonyothin Phontage Rd, Khlong<br>
-                            Nueng, Khlong Luang District, Pathum Thani 12120 Thailand
-                        </div>
+                    <div class="company-logo">บริษัท ไพน์เกท โฮลดิ้ง จำกัด (สำนักงานใหญ่)</div>
+                    <div class="company-address">
+                        645/11-12,36-37 ถนนเพชรบุรี แขวงถนนพญาไท เขตราชเทวี กรุงเทพฯ 10400<br>
+                        เลขประจำตัวผู้เสียภาษี 0105560213631
                     </div>
-                    <div class="party-box">
-                        <div class="party-title">From:</div>
-                        <div class="party-info">
-                            ReadyIDC Co.,Ltd. 39/12 Bond Street Rd, Bangphlod, Pakkret,<br>
-                            Nonthaburi Thailand 11120
+
+                    <div class="invoice-details">
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start;">
+                            <div style="text-align: left;">
+                                <div>ชื่อ : นางสาวชลดา กานพ์ทักษ์กุล</div>
+                                <div>ที่อยู่ : 18 หมู่ 26 ต.วาวี อ.แม่สาย จ.เชียงราย 57180</div>
+                                <div>เลขประจำตัวผู้เสียภาษี 1571000089294</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div>เลขที่ INV_H-670016</div>
+                                <div>วันที่ 2/10/2567</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -856,70 +806,160 @@
                 <table class="invoice-table">
                     <thead>
                         <tr>
-                            <th>Description</th>
-                            <th style="text-align: center;">VAT</th>
-                            <th style="text-align: right;">Unit cost</th>
-                            <th style="text-align: center;">Qty</th>
-                            <th style="text-align: right;">Price</th>
+                            <th>รายการ<br>Description</th>
+                            <th>จำนวนเงิน<br>Amount</th>
+                            <th>ภาษีมูลค่าเพิ่ม<br>Vat</th>
+                            <th>ภาษีหัก ณ ที่จ่าย<br>Tax</th>
+                            <th>จำนวนเงินรวม<br>Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                VPS Business SSD (Linux) - VPS-LXS+ - webserver (IP : 45.136.237.60) (30/12/2025 -
-                                29/01/2026)<br>
-                                + OS Template: Ubuntu 22.04<br>
-                                + Control Panel (License): None
-                            </td>
-                            <td style="text-align: center;">Yes</td>
-                            <td style="text-align: right;">250.00 THB</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: right;">250.00 THB</td>
+                        <tr class="empty-row">
+                            <td>ค่าเช่า 1/10/2567-31/10/2567</td>
+                            <td style="text-align: right;">30,000.00</td>
+                            <td style="text-align: center;">-</td>
+                            <td style="text-align: center;">-</td>
+                            <td style="text-align: right;">30,000.00</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>ค่าภาษีที่ดินและสิ่งปลูกสร้าง 01/10/2567-31/10/2567</td>
+                            <td style="text-align: right;">5,100.00</td>
+                            <td style="text-align: center;">-</td>
+                            <td style="text-align: center;">-</td>
+                            <td style="text-align: right;">5,100.00</td>
+                        </tr>
+                        <!-- แถวว่าง -->
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="empty-row">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <!-- แถวรวมราคาทั้งหมด - เพิ่มใหม่ -->
+                        <tr class="total-row">
+                            <td>&nbsp;</td>
+                            <td style="text-align: right;">35,100.00</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td style="text-align: right;">35,100.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="4" style="text-align: center; background-color: #d3d3d3;">สามหมื่นห้าพันหนึ่งร้อยบาทถ้วน</td>
+                            <td style="text-align: right; background-color: #d3d3d3;">35,100.00</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div class="invoice-summary">
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span>250.00 THB</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Credit:</span>
-                        <span>0.00 THB</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>VAT (7.00%):</span>
-                        <span>17.50 THB</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total:</span>
-                        <span>267.50 THB</span>
-                    </div>
-                </div>
-
                 <div class="invoice-footer">
-                    <div class="party-title">Related transactions:</div>
-                    <div class="transaction-info">
-                        <div class="transaction-row">
-                            <span class="transaction-label">Transaction Date:</span>
-                            <span class="transaction-value">28/12/2025</span>
-                        </div>
-                        <div class="transaction-row">
-                            <span class="transaction-label">Gateway:</span>
-                            <span class="transaction-value">Credit/Debit</span>
-                        </div>
-                        <div class="transaction-row">
-                            <span class="transaction-label">Transaction ID:</span>
-                            <span class="transaction-value">chrg_0GT7ozou7BekonwnzHo</span>
-                        </div>
-                        <div class="transaction-row">
-                            <span class="transaction-label">Amount:</span>
-                            <span class="transaction-value">267.50 THB</span>
-                        </div>
+                    <div class="footer-note">
+                        ใบเสร็จรับเงินของบริษัท ฯ จะออกให้เมื่อได้รับชำระเงินถูกต้องตามรายการข้างบนนี้แล้ว<br>
+                        Separate official receipt will be made out op payment as above<br>
+                        โปรดเรียกใบเสร็จรับเงินเมื่อเวลาชำระเงิน<br>
+                        Please demand official receipt when making payment
                     </div>
-                    <div style="margin-top: 15px; font-size: 12px; color: #666; font-style: italic;">
-                        Included VAT 7%
+
+                    <div class="signature-section">
+                        <span>...........................................................</span><br>
+                        <span style="margin-right: 30px;">ผู้มีอำนาจลงนาม</span>
                     </div>
                 </div>
             </div>
