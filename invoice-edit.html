@@ -678,7 +678,7 @@
 
                     <div class="form-group">
                         <label class="form-label">Surname<span class="required">*</span></label>
-                        <input type="text" class="form-input" id="surname" placeholder="นามสกุล" value="รักสุข"
+                        <input type="text" class="form-input" id="citizenId" placeholder="นามสกุล" value="รักสุข"
                             disabled>
                     </div>
 
@@ -782,7 +782,7 @@
         function toggleEdit() {
             isEditMode = !isEditMode;
             const editBtn = document.getElementById('editBtn');
-            const editableInputs = ['name', 'surname'];
+            const editableInputs = ['name', 'citizenId'];
             const itemInputs = document.querySelectorAll('.item-input, .item-price, .item-vat, .item-wht');
             const removeButtons = document.querySelectorAll('.btn-remove-item');
             const addItemBtn = document.getElementById('addItemBtn');
@@ -865,7 +865,7 @@
                 invoiceNo: document.getElementById('invoiceNo').value,
                 orderNo: document.getElementById('orderNo').value,
                 name: document.getElementById('name').value,
-                surname: document.getElementById('surname').value,
+                citizenId: document.getElementById('citizenId').value,
                 items: items,
                 vatPercent: document.getElementById('vatPercent').value,
                 whtPercent: document.getElementById('whtPercent').value,
