@@ -445,6 +445,28 @@
             color: #16a34a;
         }
 
+        .vat-wht-input {
+            width: 80px;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .vat-wht-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .vat-wht-input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #999;
+        }
+
         .summary-total {
             background: linear-gradient(135deg, #667eea, #764ba2);
             margin: 10px -20px -20px -20px;
@@ -685,7 +707,7 @@
                                         <td data-label="Delete"><button type="button" class="btn-remove-item"
                                                 onclick="removeItem(this)" disabled>×</button></td>
                                     </tr>
-                                    </tbody>
+                                </tbody>
                             </table>
                             <button type="button" class="btn-add-item" id="addItemBtn" onclick="addItem()" disabled>
                                 <i class="fa-solid fa-plus"></i> Add Item
@@ -700,11 +722,21 @@
                                 <span class="summary-value" id="totalAmount">฿0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span class="summary-label">VAT 7%:</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="summary-label">VAT:</span>
+                                    <input type="number" id="vatPercent" class="vat-wht-input" value="7" min="0"
+                                        max="100" step="0.01" oninput="calculateTotal()" placeholder="0" disabled>
+                                    <span class="summary-label">%</span>
+                                </div>
                                 <span class="summary-value" id="vatAmount">฿0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span class="summary-label">Withholding Tax 5%:</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="summary-label">Withholding Tax:</span>
+                                    <input type="number" id="whtPercent" class="vat-wht-input" value="5" min="0"
+                                        max="100" step="0.01" oninput="calculateTotal()" placeholder="0" disabled>
+                                    <span class="summary-label">%</span>
+                                </div>
                                 <span class="summary-value" id="whtAmount">฿0.00</span>
                             </div>
                             <div class="summary-row summary-total">
@@ -768,6 +800,8 @@
             const itemInputs = document.querySelectorAll('.item-input, .item-price, .item-vat, .item-wht');
             const removeButtons = document.querySelectorAll('.btn-remove-item');
             const addItemBtn = document.getElementById('addItemBtn');
+            const vatPercent = document.getElementById('vatPercent');
+            const whtPercent = document.getElementById('whtPercent');
 
             if (isEditMode) {
                 // เข้าสู่โหมดแก้ไข
@@ -793,6 +827,10 @@
 
                 // Enable add item button
                 addItemBtn.disabled = false;
+
+                // Enable VAT and WHT percent inputs
+                vatPercent.disabled = false;
+                whtPercent.disabled = false;
             } else {
                 // บันทึกข้อมูล
                 saveOrderData();
@@ -811,9 +849,14 @@
                 itemInputs.forEach(input => input.disabled = true);
                 removeButtons.forEach(btn => btn.disabled = true);
                 addItemBtn.disabled = true;
+
+                // Disable VAT and WHT percent inputs
+                vatPercent.disabled = true;
+                whtPercent.disabled = true;
             }
         }
 
+        // Save Order Data
         // Save Order Data
         function saveOrderData() {
             // Collect all items
@@ -840,12 +883,16 @@
                 items: items,
                 startDate: document.getElementById('startDate').value,
                 validDate: document.getElementById('validDate').value,
+                receiveAccount: document.getElementById('receiveAccount').value,
+                receiveBank: document.getElementById('receiveBank').value,
                 status: document.getElementById('orderStatus').value,
                 note: document.getElementById('note').value,
-                totalAmount: document.getElementById('totalAmount').textContent.replace('฿', '').replace(',', ''),
-                vatAmount: document.getElementById('vatAmount').textContent.replace('฿', '').replace(',', ''),
-                whTaxAmount: document.getElementById('whTaxAmount').textContent.replace('฿', '').replace(',', ''),
-                netAmount: document.getElementById('netAmount').textContent.replace('฿', '').replace(',', '')
+                vatPercent: document.getElementById('vatPercent').value,
+                whtPercent: document.getElementById('whtPercent').value,
+                totalAmount: document.getElementById('totalAmount').textContent.replace('฿', '').replace(/,/g, ''),
+                vatAmount: document.getElementById('vatAmount').textContent.replace('฿', '').replace(/,/g, ''),
+                whtAmount: document.getElementById('whtAmount').textContent.replace('฿', '').replace(/,/g, ''),
+                netAmount: document.getElementById('netAmount').textContent.replace('฿', '').replace(/,/g, '')
             };
 
             console.log('Saving data:', formData);
@@ -950,7 +997,14 @@
             let totalAmount = 0;
             let totalVat = 0;
             let totalWht = 0;
+            let hasVatItem = false;
+            let hasWhtItem = false;
 
+            // ดึงค่า % ที่ user กรอก
+            const vatPercent = parseFloat(document.getElementById('vatPercent').value) || 0;
+            const whtPercent = parseFloat(document.getElementById('whtPercent').value) || 0;
+
+            // วนลูปคำนวณแต่ละ row
             rows.forEach(row => {
                 const priceInput = row.querySelector('.item-price');
                 const vatSelect = row.querySelector('.item-vat');
@@ -960,38 +1014,42 @@
                 const vatType = vatSelect.value;
                 const whtType = whtSelect.value;
 
-                let itemAmount = 0;
+                let itemBasePrice = 0;
                 let itemVat = 0;
                 let itemWht = 0;
 
-                if (vatType === 'none') {
-                    // None: ราคาที่จ่ายคือราคาที่กรอก
-                    itemAmount = price;
+                if (vatType === 'include') {
+                    // Include VAT: ราคาที่กรอกรวม VAT แล้ว
+                    // ต้องแยก VAT ออก
+                    hasVatItem = true;
+                    itemBasePrice = price / (1 + vatPercent / 100);
+                    itemVat = price - itemBasePrice;
+                } else if (vatType === 'exclude') {
+                    // Exclude VAT: ราคาที่กรอกยังไม่รวม VAT
+                    // ต้องบวก VAT เพิ่ม
+                    hasVatItem = true;
+                    itemBasePrice = price;
+                    itemVat = price * (vatPercent / 100);
+                } else {
+                    // None: ไม่มี VAT
+                    itemBasePrice = price;
                     itemVat = 0;
 
-                    // ถ้าเลือก WHT
+                    // เช็ค WHT (เฉพาะเมื่อ VAT = None)
                     if (whtType === 'yes') {
-                        itemWht = price * 0.05;
-                        itemAmount = price - itemWht;
+                        hasWhtItem = true;
+                        itemWht = price * (whtPercent / 100);
                     }
-                } else if (vatType === 'include') {
-                    // Include VAT: ราคารวม VAT แล้ว
-                    // ราคาสินค้า = ราคาที่กรอก / 1.07
-                    itemAmount = price / 1.07;
-                    itemVat = price - itemAmount;
-                } else if (vatType === 'exclude') {
-                    // Exclude VAT: ต้องบวก VAT เพิ่ม
-                    itemAmount = price;
-                    itemVat = price * 0.07;
                 }
 
-                totalAmount += itemAmount;
+                totalAmount += itemBasePrice;
                 totalVat += itemVat;
                 totalWht += itemWht;
             });
 
             const netAmount = totalAmount + totalVat - totalWht;
 
+            // แสดงผล
             document.getElementById('totalAmount').textContent = `฿${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('vatAmount').textContent = `฿${totalVat.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('whtAmount').textContent = `฿${totalWht.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;

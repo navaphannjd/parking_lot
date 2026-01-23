@@ -504,6 +504,28 @@
             color: #16a34a;
         }
 
+        .vat-wht-input {
+            width: 80px;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .vat-wht-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .vat-wht-input:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            color: #999;
+        }
+
         .summary-total {
             background: linear-gradient(135deg, #667eea, #764ba2);
             margin: 10px -20px -20px -20px;
@@ -622,7 +644,7 @@
 </head>
 
 <body>
-    
+
     <div class="content">
         <div class="content-header">
             <div class="section-title">Invoice Details</div>
@@ -692,7 +714,7 @@
                                         <td data-label="WHT" class="wht-cell">
                                             <select class="item-wht" onchange="calculateTotal()" disabled>
                                                 <option value="no">No</option>
-                                                <option value="yes">Yes (5%)</option>
+                                                <option value="yes">Yes</option>
                                             </select>
                                         </td>
                                         <td data-label="Delete"><button type="button" class="btn-remove-item"
@@ -713,11 +735,21 @@
                                 <span class="summary-value" id="totalAmount">฿0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span class="summary-label">VAT 7%:</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="summary-label">VAT:</span>
+                                    <input type="number" id="vatPercent" class="vat-wht-input" value="7" min="0"
+                                        max="100" step="0.01" oninput="calculateTotal()" placeholder="0" disabled>
+                                    <span class="summary-label">%</span>
+                                </div>
                                 <span class="summary-value" id="vatAmount">฿0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span class="summary-label">Withholding Tax 5%:</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="summary-label">Withholding Tax:</span>
+                                    <input type="number" id="whtPercent" class="vat-wht-input" value="5" min="0"
+                                        max="100" step="0.01" oninput="calculateTotal()" placeholder="0" disabled>
+                                    <span class="summary-label">%</span>
+                                </div>
                                 <span class="summary-value" id="whtAmount">฿0.00</span>
                             </div>
                             <div class="summary-row summary-total">
@@ -754,7 +786,9 @@
             const itemInputs = document.querySelectorAll('.item-input, .item-price, .item-vat, .item-wht');
             const removeButtons = document.querySelectorAll('.btn-remove-item');
             const addItemBtn = document.getElementById('addItemBtn');
-            const formActions = document.querySelector('.form-actions'); // เพิ่มบรรทัดนี้
+            const formActions = document.querySelector('.form-actions');
+            const vatPercent = document.getElementById('vatPercent');
+            const whtPercent = document.getElementById('whtPercent');
 
             if (isEditMode) {
                 editBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
@@ -765,7 +799,11 @@
                 itemInputs.forEach(input => input.disabled = false);
                 updateRemoveButtons();
                 addItemBtn.disabled = false;
-                formActions.classList.add('show'); // เพิ่มบรรทัดนี้
+                formActions.classList.add('show');
+
+                // Enable VAT and WHT percent inputs
+                vatPercent.disabled = false;
+                whtPercent.disabled = false;
             } else {
                 saveInvoiceData();
                 editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
@@ -776,7 +814,11 @@
                 itemInputs.forEach(input => input.disabled = true);
                 removeButtons.forEach(btn => btn.disabled = true);
                 addItemBtn.disabled = true;
-                formActions.classList.remove('show'); // เพิ่มบรรทัดนี้
+                formActions.classList.remove('show');
+
+                // Disable VAT and WHT percent inputs
+                vatPercent.disabled = true;
+                whtPercent.disabled = true;
             }
         }
 
@@ -801,6 +843,7 @@
         }
 
         // Save Invoice Data
+        // Save Invoice Data
         function saveInvoiceData() {
             // Collect all items
             const items = [];
@@ -808,7 +851,14 @@
             itemRows.forEach(row => {
                 const itemName = row.querySelector('.item-input').value;
                 const itemPrice = parseFloat(row.querySelector('.item-price').value) || 0;
-                items.push({ name: itemName, price: itemPrice });
+                const vatType = row.querySelector('.item-vat').value;
+                const whtType = row.querySelector('.item-wht').value;
+                items.push({
+                    name: itemName,
+                    price: itemPrice,
+                    vat: vatType,
+                    wht: whtType
+                });
             });
 
             const formData = {
@@ -817,9 +867,12 @@
                 name: document.getElementById('name').value,
                 surname: document.getElementById('surname').value,
                 items: items,
+                vatPercent: document.getElementById('vatPercent').value,
+                whtPercent: document.getElementById('whtPercent').value,
                 totalAmount: document.getElementById('totalAmount').textContent.replace('฿', ''),
                 vatAmount: document.getElementById('vatAmount').textContent.replace('฿', ''),
-                netAmount: document.getElementById('netAmount').textContent.replace('฿', ''),
+                whtAmount: document.getElementById('whtAmount').textContent.replace('฿', ''),
+                netAmount: document.getElementById('netAmount').textContent.replace('฿', '')
             };
 
             console.log('Saving data:', formData);
@@ -918,7 +971,14 @@
             let totalAmount = 0;
             let totalVat = 0;
             let totalWht = 0;
+            let hasVatItem = false;
+            let hasWhtItem = false;
 
+            // ดึงค่า % ที่ user กรอก
+            const vatPercent = parseFloat(document.getElementById('vatPercent').value) || 0;
+            const whtPercent = parseFloat(document.getElementById('whtPercent').value) || 0;
+
+            // วนลูปคำนวณแต่ละ row
             rows.forEach(row => {
                 const priceInput = row.querySelector('.item-price');
                 const vatSelect = row.querySelector('.item-vat');
@@ -928,47 +988,45 @@
                 const vatType = vatSelect.value;
                 const whtType = whtSelect.value;
 
-                let itemAmount = 0;
+                let itemBasePrice = 0;
                 let itemVat = 0;
                 let itemWht = 0;
 
-                if (vatType === 'none') {
-                    // None: ราคาที่จ่ายคือราคาที่กรอก
-                    itemAmount = price;
+                if (vatType === 'include') {
+                    // Include VAT: ราคาที่กรอกรวม VAT แล้ว
+                    // ต้องแยก VAT ออก
+                    hasVatItem = true;
+                    itemBasePrice = price / (1 + vatPercent / 100);
+                    itemVat = price - itemBasePrice;
+                } else if (vatType === 'exclude') {
+                    // Exclude VAT: ราคาที่กรอกยังไม่รวม VAT
+                    // ต้องบวก VAT เพิ่ม
+                    hasVatItem = true;
+                    itemBasePrice = price;
+                    itemVat = price * (vatPercent / 100);
+                } else {
+                    // None: ไม่มี VAT
+                    itemBasePrice = price;
                     itemVat = 0;
 
-                    // ถ้าเลือก WHT
+                    // เช็ค WHT (เฉพาะเมื่อ VAT = None)
                     if (whtType === 'yes') {
-                        itemWht = price * 0.05;
-                        itemAmount = price - itemWht;
+                        hasWhtItem = true;
+                        itemWht = price * (whtPercent / 100);
                     }
-                } else if (vatType === 'include') {
-                    // Include VAT: ราคารวม VAT แล้ว
-                    // ราคาสินค้า = ราคาที่กรอก / 1.07
-                    itemAmount = price / 1.07;
-                    itemVat = price - itemAmount;
-                } else if (vatType === 'exclude') {
-                    // Exclude VAT: ต้องบวก VAT เพิ่ม
-                    itemAmount = price;
-                    itemVat = price * 0.07;
                 }
 
-                totalAmount += itemAmount;
+                totalAmount += itemBasePrice;
                 totalVat += itemVat;
                 totalWht += itemWht;
             });
 
             const netAmount = totalAmount + totalVat - totalWht;
 
+            // แสดงผล
             document.getElementById('totalAmount').textContent = `฿${totalAmount.toFixed(2)}`;
             document.getElementById('vatAmount').textContent = `฿${totalVat.toFixed(2)}`;
-
-            // แสดง WHT (สมมุติว่ามี element id="whtAmount")
-            const whtElement = document.getElementById('whtAmount');
-            if (whtElement) {
-                whtElement.textContent = `฿${totalWht.toFixed(2)}`;
-            }
-
+            document.getElementById('whtAmount').textContent = `฿${totalWht.toFixed(2)}`;
             document.getElementById('netAmount').textContent = `฿${netAmount.toFixed(2)}`;
         }
 
@@ -1040,7 +1098,7 @@
             window.location.href = 'index.html'
         }
 
-        
+
     </script>
 </body>
 
